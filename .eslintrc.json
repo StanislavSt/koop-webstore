@@ -11,7 +11,7 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:@next/next/recommended"
   ],
-  "ignorePatterns": ["node_modules/**", "public/**"],
+  "ignorePatterns": ["node_modules/**", "public/**", ".next/**"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {

@@ -46,8 +46,8 @@
   },
   "prepare": "npx husky install",
   "lint-staged": {
-    "*.{ts,tsx,js}": [
-      "yarn run lint",
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --cache --cache-location .next/cache/eslint/ --fix",
       "yarn run format"
     ]
   }
