@@ -6,10 +6,12 @@
   },
   "extends": [
     "eslint:recommended",
+    "next/core-web-vitals",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@next/next/recommended"
   ],
-  "ignorePatterns": ["./**", "./node_modules/**"],
+  "ignorePatterns": ["node_modules/**", "public/**"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
