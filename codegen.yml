@@ -1,0 +1,17 @@
+overwrite: true
+schema:
+  - ${NEXT_PUBLIC_SHOPIFY_STOREFRONT_API_URL}:
+      headers:
+        X-Shopify-Storefront-Access-Token: ${NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN}
+documents: 'src/graphql/**'
+generates:
+  src/graphql/types.d.tsx:
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+  ./graphql.schema.json:
+    plugins:
+      - 'introspection'
