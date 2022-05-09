@@ -5,19 +5,19 @@ const Products = gql`
     products(first: 5) {
       edges {
         node {
-          translations(locale: "bg") {
-            key
-            locale
-            value
-          }
           id
           title
           handle
           tags
-          priceRange {
+          priceRangeV2 {
             minVariantPrice {
               amount
             }
+          }
+          bg: translations(locale: "bg") {
+            key
+            locale
+            value
           }
           images(first: 1) {
             edges {

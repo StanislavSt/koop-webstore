@@ -30394,16 +30394,16 @@ export type ProductsQuery = {
         title: string
         handle: string
         tags: Array<string>
-        translations: Array<{
+        priceRangeV2: {
+          __typename?: 'ProductPriceRangeV2'
+          minVariantPrice: { __typename?: 'MoneyV2'; amount: any }
+        }
+        bg: Array<{
           __typename?: 'PublishedTranslation'
           key: string
           locale: string
           value?: string | null
         }>
-        priceRange: {
-          __typename?: 'ProductPriceRange'
-          minVariantPrice: { __typename?: 'MoneyV2'; amount: any }
-        }
         images: {
           __typename?: 'ImageConnection'
           edges: Array<{
@@ -30421,19 +30421,19 @@ export const ProductsDocument = gql`
     products(first: 5) {
       edges {
         node {
-          translations(locale: "bg") {
-            key
-            locale
-            value
-          }
           id
           title
           handle
           tags
-          priceRange {
+          priceRangeV2 {
             minVariantPrice {
               amount
             }
+          }
+          bg: translations(locale: "bg") {
+            key
+            locale
+            value
           }
           images(first: 1) {
             edges {

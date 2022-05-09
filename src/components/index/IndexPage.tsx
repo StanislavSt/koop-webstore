@@ -1,10 +1,13 @@
 import React from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 import Layout from '../layout/Layout'
 import { ProductsQuery } from '../../graphql/types'
 
 const IndexPage = ({ products }: ProductsQuery) => {
+  const { locale } = useRouter()
+
   return (
     <Layout title="Home Page">
       <div className="bg-white">
@@ -22,9 +25,13 @@ const IndexPage = ({ products }: ProductsQuery) => {
                     height={250}
                   />
                 </div>
-                <h3 className="mt-4 text-sm text-gray-700">{product.title}</h3>
+                <h3 className="mt-4 text-sm text-gray-700">
+                  {locale === 'bg'
+                    ? product.bg[0] && product.bg[0].value
+                    : product.title}
+                </h3>
                 <p className="mt-1 text-lg font-medium text-gray-900">
-                  {product.priceRange.minVariantPrice.amount}
+                  {product.priceRangeV2.minVariantPrice.amount}
                 </p>
               </a>
             ))}
