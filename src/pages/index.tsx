@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Products from '../graphql/queries/Products'
 
 import client from '../graphql/apollo-client'
-import { ProductsQuery } from '../graphql/types.d'
+import { ProductsQuery } from '../graphql/types'
 
 const Home: NextPage<ProductsQuery> = ({ products }) => {
   return (
