@@ -2,17 +2,36 @@ import React from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-
 import { gql } from '@apollo/client'
+
 import styles from '../styles/Home.module.css'
 import client from '../server/apollo-client'
 
 type Props = {
-  products: any
+  products: {
+    edges: {
+      node: {
+        id: string
+        title: string
+        imageAlt: string
+        priceRange: {
+          minVariantPrice: {
+            amount: number
+          }
+        }
+        images: {
+          edges: {
+            node: {
+              url: string
+            }
+          }[]
+        }
+      }
+    }[]
+  }
 }
 
 const Home: NextPage<Props> = ({ products }) => {
-  console.log(products)
   return (
     <div className={styles.container}>
       <Head>
@@ -25,13 +44,15 @@ const Home: NextPage<Props> = ({ products }) => {
           <h2 className="sr-only">Products</h2>
 
           <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {products.edges.map(({ node: product }: any) => (
-              <a key={product.id} href={product.href} className="group">
+            {products.edges.map(({ node: product }) => (
+              <a key={product.id} className="group">
                 <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
-                  <img
+                  <Image
                     src={product.images.edges[0].node.url}
                     alt={product.imageAlt}
                     className="group-hover:opacity-75"
+                    width={250}
+                    height={250}
                   />
                 </div>
                 <h3 className="mt-4 text-sm text-gray-700">{product.title}</h3>
