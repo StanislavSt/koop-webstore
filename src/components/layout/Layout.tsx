@@ -1,5 +1,5 @@
 import Head from 'next/head'
-
+import Footer from './Footer'
 type Props = React.PropsWithChildren<{
   title?: string
 }>
@@ -13,6 +13,7 @@ const Layout = ({ title = 'KOOP', children }: Props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {children}
+      <Footer />
     </div>
   )
 }
