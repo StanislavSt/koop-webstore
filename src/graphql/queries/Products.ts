@@ -5,6 +5,11 @@ const Products = gql`
     products(first: 5) {
       edges {
         node {
+          translations(locale: "bg") {
+            key
+            locale
+            value
+          }
           id
           title
           handle

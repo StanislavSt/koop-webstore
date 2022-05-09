@@ -1,8 +1,8 @@
 overwrite: true
 schema:
-  - ${NEXT_PUBLIC_SHOPIFY_STOREFRONT_API_URL}:
+  - ${NEXT_PUBLIC_SHOPIFY_ADMIN_API_URL}:
       headers:
-        X-Shopify-Storefront-Access-Token: ${NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN}
+        X-Shopify-Access-Token: ${NEXT_PUBLIC_SHOPIFY_ACCESS_TOKEN}
 documents: 'src/graphql/**'
 generates:
   src/graphql/types.tsx:
