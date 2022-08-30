@@ -1,4 +1,13 @@
 /** @type {import('next').NextConfig} */
+
+const STUDIO_REWRITE = {
+  source: '/studio/:path*',
+  destination:
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:3333/studio/:path*'
+      : '/studio/index.html',
+}
+
 const nextConfig = {
   reactStrictMode: true,
   env: {
@@ -19,6 +28,9 @@ const nextConfig = {
     // This is the default locale you want to be used when visiting
     // a non-locale prefixed path e.g. `/hello`
     defaultLocale: 'en-US',
+  },
+  async rewrites() {
+    return [STUDIO_REWRITE]
   },
 }
 

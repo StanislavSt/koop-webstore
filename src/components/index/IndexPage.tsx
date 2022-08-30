@@ -7,7 +7,6 @@ import { ProductsQuery } from '../../graphql/types'
 
 const IndexPage = ({ products }: ProductsQuery) => {
   const { locale } = useRouter()
-
   return (
     <Layout title="Home Page">
       <div className="bg-white">
@@ -17,14 +16,16 @@ const IndexPage = ({ products }: ProductsQuery) => {
             {products.edges.map(({ node: product }) => (
               <a key={product.id} className="group">
                 <div>
-                  <Image
-                    className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8 group-hover:opacity-75"
-                    src={product.images.edges[0].node.url}
-                    alt={product.images.edges[0].node.altText ?? ''}
-                    width={250}
-                    height={350}
-                    objectFit="cover"
-                  />
+                  {product.images.edges[0] && (
+                    <Image
+                      className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8 group-hover:opacity-75"
+                      src={product.images.edges[0].node.url}
+                      alt={product.images.edges[0].node.altText ?? ''}
+                      width={250}
+                      height={350}
+                      objectFit="cover"
+                    />
+                  )}
                 </div>
                 <h3 className="mt-4 text-sm text-gray-700">
                   {locale === 'bg'
