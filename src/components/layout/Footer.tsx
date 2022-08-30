@@ -5,7 +5,7 @@ const Footer = () => {
   const { locale } = useRouter()
 
   return (
-    <footer className="absolute bottom-5 -left-1 w-full flex justify-center z-10 text-sm">
+    <footer className="mb-5 w-full flex justify-center z-10 text-sm">
       <ul className="flex flex-wrap gap-3 uppercase max-w-4xl justify-center">
         <li className="hover:opacity-50 cursor-pointer ">
           <Link href="/about">

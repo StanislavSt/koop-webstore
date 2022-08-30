@@ -18,6 +18,7 @@ const Layout = ({ title = 'KOOP', children }: Props) => {
       </Head>
       <header>
         <div className="flex justify-center gap-3 ">
+          <Link href={'/'}>Home</Link>
           {router.locales &&
             [...router.locales].map((locale) => (
               <Link key={locale} href={router.asPath} locale={locale}>
