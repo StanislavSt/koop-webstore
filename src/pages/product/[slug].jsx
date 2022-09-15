@@ -4,28 +4,28 @@ import { client } from '../../graphql/groq-client'
 export default ProductPage
 
 export async function getStaticPaths() {
-  const allPosts = await client.fetch(
+  const allProducts = await client.fetch(
     `*[_type=='product' && store.isDeleted==false]`
   )
 
-  const slugs = allPosts.map((post: any) => ({
+  const slugs = allProducts.map((product) => ({
     params: {
-      id: post.store.slug.current,
+      slug: product.store.slug.current,
     },
   }))
 
-  console.log('slugs are', slugs)
   return {
     paths: slugs,
     fallback: false, // can also be true or 'blocking'
   }
 }
 
-export const getStaticProps: any = async ({ params: { id } }: any) => {
-  const post = await client.fetch(`*[store.slug.current == "${id}"]`)
+export const getStaticProps = async ({ params: { slug } }) => {
+  const products = await client.fetch(`*[store.slug.current == "${slug}"]`)
+
   return {
     props: {
-      post,
+      products,
     },
   }
 }
