@@ -13,8 +13,10 @@ const paymentParams = {
   urlCancel: 'https://koop-webstore.vercel.app/',
   keyIndex: 1,
   CardTokenRequest: 0,
-  CustomerAddress: 'Samokov 28g',
-  CustomerZIPCode: '1113',
+  CustomerAddress: '',
+  CustomerZIPCode: '',
+  CustomerCity: '',
+  CustomerCountry: '',
   PaymentParametersRequired: 2,
   cartItems: [
     {
