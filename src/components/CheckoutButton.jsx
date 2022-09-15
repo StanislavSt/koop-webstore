@@ -25,7 +25,7 @@ const paymentParams = {
       article: 'Delivery',
       quantity: 1,
       price: 0.05,
-      currency: 'EUR',
+      currency: 'BGN',
     },
   ],
   signature:
