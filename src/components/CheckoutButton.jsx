@@ -14,7 +14,6 @@ const paymentParams = {
   keyIndex: 1,
   CardTokenRequest: 0,
   PaymentParametersRequired: 2,
-  note: 'this is a test payment',
   cartItems: [
     {
       article: 'HP ProBook 6360b sticker',
