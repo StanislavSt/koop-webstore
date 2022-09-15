@@ -8,7 +8,7 @@ const paymentParams = {
   amount: 0.1,
   currency: 'BGN',
   orderID: Math.random().toString(36).substr(2, 9),
-  urlNotify: 'https://koop-webstore.vercel.app', // Warning: use your own url to verify your payment!
+  urlNotify: 'https://koop-webstore.vercel.app/api/notify', // Warning: use your own url to verify your payment!
   urlOk: 'https://koop-webstore.vercel.app/',
   urlCancel: 'https://koop-webstore.vercel.app/',
   keyIndex: 1,
