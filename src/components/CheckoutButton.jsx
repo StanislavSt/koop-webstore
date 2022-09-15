@@ -12,17 +12,19 @@ const paymentParams = {
   urlOk: 'https://koop-webstore.vercel.app/',
   urlCancel: 'https://koop-webstore.vercel.app/',
   keyIndex: 1,
+  CardTokenRequest: 0,
+  PaymentParametersRequired: 2,
   cartItems: [
     {
       article: 'HP ProBook 6360b sticker',
-      quantity: 2,
-      price: 10,
+      quantity: 1,
+      price: 0.05,
       currency: 'BGN',
     },
     {
       article: 'Delivery',
       quantity: 1,
-      price: 3.45,
+      price: 0.05,
       currency: 'BGN',
     },
   ],
