@@ -28,10 +28,6 @@ const ProductPage = ({ products }) => {
           objectFit="cover"
         />
         <CheckoutButton />
-        <button onClick={() => fetch('/api/purchase', { method: 'POST' })}>
-          {' '}
-          click me
-        </button>
       </div>
     </Layout>
   )
