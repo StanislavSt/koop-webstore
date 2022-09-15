@@ -5,27 +5,28 @@ const paymentParams = {
   sid: '458570',
   ipcLanguage: 'en', //Checkout page language (ISO 2 format).
   walletNumber: '40609591967',
-  amount: 0.1,
-  currency: 'BGN',
+  amount: 0.12,
+  currency: 'EUR',
   orderID: Math.random().toString(36).substr(2, 9),
   urlNotify: 'https://koop-webstore.vercel.app', // Warning: use your own url to verify your payment!
   urlOk: 'https://koop-webstore.vercel.app/',
   urlCancel: 'https://koop-webstore.vercel.app/',
   keyIndex: 1,
-  CardTokenRequest: 0,
-  PaymentParametersRequired: 2,
+  cardTokenRequest: 0,
+  paymentParametersRequired: 2,
+  note: 'this is a test payment',
   cartItems: [
     {
       article: 'HP ProBook 6360b sticker',
       quantity: 1,
-      price: 0.05,
-      currency: 'BGN',
+      price: 0.06,
+      currency: 'EUR',
     },
     {
       article: 'Delivery',
       quantity: 1,
-      price: 0.05,
-      currency: 'BGN',
+      price: 0.06,
+      currency: 'EUR',
     },
   ],
   signature:
