@@ -8,16 +8,10 @@ const paymentParams = {
   amount: 0.1,
   currency: 'EUR',
   orderID: Math.random().toString(36).substr(2, 9),
-  urlNotify: MyPOSEmbedded.IPC_URL + '/client/ipcNotify', // Warning: use your own url to verify your payment!
+  urlNotify: 'https://koop-webstore.vercel.app/' + 'notify', // Warning: use your own url to verify your payment!
   urlOk: window.location.href,
   urlCancel: window.location.href,
   keyIndex: 1,
-  CustomerAddress: 'Some address',
-  CustomerEmail: 's.staev1@gmail.com',
-  CustomerCity: 'Sofia',
-  CustomerFirstNames: 'Stanislav',
-  CustomerFamilyName: 'Staev',
-  Delivery: 0.05,
   cartItems: [
     {
       article: 'HP ProBook 6360b sticker',
