@@ -2,10 +2,10 @@
 import * as MyPOSEmbedded from 'mypos-embedded-checkout'
 
 const paymentParams = {
-  sid: '000000000000010',
+  sid: '458570',
   ipcLanguage: 'en', //Checkout page language (ISO 2 format).
-  walletNumber: '61938166610',
-  amount: 23.45,
+  walletNumber: '40609591967',
+  amount: 0.1,
   currency: 'EUR',
   orderID: Math.random().toString(36).substr(2, 9),
   urlNotify: MyPOSEmbedded.IPC_URL + '/client/ipcNotify', // Warning: use your own url to verify your payment!
@@ -14,6 +14,10 @@ const paymentParams = {
   keyIndex: 1,
   CustomerAddress: 'Some address',
   CustomerEmail: 's.staev1@gmail.com',
+  CustomerCity: 'Sofia',
+  CustomerFirstNames: 'Stanislav',
+  CustomerFamilyName: 'Staev',
+  Delivery: 0.05,
   cartItems: [
     {
       article: 'HP ProBook 6360b sticker',
@@ -31,7 +35,7 @@ const paymentParams = {
 }
 
 const callbackParams = {
-  isSandbox: true,
+  //   isSandbox: true,
   onSuccess: () => {},
   onError: () => {},
 }
