@@ -48,7 +48,7 @@ export type Scalars = {
   /**
    * A string containing a strict subset of HTML code. Non-allowed tags will be stripped out.
    * Allowed tags:
-   * * `a` (allowed attributes: `href`)
+   * * `a` (allowed attributes: `href`, `target`)
    * * `b`
    * * `br`
    * * `em`
@@ -202,7 +202,7 @@ export type App = Node & {
   developerType: AppDeveloperType
   /**
    * Website of the developer who created the app.
-   * @deprecated Use `appStoreDeveloperUrl` instead
+   * @deprecated Use `appStoreDeveloperUrl` instead.
    */
   developerUrl: Scalars['URL']
   /** Whether the app uses the Embedded App SDK. */
@@ -396,7 +396,7 @@ export type AppInstallation = HasMetafields &
     app: App
     /**
      * Channel associated with the installed application.
-     * @deprecated Use `publication` instead
+     * @deprecated Use `publication` instead.
      */
     channel?: Maybe<Channel>
     /** Credits that can be used towards future app purchases. */
@@ -421,7 +421,7 @@ export type AppInstallation = HasMetafields &
     revenueAttributionRecords: AppRevenueAttributionRecordConnection
     /**
      * Subscriptions charge to a shop on a recurring basis.
-     * @deprecated Use `activeSubscriptions` instead
+     * @deprecated Use `activeSubscriptions` instead.
      */
     subscriptions: Array<AppSubscription>
     /** The URL to uninstall the application. */
@@ -596,13 +596,13 @@ export enum AppPricingInterval {
 
 /** The public-facing category for an app. */
 export enum AppPublicCategory {
-  /** App's public category is [Custom](https://shopify.dev/apps/getting-started/app-types). */
+  /** The app's public category is [custom](https://shopify.dev/apps/distribution#capabilities-and-requirements). */
   Custom = 'CUSTOM',
-  /** App's public category is Other. An app is in this category if it is not classified under any of the [other app types](https://shopify.dev/apps/getting-started/app-types). */
+  /** The app's public category is other. An app is in this category if it's not classified under any of the other app types (private, public, or custom). */
   Other = 'OTHER',
-  /** App's public category is [Private](https://shopify.dev/apps/getting-started/app-types). */
+  /** The app's public category is [private](https://shopify.dev/apps/distribution#deprecated-app-types). */
   Private = 'PRIVATE',
-  /** App's public category is [Public](https://shopify.dev/apps/getting-started/app-types). */
+  /** The app's public category is [public](https://shopify.dev/apps/distribution#capabilities-and-requirements). */
   Public = 'PUBLIC',
 }
 
@@ -889,7 +889,7 @@ export type AppSubscription = Node & {
   __typename?: 'AppSubscription'
   /** The date and time when the app subscription was created. */
   createdAt: Scalars['DateTime']
-  /** The date and time when the current app subscription period ends. */
+  /** The date and time when the current app subscription period ends. Returns `null` if the subscription isn't active. */
   currentPeriodEnd?: Maybe<Scalars['DateTime']>
   /** A globally-unique identifier. */
   id: Scalars['ID']
@@ -1221,7 +1221,7 @@ export type AttributeInput = {
  */
 export type AutomaticDiscountApplication = DiscountApplication & {
   __typename?: 'AutomaticDiscountApplication'
-  /** The method by which the discount's value is allocated to its entitled items. */
+  /** The method by which the discount's value is applied to its entitled items. */
   allocationMethod: DiscountApplicationAllocationMethod
   /**
    * An ordered index that can be used to identify the discount application and indicate the precedence
@@ -1556,7 +1556,7 @@ export type CalculatedAutomaticDiscountApplication =
  */
 export type CalculatedDiscountAllocation = {
   __typename?: 'CalculatedDiscountAllocation'
-  /** The money amount allocated by the discount application in shop and presentment currencies. */
+  /** The money amount that's allocated by the discount application in shop and presentment currencies. */
   allocatedAmountSet: MoneyBag
   /** The discount that the allocated amount originated from. */
   discountApplication: CalculatedDiscountApplication
@@ -1669,7 +1669,7 @@ export type CalculatedDraftOrderLineItem = {
   appliedDiscount?: Maybe<DraftOrderAppliedDiscount>
   /** Whether the line item is a custom line item (`true`) or a product variant line item (`false`). */
   custom: Scalars['Boolean']
-  /** List of additional information about the line item. */
+  /** A list of attributes that represent custom features or special requests. */
   customAttributes: Array<Attribute>
   /** Total price with discounts applied. */
   discountedTotal: MoneyV2
@@ -1687,9 +1687,9 @@ export type CalculatedDraftOrderLineItem = {
   fulfillmentService?: Maybe<FulfillmentService>
   /** The image associated with the draft order line item. */
   image?: Maybe<Image>
-  /** Whether the line item represents the puchase of a gift card. */
+  /** Whether the line item represents the purchase of a gift card. */
   isGiftCard: Scalars['Boolean']
-  /** Name of the product. */
+  /** The name of the product. */
   name: Scalars['String']
   /**
    * The total price (without discounts) of the line item, based on the original unit price of the variant x quantity.
@@ -1704,19 +1704,19 @@ export type CalculatedDraftOrderLineItem = {
   quantity: Scalars['Int']
   /** Whether physical shipping is required for the variant. */
   requiresShipping: Scalars['Boolean']
-  /** Variant SKU number. */
+  /** The SKU number of the product variant. */
   sku?: Maybe<Scalars['String']>
   /** Whether the variant is taxable. */
   taxable: Scalars['Boolean']
-  /** Title of the product or variant (this field only applies to custom line items). */
+  /** The title of the product or variant. This field only applies to custom line items. */
   title: Scalars['String']
   /** The total value of the discount. */
   totalDiscount: MoneyV2
   /** The variant associated with the draft order line item. */
   variant?: Maybe<ProductVariant>
-  /** Name of the variant. */
+  /** The name of the variant. */
   variantTitle?: Maybe<Scalars['String']>
-  /** Name of the vendor who made the variant. */
+  /** The name of the vendor who created the product variant. */
   vendor?: Maybe<Scalars['String']>
   /** The weight unit and value for a draft order line item. */
   weight?: Maybe<Weight>
@@ -1730,11 +1730,11 @@ export type CalculatedLineItem = {
   __typename?: 'CalculatedLineItem'
   /** The discounts that have been allocated onto the line item by discount applications. */
   calculatedDiscountAllocations: Array<CalculatedDiscountAllocation>
-  /** The list of additional information about the line item. */
+  /** A list of attributes that represent custom features or special requests. */
   customAttributes: Array<Attribute>
   /**
    * The discounts that have been allocated onto the line item by discount applications.
-   * @deprecated Use `calculatedDiscountAllocations` instead
+   * @deprecated Use `calculatedDiscountAllocations` instead.
    */
   discountAllocations: Array<DiscountAllocation>
   /** The price of a single quantity of the line item with line item discounts applied, in shop and presentment currencies. Discounts applied to the entire order aren't included in this price. */
@@ -1861,7 +1861,7 @@ export type CalculatedOrder = Node & {
   notificationPreviewTitle: Scalars['String']
   /**
    * The order without any changes applied.
-   * @deprecated Use `originalOrder` instead
+   * @deprecated Use `originalOrder` instead.
    */
   order: Order
   /**
@@ -1965,44 +1965,46 @@ export type CalculatedScriptDiscountApplication =
  */
 export type Channel = Node & {
   __typename?: 'Channel'
-  /** Underlying app used by the channel. */
+  /** The underlying app used by the channel. */
   app: App
   /** The collection publications for the list of collections published to the channel. */
   collectionPublicationsV3: ResourcePublicationConnection
   /** The list of collections published to the channel. */
   collections: CollectionConnection
   /**
-   * Unique identifier for the channel.
-   * @deprecated Use `id` instead
+   * The unique identifier for the channel.
+   * @deprecated Use `id` instead.
    */
   handle: Scalars['String']
   /** Whether the collection is available to the channel. */
   hasCollection: Scalars['Boolean']
   /** A globally-unique identifier. */
   id: Scalars['ID']
-  /** Name of the channel. */
+  /** The name of the channel. */
   name: Scalars['String']
   /**
-   * Menu items for the channel, which also appear as submenu items in left navigation sidebar in the Shopify admin.
+   * The menu items for the channel, which also appear as submenu items in the left navigation sidebar in the Shopify admin.
    *
-   * @deprecated Use App.navigationItems instead
+   * @deprecated Use [AppInstallation.navigationItems](
+   *           https://shopify.dev/api/admin-graphql/current/objects/AppInstallation#field-appinstallation-navigationitems) instead.
    */
   navigationItems: Array<NavigationItem>
   /**
    * Home page for the channel.
-   * @deprecated Use App.launchUrl instead
+   * @deprecated Use [AppInstallation.launchUrl](
+   *           https://shopify.dev/api/admin-graphql/current/objects/AppInstallation#field-appinstallation-launchurl) instead.
    */
   overviewPath?: Maybe<Scalars['URL']>
   /**
    * The product publications for the products published to the channel.
-   * @deprecated Use `productPublicationsV3` instead
+   * @deprecated Use `productPublicationsV3` instead.
    */
   productPublications: ProductPublicationConnection
   /** The product publications for the list of products published to the channel. */
   productPublicationsV3: ResourcePublicationConnection
   /** The list of products published to the channel. */
   products: ProductConnection
-  /** Whether or not this channel supports future publishing. */
+  /** Whether the channel supports future publishing. */
   supportsFuturePublishing: Scalars['Boolean']
 }
 
@@ -2226,17 +2228,17 @@ export type Collection = HasMetafieldDefinitions &
     publicationCount: Scalars['Int']
     /**
      * The channels where the collection is published.
-     * @deprecated Use `resourcePublications` instead
+     * @deprecated Use `resourcePublications` instead.
      */
     publications: CollectionPublicationConnection
     /**
      * Check to see whether the resource is published to a given channel.
-     * @deprecated Use `publishedOnPublication` instead
+     * @deprecated Use `publishedOnPublication` instead.
      */
     publishedOnChannel: Scalars['Boolean']
     /**
      * Check to see whether the resource is published to the calling app's channel.
-     * @deprecated Use `publishedOnCurrentPublication` instead
+     * @deprecated Use `publishedOnCurrentPublication` instead.
      */
     publishedOnCurrentChannel: Scalars['Boolean']
     /** Check to see whether the resource is published to the calling app's publication. */
@@ -2267,7 +2269,7 @@ export type Collection = HasMetafieldDefinitions &
      *
      * As of the `2022-04` version release, the Storefront GraphQL API will no longer return Base64 encoded IDs to match the behavior of the Admin GraphQL API. Therefore, you can safely use the `id` field's value instead.
      *
-     * @deprecated Use `id` instead
+     * @deprecated Use `id` instead.
      */
     storefrontId: Scalars['StorefrontID']
     /**
@@ -2284,7 +2286,7 @@ export type Collection = HasMetafieldDefinitions &
     translations: Array<PublishedTranslation>
     /**
      * The list of channels that the resource is not published to.
-     * @deprecated Use `unpublishedPublications` instead
+     * @deprecated Use `unpublishedPublications` instead.
      */
     unpublishedChannels: ChannelConnection
     /** The list of publications that the resource is not published to. */
@@ -2566,7 +2568,7 @@ export type CollectionUnpublishedPublicationsArgs = {
 /** Return type for `collectionAddProducts` mutation. */
 export type CollectionAddProductsPayload = {
   __typename?: 'CollectionAddProductsPayload'
-  /** The updated collection. */
+  /** The updated collection. Returns `null` if an error is raised. */
   collection?: Maybe<Collection>
   /** The list of errors that occurred from executing the mutation. */
   userErrors: Array<UserError>
@@ -2604,7 +2606,7 @@ export type CollectionDeleteInput = {
 /** Return type for `collectionDelete` mutation. */
 export type CollectionDeletePayload = {
   __typename?: 'CollectionDeletePayload'
-  /** The ID of the collection that was deleted. */
+  /** The ID of the collection that was deleted. Returns `null` if the collection doesn't exist. */
   deletedCollectionId?: Maybe<Scalars['ID']>
   /** The shop associated with the collection. */
   shop: Shop
@@ -2633,17 +2635,20 @@ export type CollectionInput = {
    *
    */
   handle?: InputMaybe<Scalars['String']>
-  /** Specifies the collection to update or create a new collection if absent. */
+  /**
+   * Specifies the collection to update or create a new collection if absent. Required for updating a collection.
+   *
+   */
   id?: InputMaybe<Scalars['ID']>
   /** The image associated with the collection. */
   image?: InputMaybe<ImageInput>
-  /** The metafields to associate with this collection. */
+  /** The metafields to associate with the collection. */
   metafields?: InputMaybe<Array<MetafieldInput>>
-  /** The private metafields to associated with this product. */
+  /** The private metafields to associate with the collection. */
   privateMetafields?: InputMaybe<Array<PrivateMetafieldInput>>
-  /** Initial list of collection products. Only valid with `productCreate` and without rules. */
+  /** Initial list of collection products. Only valid with `collectionCreate` and without rules. */
   products?: InputMaybe<Array<Scalars['ID']>>
-  /** Initial list of collection publications. Only valid with `productCreate`. This argument is deprecated: Use PublishablePublish instead. */
+  /** Initial list of collection publications. Only valid with `collectionCreate`. This argument is deprecated: Use PublishablePublish instead. */
   publications?: InputMaybe<Array<CollectionPublicationInput>>
   /**
    * Indicates whether a redirect is required after a new handle has been provided.
@@ -2662,7 +2667,7 @@ export type CollectionInput = {
   sortOrder?: InputMaybe<CollectionSortOrder>
   /** The theme template used when viewing the collection in a store. */
   templateSuffix?: InputMaybe<Scalars['String']>
-  /** Required for creating a new collection. */
+  /** The title of the collection. Required for creating a new collection. */
   title?: InputMaybe<Scalars['String']>
 }
 
@@ -2671,7 +2676,7 @@ export type CollectionPublication = {
   __typename?: 'CollectionPublication'
   /**
    * The channel where the collection will be published.
-   * @deprecated Use `publication` instead
+   * @deprecated Use `publication` instead.
    */
   channel: Channel
   /** The collection to be published on the publication. */
@@ -2762,42 +2767,47 @@ export type CollectionReorderProductsPayload = {
 /** Represents at rule that's used to assign products to a collection. */
 export type CollectionRule = {
   __typename?: 'CollectionRule'
-  /** The attribute that the rule focuses on (for example, `title` or `product_type`). */
+  /** The attribute that the rule focuses on. For example, `title` or `product_type`. */
   column: CollectionRuleColumn
-  /** The value that the operator is applied to (for example, `Hats`). */
+  /** The value that the operator is applied to. For example, `Hats`. */
   condition: Scalars['String']
   /**
-   * The type of operator that the rule is based on (for example, `equals`, `contains`, or `not_equals`).
+   * The type of operator that the rule is based on. For example, `equals`, `contains`, or `not_equals`.
    *
    */
   relation: CollectionRuleRelation
 }
 
-/** Specifies the property of a product being used to populate the smart collection. */
+/** Specifies the attribute of a product being used to populate the smart collection. */
 export enum CollectionRuleColumn {
-  /** The `is_price_reduced` attribute, which is a Boolean type evaluated as `true` if a product has a `compare_at_price` set on any of its variants. */
+  /**
+   * An attribute evaluated based on the `compare_at_price` attribute of the product's variants.
+   * With `is_set` relation, the rule matches products with at least one variant with `compare_at_price` set.
+   * With `is_not_set` relation, the rule matches matches products with at least one variant with `compare_at_price` not set.
+   *
+   */
   IsPriceReduced = 'IS_PRICE_REDUCED',
-  /** The `tag` attribute. */
+  /** The [`tag`](https://shopify.dev/api/admin-graphql/latest/objects/Product#field-product-producttype) attribute. */
   Tag = 'TAG',
-  /** The `title` attribute. */
+  /** The [`title`](https://shopify.dev/api/admin-graphql/latest/objects/Product#field-product-title) attribute. */
   Title = 'TITLE',
-  /** The `type` attribute. */
+  /** The [`type`](https://shopify.dev/api/admin-graphql/latest/objects/Product#field-product-producttype) attribute. */
   Type = 'TYPE',
-  /** The `variant_compare_at_price` attribute. */
+  /** The [`variant_compare_at_price`](https://shopify.dev/api/admin-graphql/latest/objects/ProductVariant#field-productvariant-compareatprice) attribute. */
   VariantCompareAtPrice = 'VARIANT_COMPARE_AT_PRICE',
-  /** The `variant_inventory` attribute. */
+  /** The [`variant_inventory`](https://shopify.dev/api/admin-graphql/latest/objects/ProductVariant#field-productvariant-inventoryquantity) attribute. */
   VariantInventory = 'VARIANT_INVENTORY',
-  /** The `variant_price` attribute. */
+  /** The [`variant_price`](https://shopify.dev/api/admin-graphql/latest/objects/ProductVariant#field-productvariant-price) attribute. */
   VariantPrice = 'VARIANT_PRICE',
-  /** The `variant_title` attribute. */
+  /** The [`variant_title`](https://shopify.dev/api/admin-graphql/latest/objects/ProductVariant#field-productvariant-title) attribute. */
   VariantTitle = 'VARIANT_TITLE',
-  /** The `variant_weight` attribute. */
+  /** The [`variant_weight`](https://shopify.dev/api/admin-graphql/latest/objects/ProductVariant#field-productvariant-weight) attribute. */
   VariantWeight = 'VARIANT_WEIGHT',
-  /** The `vendor` attribute. */
+  /** The [`vendor`](https://shopify.dev/api/admin-graphql/latest/objects/Product#field-product-vendor) attribute. */
   Vendor = 'VENDOR',
 }
 
-/** Collections may use rules to automatically include the matching products. This defines restrictions for a type of rule. */
+/** This object defines all columns and allowed relations that can be used in rules for smart collections to automatically include the matching products. */
 export type CollectionRuleConditions = {
   __typename?: 'CollectionRuleConditions'
   /** Allowed relations of the rule. */
@@ -2810,18 +2820,18 @@ export type CollectionRuleConditions = {
 
 /** Specifies a rule to associate with a collection. */
 export type CollectionRuleInput = {
-  /** The attribute that the rule focuses on (for example, `title` or `product_type`). */
+  /** The attribute that the rule focuses on. For example, `title` or `product_type`. */
   column: CollectionRuleColumn
-  /** The value that the operator is applied to (for example, `Hats`). */
+  /** The value that the operator is applied to. For example, `Hats`. */
   condition: Scalars['String']
   /**
-   * The type of operator that the rule is based on (for example, `equals`, `contains`, or `not_equals`).
+   * The type of operator that the rule is based on. For example, `equals`, `contains`, or `not_equals`.
    *
    */
   relation: CollectionRuleRelation
 }
 
-/** Specifies the relationship between the `column` and the condition. */
+/** Specifies the relationship between the `column` and the `condition`. */
 export enum CollectionRuleRelation {
   /** The attribute contains the condition. */
   Contains = 'CONTAINS',
@@ -2831,9 +2841,9 @@ export enum CollectionRuleRelation {
   Equals = 'EQUALS',
   /** The attribute is greater than the condition. */
   GreaterThan = 'GREATER_THAN',
-  /** The attribute is not set. */
+  /** The attribute is not set (equal to `null`). */
   IsNotSet = 'IS_NOT_SET',
-  /** The attribute is set. */
+  /** The attribute is set (not equal to `null`). */
   IsSet = 'IS_SET',
   /** The attribute is less than the condition. */
   LessThan = 'LESS_THAN',
@@ -2850,7 +2860,7 @@ export type CollectionRuleSet = {
   __typename?: 'CollectionRuleSet'
   /**
    * Whether products must match any or all of the rules to be included in the collection.
-   * If true, then products must match one or more of the rules to be included in the collection.
+   * If true, then products must match at least one of the rules to be included in the collection.
    * If false, then products must match all of the rules to be included in the collection.
    *
    */
@@ -2863,7 +2873,7 @@ export type CollectionRuleSet = {
 export type CollectionRuleSetInput = {
   /**
    * Whether products must match any or all of the rules to be included in the collection.
-   * If true, then products must match one or more of the rules to be included in the collection.
+   * If true, then products must match at least one of the rules to be included in the collection.
    * If false, then products must match all of the rules to be included in the collection.
    *
    */
@@ -3036,7 +3046,7 @@ export type CountriesInShippingZones = {
 
 /**
  * The code designating a country/region, which generally follows ISO 3166-1 alpha-2 guidelines.
- * If a territory doesn't have a country code value in the `CountryCode` enum, it might be considered a subdivision
+ * If a territory doesn't have a country code value in the `CountryCode` enum, then it might be considered a subdivision
  * of another country. For example, the territories associated with Spain are represented by the country code `ES`,
  * and the territories associated with the United States of America are represented by the country code `US`.
  *
@@ -3585,11 +3595,11 @@ export type CountryHarmonizedSystemCodeInput = {
 
 /** Specifies the input fields required to create a media object. */
 export type CreateMediaInput = {
-  /** The alt text associated to the media. */
+  /** The alt text associated with the media. */
   alt?: InputMaybe<Scalars['String']>
   /** The media content type. */
   mediaContentType: MediaContentType
-  /** The original source of the media object. May be an external URL or signed upload URL. */
+  /** The original source of the media object. This might be an external URL or a staged upload URL. */
   originalSource: Scalars['String']
 }
 
@@ -4010,13 +4020,13 @@ export type Customer = CommentEventSubject &
     __typename?: 'Customer'
     /**
      * Whether the customer has agreed to receive marketing material.
-     * @deprecated Use `emailMarketingConsent` instead
+     * @deprecated Use `emailMarketingConsent` instead.
      */
     acceptsMarketing: Scalars['Boolean']
     /**
      * The date and time when the customer consented or objected to receiving marketing material by email.
      *
-     * @deprecated Use `emailMarketingConsent` instead
+     * @deprecated Use `emailMarketingConsent` instead.
      */
     acceptsMarketingUpdatedAt: Scalars['DateTime']
     /** A list of addresses associated with the customer. */
@@ -4025,7 +4035,7 @@ export type Customer = CommentEventSubject &
     amountSpent: MoneyV2
     /**
      * The average amount that the customer spent per order.
-     * @deprecated Use `averageOrderAmountV2` instead
+     * @deprecated Use `averageOrderAmountV2` instead.
      */
     averageOrderAmount?: Maybe<Scalars['Money']>
     /** The average amount that the customer spent per order. */
@@ -4087,7 +4097,7 @@ export type Customer = CommentEventSubject &
      *
      * If the customer does not accept email marketing, then this property is `null`.
      *
-     * @deprecated Use `emailMarketingConsent` instead
+     * @deprecated Use `emailMarketingConsent` instead.
      */
     marketingOptInLevel?: Maybe<CustomerMarketingOptInLevel>
     /** Returns a metafield by namespace and key that belongs to the resource. */
@@ -4136,8 +4146,11 @@ export type Customer = CommentEventSubject &
     /** The date and time when the customer was last updated. */
     updatedAt: Scalars['DateTime']
     /**
-     * Whether the email address is formatted correctly. This does not
-     * guarantee that the email address actually exists.
+     * Whether the email address is formatted correctly.
+     *
+     * Returns `true` when the email is formatted correctly and
+     * belongs to an existing domain. This doesn't guarantee that
+     * the email address actually exists.
      *
      */
     validEmailAddress: Scalars['Boolean']
@@ -4746,7 +4759,7 @@ export type CustomerJourneySummary = {
   moments?: Maybe<CustomerMomentConnection>
   /** The total number of customer moments associated with this order. Returns null if the order is still in the process of being attributed. */
   momentsCount?: Maybe<Scalars['Int']>
-  /** Whether or not the attributed sessions for the order have been created yet. */
+  /** Whether the attributed sessions for the order have been created yet. */
   ready: Scalars['Boolean']
 }
 
@@ -5039,6 +5052,14 @@ export enum CustomerPaymentMethodRevocationReason {
   AuthorizeNetGatewayNotEnabled = 'AUTHORIZE_NET_GATEWAY_NOT_ENABLED',
   /** Authorize.net did not return any payment methods. Make sure that the correct Authorize.net account is linked. */
   AuthorizeNetReturnedNoPaymentMethod = 'AUTHORIZE_NET_RETURNED_NO_PAYMENT_METHOD',
+  /** Failed to contact Braintree API. */
+  BraintreeApiAuthenticationError = 'BRAINTREE_API_AUTHENTICATION_ERROR',
+  /** The Braintree payment gateway is not enabled. */
+  BraintreeGatewayNotEnabled = 'BRAINTREE_GATEWAY_NOT_ENABLED',
+  /** The Braintree payment method type should be a credit card or Apple Pay card. */
+  BraintreePaymentMethodNotCard = 'BRAINTREE_PAYMENT_METHOD_NOT_CARD',
+  /** Braintree returned no payment methods. Make sure the correct Braintree account is linked. */
+  BraintreeReturnedNoPaymentMethod = 'BRAINTREE_RETURNED_NO_PAYMENT_METHOD',
   /** The credit card failed to update. */
   FailedToUpdateCreditCard = 'FAILED_TO_UPDATE_CREDIT_CARD',
   /** The payment method was manually revoked. */
@@ -5419,13 +5440,25 @@ export enum CustomerSortKeys {
 
 /** The valid values for the state of a customer's account with a shop. */
 export enum CustomerState {
-  /** The customer declined the email invite to create an account. */
+  /**
+   * The customer declined the email invite to create an account.
+   *
+   */
   Declined = 'DECLINED',
-  /** The customer doesn't have an active account. Customer accounts can be disabled from the Shopify admin at any time. */
+  /**
+   * The customer doesn't have an active account. Customer accounts can be disabled from the Shopify admin at any time.
+   *
+   */
   Disabled = 'DISABLED',
-  /** The customer has created an account. */
+  /**
+   * The customer has created an account.
+   *
+   */
   Enabled = 'ENABLED',
-  /** The customer has received an email invite to create an account. */
+  /**
+   * The customer has received an email invite to create an account.
+   *
+   */
   Invited = 'INVITED',
 }
 
@@ -6040,7 +6073,7 @@ export type DeliveryProfile = Node & {
   originLocationCount: Scalars['Int']
   /**
    * The number of product variants for this profile. The count for the default profile is not supported and will return -1.
-   * @deprecated Use `productVariantsCountV2` instead
+   * @deprecated Use `productVariantsCountV2` instead.
    */
   productVariantsCount: Scalars['Int']
   /** How many product variants are in this profile. */
@@ -6342,20 +6375,17 @@ export enum DigitalWallet {
   ShopifyPay = 'SHOPIFY_PAY',
 }
 
-/**
- * An amount discounting the line that has been allocated by an associated discount application.
- *
- */
+/** An amount that's allocated to a line based on an associated discount application. */
 export type DiscountAllocation = {
   __typename?: 'DiscountAllocation'
   /**
-   * Money amount allocated by the discount application.
-   * @deprecated Use `allocatedAmountSet` instead
+   * The money amount that's allocated to a line based on the associated discount application.
+   * @deprecated Use `allocatedAmountSet` instead.
    */
   allocatedAmount: MoneyV2
-  /** Money amount allocated by the discount application in shop and presentment currencies. */
+  /** The money amount that's allocated to a line based on the associated discount application in shop and presentment currencies. */
   allocatedAmountSet: MoneyBag
-  /** The discount of which this allocated amount originated from. */
+  /** The discount application that the allocated amount originated from. */
   discountApplication: DiscountApplication
 }
 
@@ -6380,9 +6410,11 @@ export type DiscountAmountInput = {
  * Discount applications capture the intentions of a discount source at
  * the time of application on an order's line items or shipping lines.
  *
+ * Discount applications don't represent the actual final amount discounted on a line (line item or shipping line). The actual amount discounted on a line is represented by the [DiscountAllocation](https://shopify.dev/api/admin-graphql/latest/objects/discountallocation) object.
+ *
  */
 export type DiscountApplication = {
-  /** The method by which the discount's value is allocated to its entitled items. */
+  /** The method by which the discount's value is applied to its entitled items. */
   allocationMethod: DiscountApplicationAllocationMethod
   /**
    * An ordered index that can be used to identify the discount application and indicate the precedence
@@ -6437,16 +6469,16 @@ export type DiscountApplicationEdge = {
   node: DiscountApplication
 }
 
-/** The method by which the discount's value is allocated onto its entitled lines. */
+/** The level at which the discount's value is applied. */
 export enum DiscountApplicationLevel {
   /**
-   * The discount was applied at the line level.
+   * The discount is applied at the line level.
    * Line level discounts are factored into the discountedUnitPriceSet on line items.
    *
    */
   Line = 'LINE',
   /**
-   * The discount was applied at the order level.
+   * The discount is applied at the order level.
    * Order level discounts are not factored into the discountedUnitPriceSet on line items.
    *
    */
@@ -6454,14 +6486,16 @@ export enum DiscountApplicationLevel {
 }
 
 /**
- * Which lines on the order that the discount is allocated over, of the type
- * defined by the Discount Application's target_type.
+ * The lines on the order to which the discount is applied, of the type defined by
+ * the discount application's `targetType`. For example, the value `ENTITLED`, combined with a `targetType` of
+ * `LINE_ITEM`, applies the discount on all line items that are entitled to the discount.
+ * The value `ALL`, combined with a `targetType` of `SHIPPING_LINE`, applies the discount on all shipping lines.
  *
  */
 export enum DiscountApplicationTargetSelection {
   /** The discount is allocated onto all the lines. */
   All = 'ALL',
-  /** The discount is allocated onto only the lines it is entitled for. */
+  /** The discount is allocated onto only the lines that it's entitled for. */
   Entitled = 'ENTITLED',
   /** The discount is allocated onto explicitly chosen lines. */
   Explicit = 'EXPLICIT',
@@ -6515,7 +6549,7 @@ export type DiscountAutomaticBasic = {
   title: Scalars['String']
   /**
    * The number of times that the discount has been used.
-   * @deprecated Use `asyncUsageCount` instead
+   * @deprecated Use `asyncUsageCount` instead.
    */
   usageCount: Scalars['Int']
 }
@@ -6529,9 +6563,9 @@ export type DiscountAutomaticBasicCreatePayload = {
   userErrors: Array<DiscountUserError>
 }
 
-/** Specifies input field to create or update automatic basic discount. */
+/** The input that's used to create or update an automatic basic discount. */
 export type DiscountAutomaticBasicInput = {
-  /** The qualifying items in an order, the quantity of each one, and the total value of the discount. */
+  /** Information about the qualifying items and their discount. */
   customerGets?: InputMaybe<DiscountCustomerGetsInput>
   /** The date and time when the discount ends. For open-ended discounts, use `null`. */
   endsAt?: InputMaybe<Scalars['DateTime']>
@@ -6592,7 +6626,7 @@ export type DiscountAutomaticBxgy = HasEvents &
     title: Scalars['String']
     /**
      * The number of times that the discount has been used.
-     * @deprecated Use `asyncUsageCount` instead
+     * @deprecated Use `asyncUsageCount` instead.
      */
     usageCount: Scalars['Int']
     /** The maximum number of times that the discount can be applied to an order. */
@@ -6619,7 +6653,7 @@ export type DiscountAutomaticBxgyCreatePayload = {
   userErrors: Array<DiscountUserError>
 }
 
-/** Specifies input field to create or update automatic bogo discount. */
+/** Specifies input field to create or update an automatic Buy X, Get Y (BXGY) discount. */
 export type DiscountAutomaticBxgyInput = {
   /** The qualifying items and the quantity of each one that the customer has to buy to be eligible for the discount. */
   customerBuys?: InputMaybe<DiscountCustomerBuysInput>
@@ -6756,10 +6790,12 @@ export type DiscountCodeActivatePayload = {
  * Discount code applications capture the intentions of a discount code at
  * the time that it is applied onto an order.
  *
+ * Discount applications don't represent the actual final amount discounted on a line (line item or shipping line). The actual amount discounted on a line is represented by the [DiscountAllocation](https://shopify.dev/api/admin-graphql/latest/objects/discountallocation) object.
+ *
  */
 export type DiscountCodeApplication = DiscountApplication & {
   __typename?: 'DiscountCodeApplication'
-  /** The method by which the discount's value is allocated to its entitled items. */
+  /** The method by which the discount's value is applied to its entitled items. */
   allocationMethod: DiscountApplicationAllocationMethod
   /** The string identifying the discount code that was used at the time of application. */
   code: Scalars['String']
@@ -6841,7 +6877,7 @@ export type DiscountCodeBasicCreatePayload = {
   userErrors: Array<DiscountUserError>
 }
 
-/** Specifies input field to create or update code basic discount. */
+/** The input field to create or update a basic code discount. */
 export type DiscountCodeBasicInput = {
   /** Whether the discount can be applied only once per customer. */
   appliesOncePerCustomer?: InputMaybe<Scalars['Boolean']>
@@ -6971,9 +7007,9 @@ export type DiscountCodeBxgyInput = {
   code?: InputMaybe<Scalars['String']>
   /** The qualifying items and the quantity of each one that the customer has to buy to be eligible for the discount. */
   customerBuys?: InputMaybe<DiscountCustomerBuysInput>
-  /** The qualifying items in an order, the quantity of each one, and the total value of the discount. */
+  /** The qualifying items that will be discounted, the quantity of each one, and the total value of the discount. */
   customerGets?: InputMaybe<DiscountCustomerGetsInput>
-  /** The customers that can use the discount. */
+  /** The customers that are eligible to use the discount. */
   customerSelection?: InputMaybe<DiscountCustomerSelectionInput>
   /** The date and time when the discount ends. For open-ended discounts, use `null`. */
   endsAt?: InputMaybe<Scalars['DateTime']>
@@ -7094,7 +7130,7 @@ export type DiscountCodeFreeShippingInput = {
   appliesOncePerCustomer?: InputMaybe<Scalars['Boolean']>
   /** The code to use the discount. */
   code?: InputMaybe<Scalars['String']>
-  /** The customers that can use the discount. */
+  /** The customers that are eligible to use the discount. */
   customerSelection?: InputMaybe<DiscountCustomerSelectionInput>
   /** A list of destinations where the discount will apply. */
   destination?: InputMaybe<DiscountShippingDestinationSelectionInput>
@@ -7263,7 +7299,7 @@ export type DiscountCustomerBuys = {
   value: DiscountCustomerBuysValue
 }
 
-/** Specifies the prerequisite items and prerequisite quantity. */
+/** The prerequisite items and quantity for the discount. */
 export type DiscountCustomerBuysInput = {
   /** The IDs of items that the customer buys. The items can be either collections or products. */
   items?: InputMaybe<DiscountItemsInput>
@@ -7276,9 +7312,9 @@ export type DiscountCustomerBuysValue =
   | DiscountPurchaseAmount
   | DiscountQuantity
 
-/** Specifies the prerequisite quantity for the discount. */
+/** The prerequisite quantity or the minimum purchase amount required for the discount. */
 export type DiscountCustomerBuysValueInput = {
-  /** The prerequisite purchase amount required for the discount to be applicable. */
+  /** The prerequisite minimum purchase amount required for the discount to be applicable. */
   amount?: InputMaybe<Scalars['Decimal']>
   /** The quantity of prerequisite items. */
   quantity?: InputMaybe<Scalars['UnsignedInt64']>
@@ -7434,7 +7470,7 @@ export type DiscountItems =
   | DiscountCollections
   | DiscountProducts
 
-/** Specifies the items attached to a discount. */
+/** The items attached to a discount. You can specify the discount items by product ID or collection ID. */
 export type DiscountItemsInput = {
   /** Whether all items should be selected. */
   all?: InputMaybe<Scalars['Boolean']>
@@ -7451,7 +7487,7 @@ export type DiscountMinimumQuantity = {
   greaterThanOrEqualToQuantity: Scalars['UnsignedInt64']
 }
 
-/** Specifies the quantity minimum requirements for a discount. */
+/** The minimum quantity required for the discount. */
 export type DiscountMinimumQuantityInput = {
   /** The minimum quantity of items that's required for the discount to be applied. */
   greaterThanOrEqualToQuantity?: InputMaybe<Scalars['UnsignedInt64']>
@@ -7462,7 +7498,7 @@ export type DiscountMinimumRequirement =
   | DiscountMinimumQuantity
   | DiscountMinimumSubtotal
 
-/** Specifies the quantity or subtotal minimum requirements for a discount. */
+/** The minimum quantity or subtotal required for a discount. */
 export type DiscountMinimumRequirementInput = {
   /** The minimum required quantity. */
   quantity?: InputMaybe<DiscountMinimumQuantityInput>
@@ -7477,7 +7513,7 @@ export type DiscountMinimumSubtotal = {
   greaterThanOrEqualToSubtotal: MoneyV2
 }
 
-/** Specifies the subtotal minimum requirements for a discount. */
+/** The minimum subtotal required for a discount. */
 export type DiscountMinimumSubtotalInput = {
   /** The minimum subtotal that's required for the discount to be applied. */
   greaterThanOrEqualToSubtotal?: InputMaybe<Scalars['Decimal']>
@@ -7560,7 +7596,7 @@ export type DiscountQuantity = {
   quantity: Scalars['UnsignedInt64']
 }
 
-/** A code that a customer can use at checkout to receive a discount. For example, a customer can use the redeem code 'SUMMER20' at checkout to receive a 20%discount on their entire order. */
+/** A code that a customer can use at checkout to receive a discount. For example, a customer can use the redeem code 'SUMMER20' at checkout to receive a 20% discount on their entire order. */
 export type DiscountRedeemCode = {
   __typename?: 'DiscountRedeemCode'
   /** The number of times that the discount redeem code has been used. This value is updated asynchronously and can be different than the actual usage count. */
@@ -7576,7 +7612,7 @@ export type DiscountRedeemCode = {
 /** Return type for `discountRedeemCodeBulkAdd` mutation. */
 export type DiscountRedeemCodeBulkAddPayload = {
   __typename?: 'DiscountRedeemCodeBulkAddPayload'
-  /** Tracks the progress of the bulk code creation. */
+  /** The ID of the discount redeem code bulk creation operation. The properties and status of the operation can be tracked using the [`DiscountRedeemCodeBulkCreation` query](https://shopify.dev/api/admin-graphql/2022-04/queries/discountRedeemCodeBulkCreation). */
   bulkCreation?: Maybe<DiscountRedeemCodeBulkCreation>
   /** The list of errors that occurred from executing the mutation. */
   userErrors: Array<DiscountUserError>
@@ -7680,9 +7716,9 @@ export type DiscountRedeemCodeEdge = {
   node: DiscountRedeemCode
 }
 
-/** Specifies the code attached to a discount. */
+/** The redeem code to attach to a discount. */
 export type DiscountRedeemCodeInput = {
-  /** The code of a discount. */
+  /** The code that a customer can use at checkout to receive the associated discount. */
   code: Scalars['String']
 }
 
@@ -7732,15 +7768,15 @@ export enum DiscountStatus {
   Scheduled = 'SCHEDULED',
 }
 
-/** The type of line a subscription discount is applied on. */
+/** The type of line (line item or shipping line) on an order that the subscription discount is applicable towards. */
 export enum DiscountTargetType {
-  /** Line item. */
+  /** The discount applies onto line items. */
   LineItem = 'LINE_ITEM',
-  /** Shipping line. */
+  /** The discount applies onto shipping lines. */
   ShippingLine = 'SHIPPING_LINE',
 }
 
-/** The original type of the discount. */
+/** The type of the subscription discount. */
 export enum DiscountType {
   /** Code discount type. */
   CodeDiscount = 'CODE_DISCOUNT',
@@ -7790,28 +7826,28 @@ export enum DisputeType {
 /** A unique string that represents the address of a Shopify store on the Internet. */
 export type Domain = Node & {
   __typename?: 'Domain'
-  /** The host name of the domain (eg: `example.com`). */
+  /** The host name of the domain. For example, `example.com`. */
   host: Scalars['String']
   /** A globally-unique identifier. */
   id: Scalars['ID']
-  /** The localization of the domain, if it does not redirect. */
+  /** The localization of the domain, if the domain doesn't redirect. */
   localization?: Maybe<DomainLocalization>
   /** The web presence of the domain. */
   marketWebPresence?: Maybe<MarketWebPresence>
-  /** Whether SSL is enabled or not. */
+  /** Whether SSL is enabled. */
   sslEnabled: Scalars['Boolean']
-  /** The URL of the domain (eg: `https://example.com`). */
+  /** The URL of the domain (for example, `https://example.com`). */
   url: Scalars['URL']
 }
 
 /** The country and language settings assigned to a domain. */
 export type DomainLocalization = {
   __typename?: 'DomainLocalization'
-  /** The ISO codes for the domain’s alternate locales. */
+  /** The ISO codes for the domain’s alternate locales. For example, `["en"]`. */
   alternateLocales: Array<Scalars['String']>
-  /** The ISO code for the country assigned to the domain, or "*" for a domain set to "Rest of world". */
+  /** The ISO code for the country assigned to the domain. For example, `"CA"` or "*" for a domain set to "Rest of world". */
   country?: Maybe<Scalars['String']>
-  /** The ISO code for the domain’s default locale. */
+  /** The ISO code for the domain’s default locale. For example, `"en"`. */
   defaultLocale: Scalars['String']
 }
 
@@ -7832,9 +7868,17 @@ export type DraftFulfillment = {
 }
 
 /**
- * Represents a draft order. Merchants can use draft orders to create orders on behalf of their customers.
+ * An order that a merchant creates on behalf of a customer. Draft orders are useful for merchants that need to do the following tasks:
  *
- * ***Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ * - Create new orders for sales made by phone, in person, by chat, or elsewhere. When a merchant accepts payment for a draft order, an order is created.
+ * - Send invoices to customers to pay with a secure checkout link.
+ * - Use custom items to represent additional costs or products that aren't displayed in a shop's inventory.
+ * - Re-create orders manually from active sales channels.
+ * - Sell products at discount or wholesale rates.
+ * - Take pre-orders.
+ * - Save an order as a draft and resume working on it later.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
  *
  */
 export type DraftOrder = CommentEventSubject &
@@ -7844,7 +7888,7 @@ export type DraftOrder = CommentEventSubject &
   LegacyInteroperability &
   Node & {
     __typename?: 'DraftOrder'
-    /** Order-level discount applied to the draft order. */
+    /** The order-level discount applied to the draft order. */
     appliedDiscount?: Maybe<DraftOrderAppliedDiscount>
     /**
      * The billing address of the customer.
@@ -7852,40 +7896,40 @@ export type DraftOrder = CommentEventSubject &
      */
     billingAddress?: Maybe<MailingAddress>
     /**
-     * Date and time when the draft order converted to a new order,
+     * The date and time when the draft order converted to a new order,
      * and the draft order's status changed to **Completed**.
      *
      */
     completedAt?: Maybe<Scalars['DateTime']>
-    /** Date and time when the draft order was created in Shopify. */
+    /** The date and time when the draft order was created in Shopify. */
     createdAt: Scalars['DateTime']
     /**
-     * Three letter code for the currency of the store at the time that the invoice is sent.
+     * The three letter code for the currency of the store at the time of the most recent update to the draft order.
      *
      */
     currencyCode: CurrencyCode
     /**
-     * Custom information added to the draft order on behalf of your customer.
+     * The custom information added to the draft order on behalf of the customer.
      *
      */
     customAttributes: Array<Attribute>
-    /** Customer who will be sent an invoice for the draft order, if there is one. */
+    /** The customer who will be sent an invoice for the draft order, if there is one. */
     customer?: Maybe<Customer>
-    /** Email address of the customer, which is used to send notifications to. */
+    /** The email address of the customer, which is used to send notifications. */
     email?: Maybe<Scalars['String']>
-    /** List of events associated with the draft order. */
+    /** The list of events associated with the draft order. */
     events: EventConnection
     /** Whether the merchant has added timeline comments to the draft order. */
     hasTimelineComment: Scalars['Boolean']
     /** A globally-unique identifier. */
     id: Scalars['ID']
-    /** Date and time when the invoice was last emailed to the customer. */
+    /** The date and time when the invoice was last emailed to the customer. */
     invoiceSentAt?: Maybe<Scalars['DateTime']>
-    /** Link to the checkout, which is sent to your customer in the invoice email. */
+    /** The link to the checkout, which is sent to the customer in the invoice email. */
     invoiceUrl?: Maybe<Scalars['URL']>
     /** The ID of the corresponding resource in the REST Admin API. */
     legacyResourceId: Scalars['UnsignedInt64']
-    /** List of the line items in the draft order. */
+    /** The list of the line items in the draft order. */
     lineItems: DraftOrderLineItemConnection
     /** List of localization extensions for the resource. */
     localizationExtensions: LocalizationExtensionConnection
@@ -7894,33 +7938,33 @@ export type DraftOrder = CommentEventSubject &
     /** List of metafields that belong to the resource. */
     metafields: MetafieldConnection
     /**
-     * Unique identifier for the draft order, which is unique within the store. For example, _#D1223_.
+     * The identifier for the draft order, which is unique within the store. For example, _#D1223_.
      *
      */
     name: Scalars['String']
-    /** Text from an optional note attached to the draft order. */
+    /** The text from an optional note attached to the draft order. */
     note2?: Maybe<Scalars['String']>
-    /** Order that was created from this draft order. */
+    /** The order that was created from this draft order. */
     order?: Maybe<Order>
-    /** The associated payment term for this draft order. */
+    /** The associated payment terms for this draft order. */
     paymentTerms?: Maybe<PaymentTerms>
     /** Returns a private metafield by namespace and key that belongs to the resource. */
     privateMetafield?: Maybe<PrivateMetafield>
     /** List of private metafields that belong to the resource. */
     privateMetafields: PrivateMetafieldConnection
     /**
-     * Whether or not the Draft Order is ready and can be completed. Draft Orders
-     *         may have asynchronous operations that can take time to finish.
+     * Whether the Draft Order is ready and can be completed. Draft Orders
+     *         might have asynchronous operations that can take time to finish.
      */
     ready: Scalars['Boolean']
     /** The shipping address of the customer. */
     shippingAddress?: Maybe<MailingAddress>
-    /** Line item that contains the shipping costs. */
+    /** The line item that contains the shipping costs. */
     shippingLine?: Maybe<ShippingLine>
     /** Status of the draft order. */
     status: DraftOrderStatus
     /**
-     * Subtotal of the line items and their discounts (does not contain shipping charges or shipping discounts, or taxes).
+     * The subtotal of the line items and their discounts. The subtotal doesn't include shipping charges, shipping discounts, or taxes.
      *
      */
     subtotalPrice: Scalars['Money']
@@ -7938,26 +7982,34 @@ export type DraftOrder = CommentEventSubject &
     taxLines: Array<TaxLine>
     /** Whether the line item prices include taxes. */
     taxesIncluded: Scalars['Boolean']
-    /** Total amount of the draft order (includes taxes, shipping charges, and discounts). */
+    /** The total amount of the draft order, including taxes, shipping charges, and discounts. */
     totalPrice: Scalars['Money']
-    /** Total shipping charge for the draft order. */
+    /** The total shipping charge for the draft order. */
     totalShippingPrice: Scalars['Money']
-    /** Total amount of taxes for the draft order. */
+    /** The total amount of taxes for the draft order. */
     totalTax: Scalars['Money']
-    /** Total weight (grams) of the draft order. */
+    /** The total weight in grams of the draft order. */
     totalWeight: Scalars['UnsignedInt64']
     /**
-     * Date and time when the draft order was last changed.
-     * The format is YYYY-MM-DD HH:mm:ss (for example, 2016-02-05 17:04:01).
+     * The date and time when the draft order was last changed.
+     * The format is YYYY-MM-DD HH:mm:ss. For example, 2016-02-05 17:04:01.
      *
      */
     updatedAt: Scalars['DateTime']
   }
 
 /**
- * Represents a draft order. Merchants can use draft orders to create orders on behalf of their customers.
+ * An order that a merchant creates on behalf of a customer. Draft orders are useful for merchants that need to do the following tasks:
  *
- * ***Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ * - Create new orders for sales made by phone, in person, by chat, or elsewhere. When a merchant accepts payment for a draft order, an order is created.
+ * - Send invoices to customers to pay with a secure checkout link.
+ * - Use custom items to represent additional costs or products that aren't displayed in a shop's inventory.
+ * - Re-create orders manually from active sales channels.
+ * - Sell products at discount or wholesale rates.
+ * - Take pre-orders.
+ * - Save an order as a draft and resume working on it later.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
  *
  */
 export type DraftOrderEventsArgs = {
@@ -7971,9 +8023,17 @@ export type DraftOrderEventsArgs = {
 }
 
 /**
- * Represents a draft order. Merchants can use draft orders to create orders on behalf of their customers.
+ * An order that a merchant creates on behalf of a customer. Draft orders are useful for merchants that need to do the following tasks:
  *
- * ***Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ * - Create new orders for sales made by phone, in person, by chat, or elsewhere. When a merchant accepts payment for a draft order, an order is created.
+ * - Send invoices to customers to pay with a secure checkout link.
+ * - Use custom items to represent additional costs or products that aren't displayed in a shop's inventory.
+ * - Re-create orders manually from active sales channels.
+ * - Sell products at discount or wholesale rates.
+ * - Take pre-orders.
+ * - Save an order as a draft and resume working on it later.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
  *
  */
 export type DraftOrderLineItemsArgs = {
@@ -7985,9 +8045,17 @@ export type DraftOrderLineItemsArgs = {
 }
 
 /**
- * Represents a draft order. Merchants can use draft orders to create orders on behalf of their customers.
+ * An order that a merchant creates on behalf of a customer. Draft orders are useful for merchants that need to do the following tasks:
  *
- * ***Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ * - Create new orders for sales made by phone, in person, by chat, or elsewhere. When a merchant accepts payment for a draft order, an order is created.
+ * - Send invoices to customers to pay with a secure checkout link.
+ * - Use custom items to represent additional costs or products that aren't displayed in a shop's inventory.
+ * - Re-create orders manually from active sales channels.
+ * - Sell products at discount or wholesale rates.
+ * - Take pre-orders.
+ * - Save an order as a draft and resume working on it later.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
  *
  */
 export type DraftOrderLocalizationExtensionsArgs = {
@@ -8001,9 +8069,17 @@ export type DraftOrderLocalizationExtensionsArgs = {
 }
 
 /**
- * Represents a draft order. Merchants can use draft orders to create orders on behalf of their customers.
+ * An order that a merchant creates on behalf of a customer. Draft orders are useful for merchants that need to do the following tasks:
  *
- * ***Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ * - Create new orders for sales made by phone, in person, by chat, or elsewhere. When a merchant accepts payment for a draft order, an order is created.
+ * - Send invoices to customers to pay with a secure checkout link.
+ * - Use custom items to represent additional costs or products that aren't displayed in a shop's inventory.
+ * - Re-create orders manually from active sales channels.
+ * - Sell products at discount or wholesale rates.
+ * - Take pre-orders.
+ * - Save an order as a draft and resume working on it later.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
  *
  */
 export type DraftOrderMetafieldArgs = {
@@ -8012,9 +8088,17 @@ export type DraftOrderMetafieldArgs = {
 }
 
 /**
- * Represents a draft order. Merchants can use draft orders to create orders on behalf of their customers.
+ * An order that a merchant creates on behalf of a customer. Draft orders are useful for merchants that need to do the following tasks:
  *
- * ***Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ * - Create new orders for sales made by phone, in person, by chat, or elsewhere. When a merchant accepts payment for a draft order, an order is created.
+ * - Send invoices to customers to pay with a secure checkout link.
+ * - Use custom items to represent additional costs or products that aren't displayed in a shop's inventory.
+ * - Re-create orders manually from active sales channels.
+ * - Sell products at discount or wholesale rates.
+ * - Take pre-orders.
+ * - Save an order as a draft and resume working on it later.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
  *
  */
 export type DraftOrderMetafieldsArgs = {
@@ -8027,9 +8111,17 @@ export type DraftOrderMetafieldsArgs = {
 }
 
 /**
- * Represents a draft order. Merchants can use draft orders to create orders on behalf of their customers.
+ * An order that a merchant creates on behalf of a customer. Draft orders are useful for merchants that need to do the following tasks:
  *
- * ***Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ * - Create new orders for sales made by phone, in person, by chat, or elsewhere. When a merchant accepts payment for a draft order, an order is created.
+ * - Send invoices to customers to pay with a secure checkout link.
+ * - Use custom items to represent additional costs or products that aren't displayed in a shop's inventory.
+ * - Re-create orders manually from active sales channels.
+ * - Sell products at discount or wholesale rates.
+ * - Take pre-orders.
+ * - Save an order as a draft and resume working on it later.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
  *
  */
 export type DraftOrderPrivateMetafieldArgs = {
@@ -8038,9 +8130,17 @@ export type DraftOrderPrivateMetafieldArgs = {
 }
 
 /**
- * Represents a draft order. Merchants can use draft orders to create orders on behalf of their customers.
+ * An order that a merchant creates on behalf of a customer. Draft orders are useful for merchants that need to do the following tasks:
  *
- * ***Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ * - Create new orders for sales made by phone, in person, by chat, or elsewhere. When a merchant accepts payment for a draft order, an order is created.
+ * - Send invoices to customers to pay with a secure checkout link.
+ * - Use custom items to represent additional costs or products that aren't displayed in a shop's inventory.
+ * - Re-create orders manually from active sales channels.
+ * - Sell products at discount or wholesale rates.
+ * - Take pre-orders.
+ * - Save an order as a draft and resume working on it later.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
  *
  */
 export type DraftOrderPrivateMetafieldsArgs = {
@@ -8057,7 +8157,7 @@ export type DraftOrderAppliedDiscount = {
   __typename?: 'DraftOrderAppliedDiscount'
   /**
    * Amount of the order-level discount that is applied to the draft order.
-   * @deprecated Use `amountV2` instead
+   * @deprecated Use `amountV2` instead.
    */
   amount: Scalars['Money']
   /** Amount of money discounted. */
@@ -8067,8 +8167,8 @@ export type DraftOrderAppliedDiscount = {
   /** Name of the order-level discount. */
   title?: Maybe<Scalars['String']>
   /**
-   * Amount of the order level discount (when value_type is percentage,
-   * the value in this field is the percentage discount).
+   * The order level discount amount. If `valueType` is `"percentage"`,
+   * then `value` is the percentage discount.
    *
    */
   value: Scalars['Float']
@@ -8080,6 +8180,8 @@ export type DraftOrderAppliedDiscount = {
 export type DraftOrderAppliedDiscountInput = {
   /**
    * The applied amount of the discount.
+   * If the type of the discount is fixed amount, then this is the fixed dollar amount.
+   * If the type is percentage, then this is the subtotal multiplied by the percentage.
    *
    */
   amount?: InputMaybe<Scalars['Money']>
@@ -8212,7 +8314,7 @@ export type DraftOrderInput = {
   customAttributes?: InputMaybe<Array<AttributeInput>>
   /**
    * Customer associated with the draft order.
-   *
+   *  This argument is deprecated: Use `purchasingEntity` instead, which can be used for either a D2C or B2B customer.
    */
   customerId?: InputMaybe<Scalars['ID']>
   /**
@@ -8285,7 +8387,7 @@ export type DraftOrderInput = {
 /** Return type for `draftOrderInvoicePreview` mutation. */
 export type DraftOrderInvoicePreviewPayload = {
   __typename?: 'DraftOrderInvoicePreviewPayload'
-  /** HTML to preview the draft order invoice email. */
+  /** The draft order invoice email rendered as HTML to allow previewing. */
   previewHtml?: Maybe<Scalars['HTML']>
   /** The list of errors that occurred from executing the mutation. */
   userErrors: Array<UserError>
@@ -8313,7 +8415,7 @@ export type DraftOrderLineItem = Node & {
    *
    */
   custom: Scalars['Boolean']
-  /** List of additional information about the line item. */
+  /** A list of attributes that represent custom features or special requests. */
   customAttributes: Array<Attribute>
   /**
    * The line item price after discounts are applied.
@@ -8339,7 +8441,7 @@ export type DraftOrderLineItem = Node & {
    * The weight of the line item in grams. The weight can only be specified if the line item is a custom
    * line item.
    *
-   * @deprecated Use `weight` instead
+   * @deprecated Use `weight` instead.
    */
   grams?: Maybe<Scalars['Int']>
   /** A globally-unique identifier. */
@@ -8348,7 +8450,7 @@ export type DraftOrderLineItem = Node & {
   image?: Maybe<Image>
   /** Whether the line item is a gift card. */
   isGiftCard: Scalars['Boolean']
-  /** Name of the product. */
+  /** The name of the product. */
   name: Scalars['String']
   /**
    * The total price (without discounts) of the line item, based on the original unit price of the variant x quantity.
@@ -8366,7 +8468,7 @@ export type DraftOrderLineItem = Node & {
   quantity: Scalars['Int']
   /** Whether physical shipping is required for the variant. */
   requiresShipping: Scalars['Boolean']
-  /** Variant SKU number. */
+  /** The SKU number of the product variant. */
   sku?: Maybe<Scalars['String']>
   /**
    * A list of tax line objects, each of which details the total taxes applicable to the order.
@@ -8375,7 +8477,7 @@ export type DraftOrderLineItem = Node & {
   taxLines: Array<TaxLine>
   /** Whether the variant is taxable. */
   taxable: Scalars['Boolean']
-  /** Title of the product or variant (this field only applies to custom line items). */
+  /** The title of the product or variant. This field only applies to custom line items. */
   title: Scalars['String']
   /**
    * The total value of the discount that is applied to the line item.
@@ -8387,9 +8489,9 @@ export type DraftOrderLineItem = Node & {
    *
    */
   variant?: Maybe<ProductVariant>
-  /** Name of the variant. */
+  /** The name of the variant. */
   variantTitle?: Maybe<Scalars['String']>
-  /** Name of the vendor who made the variant. */
+  /** The name of the vendor who created the product variant. */
   vendor?: Maybe<Scalars['String']>
   /** The weight unit and value for a draft order line item. */
   weight?: Maybe<Weight>
@@ -8689,7 +8791,7 @@ export type ExternalVideo = Media &
     embedUrl: Scalars['URL']
     /**
      * The URL.
-     * @deprecated Use `originUrl` instead
+     * @deprecated Use `originUrl` instead.
      */
     embeddedUrl: Scalars['URL']
     /** The host of the external video. */
@@ -8728,7 +8830,7 @@ export type File = {
   /** A word or phrase to describe the contents or the function of a file. */
   alt?: Maybe<Scalars['String']>
   /**
-   * The date and time ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) when the product was created.
+   * The date and time ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) when the file was created.
    *
    */
   createdAt: Scalars['DateTime']
@@ -8758,7 +8860,7 @@ export type FileConnection = {
 export enum FileContentType {
   /** A Shopify-hosted generic file. */
   File = 'FILE',
-  /** A Shopify hosted image. */
+  /** A Shopify-hosted image. */
   Image = 'IMAGE',
   /** A Shopify-hosted video file. It's recommended to use this type for all video files. */
   Video = 'VIDEO',
@@ -8766,12 +8868,13 @@ export enum FileContentType {
 
 /** The input fields that are required to create a file object. */
 export type FileCreateInput = {
-  /** The alt text associated with the file. */
+  /** The alternative text description of the file. */
   alt?: InputMaybe<Scalars['String']>
-  /** The file content type. */
+  /** The file content type. If omitted, then Shopify will attempt to determine the content type during file processing. */
   contentType?: InputMaybe<FileContentType>
   /**
-   * An external URL or a signed upload URL of the file object.
+   * An external URL (for images only) or a
+   * [staged upload URL](https://shopify.dev/api/admin-graphql/latest/mutations/stageduploadscreate).
    *
    */
   originalSource: Scalars['String']
@@ -8808,7 +8911,8 @@ export type FileEdge = {
 }
 
 /**
- * A file error.
+ * A file error. This typically occurs when there is an issue with the file itself causing it to fail validation.
+ * Check the file before attempting to upload again.
  *
  */
 export type FileError = {
@@ -8919,11 +9023,16 @@ export enum FileStatus {
 
 /** The input fields that are required to update a file object. */
 export type FileUpdateInput = {
-  /** The alt text associated with the file. */
+  /** The alternative text description of the file. */
   alt?: InputMaybe<Scalars['String']>
-  /** The file to update. */
+  /** The ID of the file to be updated. */
   id: Scalars['ID']
-  /** The source from which to update the media preview image. May be an external URL or signed upload URL. */
+  /**
+   * The source from which to update the media preview image.
+   * May be an external URL or a
+   * [staged upload URL](https://shopify.dev/api/admin-graphql/latest/mutations/stageduploadscreate).
+   *
+   */
   previewImageSource?: InputMaybe<Scalars['String']>
 }
 
@@ -9317,7 +9426,7 @@ export type FulfillmentLineItem = Node & {
   __typename?: 'FulfillmentLineItem'
   /**
    * The total price after discounts are applied.
-   * @deprecated Use `discountedTotalSet` instead
+   * @deprecated Use `discountedTotalSet` instead.
    */
   discountedTotal: Scalars['Money']
   /** The total price after discounts are applied in shop and presentment currencies. */
@@ -9328,7 +9437,7 @@ export type FulfillmentLineItem = Node & {
   lineItem: LineItem
   /**
    * The total price before discounts are applied.
-   * @deprecated Use `originalTotalSet` instead
+   * @deprecated Use `originalTotalSet` instead.
    */
   originalTotal: Scalars['Money']
   /** The total price before discounts are applied in shop and presentment currencies. */
@@ -9374,7 +9483,8 @@ export type FulfillmentLineItemInput = {
 /**
  * Represents a fulfillment order. In Shopify, a fulfillment order represents a group of one or more items
  * in an order that are to be fulfilled from the same location. There can be more than one fulfillment order
- * for an order at a given location.
+ * for an order at a given location. Fulfillment orders are created automatically when an order is created.
+ * To learn how to build a fulfillment app, refer to [Fulfillment apps](https://shopify.dev/apps/fulfillment).
  *
  */
 export type FulfillmentOrder = Node & {
@@ -9385,7 +9495,7 @@ export type FulfillmentOrder = Node & {
   deliveryMethod?: Maybe<DeliveryMethod>
   /** The destination where the items should be sent. */
   destination?: Maybe<FulfillmentOrderDestination>
-  /** The date and time at which the fulfillment order will be fulfillable. */
+  /** The date and time at which the fulfillment order will be fulfillable. When this date and time is reached, the scheduled fulfillment order is automatically transitioned to open. For example, the `fulfill_at` date for a subscription order might be the 1st of each month, a pre-order `fulfill_at` date would be `nil`, and a standard order `fulfill_at` date would be the order creation date. */
   fulfillAt?: Maybe<Scalars['DateTime']>
   /** The latest date and time by which all items in the fulfillment order need to be fulfilled. */
   fulfillBy?: Maybe<Scalars['DateTime']>
@@ -9416,7 +9526,8 @@ export type FulfillmentOrder = Node & {
 /**
  * Represents a fulfillment order. In Shopify, a fulfillment order represents a group of one or more items
  * in an order that are to be fulfilled from the same location. There can be more than one fulfillment order
- * for an order at a given location.
+ * for an order at a given location. Fulfillment orders are created automatically when an order is created.
+ * To learn how to build a fulfillment app, refer to [Fulfillment apps](https://shopify.dev/apps/fulfillment).
  *
  */
 export type FulfillmentOrderFulfillmentsArgs = {
@@ -9430,7 +9541,8 @@ export type FulfillmentOrderFulfillmentsArgs = {
 /**
  * Represents a fulfillment order. In Shopify, a fulfillment order represents a group of one or more items
  * in an order that are to be fulfilled from the same location. There can be more than one fulfillment order
- * for an order at a given location.
+ * for an order at a given location. Fulfillment orders are created automatically when an order is created.
+ * To learn how to build a fulfillment app, refer to [Fulfillment apps](https://shopify.dev/apps/fulfillment).
  *
  */
 export type FulfillmentOrderLineItemsArgs = {
@@ -9444,7 +9556,8 @@ export type FulfillmentOrderLineItemsArgs = {
 /**
  * Represents a fulfillment order. In Shopify, a fulfillment order represents a group of one or more items
  * in an order that are to be fulfilled from the same location. There can be more than one fulfillment order
- * for an order at a given location.
+ * for an order at a given location. Fulfillment orders are created automatically when an order is created.
+ * To learn how to build a fulfillment app, refer to [Fulfillment apps](https://shopify.dev/apps/fulfillment).
  *
  */
 export type FulfillmentOrderLocationsForMoveArgs = {
@@ -9458,7 +9571,8 @@ export type FulfillmentOrderLocationsForMoveArgs = {
 /**
  * Represents a fulfillment order. In Shopify, a fulfillment order represents a group of one or more items
  * in an order that are to be fulfilled from the same location. There can be more than one fulfillment order
- * for an order at a given location.
+ * for an order at a given location. Fulfillment orders are created automatically when an order is created.
+ * To learn how to build a fulfillment app, refer to [Fulfillment apps](https://shopify.dev/apps/fulfillment).
  *
  */
 export type FulfillmentOrderMerchantRequestsArgs = {
@@ -9689,7 +9803,7 @@ export type FulfillmentOrderInternationalDuties = {
 }
 
 /**
- * Represents a line item belonging to a fulfillment order.
+ * A line item that belongs to a fulfillment order.
  *
  */
 export type FulfillmentOrderLineItem = Node & {
@@ -9933,7 +10047,7 @@ export type FulfillmentOrderReleaseHoldUserError = DisplayableError & {
 
 /** Possible error codes that can be returned by `FulfillmentOrderReleaseHoldUserError`. */
 export enum FulfillmentOrderReleaseHoldUserErrorCode {
-  /** The fulfillment order was not found. */
+  /** The fulfillment order wasn't found. */
   FulfillmentOrderNotFound = 'FULFILLMENT_ORDER_NOT_FOUND',
 }
 
@@ -10266,14 +10380,17 @@ export type FulfillmentV2Input = {
   trackingInfo?: InputMaybe<FulfillmentTrackingInput>
 }
 
-/** A generic file. */
+/**
+ * Represents any file other than HTML.
+ *
+ */
 export type GenericFile = File &
   Node & {
     __typename?: 'GenericFile'
     /** A word or phrase to describe the contents or the function of a file. */
     alt?: Maybe<Scalars['String']>
     /**
-     * The date and time ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) when the product was created.
+     * The date and time ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) when the file was created.
      *
      */
     createdAt: Scalars['DateTime']
@@ -10283,11 +10400,11 @@ export type GenericFile = File &
     fileStatus: FileStatus
     /** A globally-unique identifier. */
     id: Scalars['ID']
-    /** The size of the original file in bytes. */
+    /** The generic file's size in bytes. */
     originalFileSize?: Maybe<Scalars['Int']>
     /** The preview image for the media. */
     preview?: Maybe<MediaPreviewImage>
-    /** The URL of the file. */
+    /** The generic file's URL. */
     url?: Maybe<Scalars['URL']>
   }
 
@@ -10644,7 +10761,7 @@ export type Image = HasMetafields & {
    *
    * If there are any existing transformations in the original source URL, they will remain and not be stripped.
    *
-   * @deprecated Use `url` instead
+   * @deprecated Use `url` instead.
    */
   originalSrc: Scalars['URL']
   /** Returns a private metafield by namespace and key that belongs to the resource. */
@@ -10653,7 +10770,7 @@ export type Image = HasMetafields & {
   privateMetafields: PrivateMetafieldConnection
   /**
    * The location of the image as a URL.
-   * @deprecated Use `url` instead
+   * @deprecated Use `url` instead.
    */
   src: Scalars['URL']
   /**
@@ -10768,18 +10885,25 @@ export type ImageInput = {
   altText?: InputMaybe<Scalars['String']>
   /** A globally-unique identifier. */
   id?: InputMaybe<Scalars['ID']>
-  /** The URL of the image. May be a signed upload URL. */
+  /** The URL of the image. May be a staged upload URL. */
   src?: InputMaybe<Scalars['String']>
 }
 
 /**
  * The available options for transforming an image.
  *
- * All transformation options are considered "best-effort". Any transformation that the original image type doesn't support will be ignored.
+ * All transformation options are considered best effort. Any transformation that the original image type doesn't support will be ignored.
  *
  */
 export type ImageTransformInput = {
-  /** Crop the image according to the specified region. */
+  /**
+   * The region of the image to remain after cropping.
+   * Must be used in conjunction with the `maxWidth` and/or `maxHeight` fields, where the `maxWidth` and `maxHeight` aren't equal.
+   * The `crop` argument should coincide with the smaller value. A smaller `maxWidth` indicates a `LEFT` or `RIGHT` crop, while
+   * a smaller `maxHeight` indicates a `TOP` or `BOTTOM` crop. For example, `{ maxWidth: 5, maxHeight: 10, crop: LEFT }` will result
+   * in an image with a width of 5 and height of 10, where the right side of the image is removed.
+   *
+   */
   crop?: InputMaybe<CropRegion>
   /**
    * Image height in pixels between 1 and 5760.
@@ -10804,12 +10928,22 @@ export type ImageTransformInput = {
   scale?: InputMaybe<Scalars['Int']>
 }
 
-/** Upload parameter of an image. */
+/**
+ * A parameter to upload an image.
+ *
+ * Deprecated in favor of
+ * [StagedUploadParameter](https://shopify.dev/api/admin-graphql/latest/objects/StagedUploadParameter),
+ * which is used in
+ * [StagedMediaUploadTarget](https://shopify.dev/api/admin-graphql/latest/objects/StagedMediaUploadTarget)
+ * and returned by the
+ * [stagedUploadsCreate mutation](https://shopify.dev/api/admin-graphql/latest/mutations/stagedUploadsCreate).
+ *
+ */
 export type ImageUploadParameter = {
   __typename?: 'ImageUploadParameter'
-  /** Parameter name. */
+  /** The parameter name. */
   name: Scalars['String']
-  /** Parameter value. */
+  /** The parameter value. */
   value: Scalars['String']
 }
 
@@ -11113,27 +11247,27 @@ export type LineItem = Node & {
   __typename?: 'LineItem'
   /**
    * Whether the line item can be restocked.
-   * @deprecated Use `restockable` instead
+   * @deprecated Use `restockable` instead.
    */
   canRestock: Scalars['Boolean']
   /** The subscription contract associated with this line item. */
   contract?: Maybe<SubscriptionContract>
   /** The line item's quantity, minus the removed quantity. */
   currentQuantity: Scalars['Int']
-  /** A list of additional information about the line item. */
+  /** A list of attributes that represent custom features or special requests. */
   customAttributes: Array<Attribute>
   /** The discounts that have been allocated onto the line item by discount applications. */
   discountAllocations: Array<DiscountAllocation>
   /**
    * The total line price after discounts are applied, in shop currency.
-   * @deprecated Use `discountedTotalSet` instead
+   * @deprecated Use `discountedTotalSet` instead.
    */
   discountedTotal: Scalars['Money']
   /** The total line price after discounts are applied, in shop and presentment currencies. */
   discountedTotalSet: MoneyBag
   /**
    * The approximate split price of a line item unit, in shop currency. This value doesn't include discounts applied to the entire order.
-   * @deprecated Use `discountedUnitPriceSet` instead
+   * @deprecated Use `discountedUnitPriceSet` instead.
    */
   discountedUnitPrice: Scalars['Money']
   /** The approximate split price of a line item unit, in shop and presentment currencies. This value doesn't include discounts applied to the entire order. */
@@ -11150,7 +11284,7 @@ export type LineItem = Node & {
    *
    * Deleted fulfillment services will return null.
    *
-   * @deprecated Use [FulfillmentOrder#assignedLocation](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrder#field-fulfillmentorder-assignedlocation) instead.
+   * @deprecated Multi-managed inventory introduced a [breaking change](https://shopify.dev/api/release-notes/2022-07#shipping-and-fulfillment) to this field, therefore this field will no longer be supported. Fulfillment services will all be opted into SKU sharing in 2023-04. Use [FulfillmentOrder#assignedLocation](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrder#field-fulfillmentorder-assignedlocation) instead.
    */
   fulfillmentService?: Maybe<FulfillmentService>
   /**
@@ -11178,14 +11312,14 @@ export type LineItem = Node & {
    * The total price without discounts applied, in shop currency.
    * This value is based on the unit price of the variant x quantity.
    *
-   * @deprecated Use `originalTotalSet` instead
+   * @deprecated Use `originalTotalSet` instead.
    */
   originalTotal: Scalars['Money']
   /** The total price in shop and presentment currencies, without discounts applied. This value is based on the unit price of the variant x quantity. */
   originalTotalSet: MoneyBag
   /**
    * The variant unit price without discounts applied, in shop currency.
-   * @deprecated Use `originalUnitPriceSet` instead
+   * @deprecated Use `originalUnitPriceSet` instead.
    */
   originalUnitPrice: Scalars['Money']
   /** The variant unit price without discounts applied, in shop and presentment currencies. */
@@ -11213,22 +11347,22 @@ export type LineItem = Node & {
   /** The title of the product. */
   title: Scalars['String']
   /**
-   * The sum of all AppliedDiscounts on this line item, in shop currency.
-   * @deprecated Use `totalDiscountSet` instead
+   * The total amount of the discount allocated to the line item in the shop currency.
+   * @deprecated Use `totalDiscountSet` instead.
    */
   totalDiscount: Scalars['Money']
-  /** The sum of all AppliedDiscounts on this line item, in shop and presentment currencies. */
+  /** The total amount of the discount that's allocated to the line item, in the shop and presentment currencies. This field must be explicitly set using draft orders, Shopify scripts, or the API. */
   totalDiscountSet: MoneyBag
   /**
    * The total discounted value of unfulfilled units, in shop currency.
-   * @deprecated Use `unfulfilledDiscountedTotalSet` instead
+   * @deprecated Use `unfulfilledDiscountedTotalSet` instead.
    */
   unfulfilledDiscountedTotal: Scalars['Money']
   /** The total discounted value of unfulfilled units, in shop and presentment currencies. */
   unfulfilledDiscountedTotalSet: MoneyBag
   /**
    * The total price, without any discounts applied. This value is based on the unit price of the variant x quantity of all unfulfilled units, in shop currency.
-   * @deprecated Use `unfulfilledOriginalTotalSet` instead
+   * @deprecated Use `unfulfilledOriginalTotalSet` instead.
    */
   unfulfilledOriginalTotal: Scalars['Money']
   /** The total price, without any discounts applied. This value is based on the unit price of the variant x quantity of all unfulfilled units, in shop and presentment currencies. */
@@ -11287,23 +11421,23 @@ export type LineItemMutable = Node & {
   __typename?: 'LineItemMutable'
   /**
    * Whether the line item can be restocked.
-   * @deprecated Use `restockable` instead
+   * @deprecated Use `restockable` instead.
    */
   canRestock: Scalars['Boolean']
-  /** A list of additional information about the line item. */
+  /** A list of attributes that represent custom features or special requests. */
   customAttributes: Array<Attribute>
   /** The discounts that have been allocated onto the line item by discount applications. */
   discountAllocations: Array<DiscountAllocation>
   /**
    * The total line price after discounts are applied, in shop currency.
-   * @deprecated Use `discountedTotalSet` instead
+   * @deprecated Use `discountedTotalSet` instead.
    */
   discountedTotal: Scalars['Money']
   /** The total line price after discounts are applied, in shop and presentment currencies. */
   discountedTotalSet: MoneyBag
   /**
    * The approximate split price of a line item unit, in shop currency. This value doesn't include discounts applied to the entire order.
-   * @deprecated Use `discountedUnitPriceSet` instead
+   * @deprecated Use `discountedUnitPriceSet` instead.
    */
   discountedUnitPrice: Scalars['Money']
   /** The approximate split price of a line item unit, in shop and presentment currencies. This value doesn't include discounts applied to the entire order. */
@@ -11336,14 +11470,14 @@ export type LineItemMutable = Node & {
   /**
    * The total price without any discounts applied, in shop currency. ""This value is based on the unit price of the variant x quantity.
    *
-   * @deprecated Use `originalTotalSet` instead
+   * @deprecated Use `originalTotalSet` instead.
    */
   originalTotal: Scalars['Money']
   /** The total price in shop and presentment currencies, without discounts applied. This value is based on the unit price of the variant x quantity. */
   originalTotalSet: MoneyBag
   /**
    * The variant unit price without discounts applied, in shop currency.
-   * @deprecated Use `originalUnitPriceSet` instead
+   * @deprecated Use `originalUnitPriceSet` instead.
    */
   originalUnitPrice: Scalars['Money']
   /** The variant unit price without discounts applied, in shop and presentment currencies. */
@@ -11369,22 +11503,22 @@ export type LineItemMutable = Node & {
   /** The title of the product. */
   title: Scalars['String']
   /**
-   * The sum of all AppliedDiscounts on this line item, in shop currency.
-   * @deprecated Use `totalDiscountSet` instead
+   * The total amount of the discount allocated to the line item in the shop currency. This field must be explicitly set using draft orders, Shopify scripts, or the API. Instead of using this field, Shopify recommends using `discountAllocations`, which provides the same information.
+   * @deprecated Use `totalDiscountSet` instead.
    */
   totalDiscount: Scalars['Money']
-  /** The sum of all AppliedDiscounts on this line item in shop and presentment currencies. */
+  /** The total amount of the discount allocated to the line item in the presentment currency. This field must be explicitly set using draft orders, Shopify scripts, or the API. Instead of using this field, Shopify recommends using `discountAllocations`, which provides the same information. */
   totalDiscountSet: MoneyBag
   /**
    * The total discounted value of unfulfilled units, in shop currency.
-   * @deprecated Use `unfulfilledDiscountedTotalSet` instead
+   * @deprecated Use `unfulfilledDiscountedTotalSet` instead.
    */
   unfulfilledDiscountedTotal: Scalars['Money']
   /** The total discounted value of unfulfilled units, in shop and presentment currencies. */
   unfulfilledDiscountedTotalSet: MoneyBag
   /**
    * The total price without any discounts applied. This value is based on the unit price of the variant x quantity of all unfulfilled units, in shop currency.
-   * @deprecated Use `unfulfilledOriginalTotalSet` instead
+   * @deprecated Use `unfulfilledOriginalTotalSet` instead.
    */
   unfulfilledOriginalTotal: Scalars['Money']
   /** The total price without any discounts applied. This value is based on the unit price of the variant x quantity of all unfulfilled units, in shop and presentment currencies. */
@@ -11772,7 +11906,7 @@ export type MailingAddress = Node & {
    *
    * For example, US.
    *
-   * @deprecated Use `countryCodeV2` instead
+   * @deprecated Use `countryCodeV2` instead.
    */
   countryCode?: Maybe<Scalars['String']>
   /**
@@ -11886,10 +12020,12 @@ export type MailingAddressInput = {
 /**
  * Manual discount applications capture the intentions of a discount that was manually created for an order.
  *
+ * Discount applications don't represent the actual final amount discounted on a line (line item or shipping line). The actual amount discounted on a line is represented by the [DiscountAllocation](https://shopify.dev/api/admin-graphql/latest/objects/discountallocation) object.
+ *
  */
 export type ManualDiscountApplication = DiscountApplication & {
   __typename?: 'ManualDiscountApplication'
-  /** The method by which the discount's value is allocated to its entitled items. */
+  /** The method by which the discount's value is applied to its entitled items. */
   allocationMethod: DiscountApplicationAllocationMethod
   /** The description of the discount application. */
   description?: Maybe<Scalars['String']>
@@ -11914,7 +12050,7 @@ export type ManualDiscountApplication = DiscountApplication & {
  * By creating a market, you can configure a distinct, localized shopping experience for
  * customers from a specific area of the world. For example, you can
  * [change currency](https://shopify.dev/api/admin-graphql/current/mutations/marketCurrencySettingsUpdate),
- * [configure international pricing](https://shopify.dev/api/examples/product-price-lists),
+ * [configure international pricing](https://shopify.dev/apps/internationalization/product-price-lists),
  * or [add market-specific domains or subfolders](https://shopify.dev/api/admin-graphql/current/objects/MarketWebPresence).
  *
  */
@@ -11961,7 +12097,7 @@ export type Market = Node & {
  * By creating a market, you can configure a distinct, localized shopping experience for
  * customers from a specific area of the world. For example, you can
  * [change currency](https://shopify.dev/api/admin-graphql/current/mutations/marketCurrencySettingsUpdate),
- * [configure international pricing](https://shopify.dev/api/examples/product-price-lists),
+ * [configure international pricing](https://shopify.dev/apps/internationalization/product-price-lists),
  * or [add market-specific domains or subfolders](https://shopify.dev/api/admin-graphql/current/objects/MarketWebPresence).
  *
  */
@@ -12296,7 +12432,7 @@ export enum MarketUserErrorCode {
  * Note: while the domain/subfolders defined by a market’s web presence are not applicable to
  * custom storefronts, which must manage their own domains and routing, the languages chosen
  * here do govern [the languages available on the Storefront
- * API](https://shopify.dev/api/examples/multiple-languages) for the countries in
+ * API](https://shopify.dev/custom-storefronts/internationalization/multiple-languages) for the countries in
  * this market.
  *
  */
@@ -12467,7 +12603,7 @@ export type MarketingActivity = Node & {
   status: MarketingActivityStatus
   /**
    * The severity of the marketing activity's status.
-   * @deprecated Use `statusBadgeTypeV2` instead
+   * @deprecated Use `statusBadgeTypeV2` instead.
    */
   statusBadgeType?: Maybe<MarketingActivityStatusBadgeType>
   /** The severity of the marketing activity's status. */
@@ -12653,10 +12789,9 @@ export type MarketingActivityUpdateInput = {
   /** Encoded context provided by Shopify during the update marketing activity callback. This argument is deprecated: This context is no longer needed by Shopify in the callback. */
   context?: InputMaybe<Scalars['String']>
   /**
-   * Error messages generated when the app was trying to complete this activity.
+   * The error messages that were generated when the app was trying to complete the activity.
    * Learn more about the
-   * JSON[format expected for the error messages](/apps/app-extensions/marketing-activities/reference
-   * /status#failed-status).
+   * [JSON format expected for error messages](/api/marketing-activities/statuses#failed-status).
    *
    */
   errors?: InputMaybe<Scalars['JSON']>
@@ -12678,11 +12813,11 @@ export type MarketingActivityUpdateInput = {
   marketingRecommendationId?: InputMaybe<Scalars['ID']>
   /**
    * The current state of the marketing activity. Learn more about
-   * [marketing activity status](/apps/app-extensions/marketing-activities/reference/status).
+   * [marketing activities statuses](/api/marketing-activities/statuses).
    *
    */
   status?: InputMaybe<MarketingActivityStatus>
-  /** The target state that the marketing activity is transitioning to. Learn more about [marketing activity status](/apps/app-extensions/marketing-activities/reference/status). */
+  /** The target state that the marketing activity is transitioning to. Learn more about [marketing activities statuses](/api/marketing-activities/statuses). */
   targetStatus?: InputMaybe<MarketingActivityStatus>
   /** The title of the marketing activity. */
   title?: InputMaybe<Scalars['String']>
@@ -12869,7 +13004,7 @@ export type MarketingEvent = LegacyInteroperability &
     startedAt: Scalars['DateTime']
     /**
      * The display text for the marketing event type.
-     * @deprecated Use `sourceAndMedium` instead
+     * @deprecated Use `sourceAndMedium` instead.
      */
     targetTypeDisplayText: Scalars['String']
     /** The marketing event type. */
@@ -13008,11 +13143,11 @@ export type MediaConnection = {
 export enum MediaContentType {
   /** An externally hosted video. */
   ExternalVideo = 'EXTERNAL_VIDEO',
-  /** A Shopify hosted image. */
+  /** A Shopify-hosted image. */
   Image = 'IMAGE',
   /** A 3d model. */
   Model_3D = 'MODEL_3D',
-  /** A Shopify hosted video. */
+  /** A Shopify-hosted video. */
   Video = 'VIDEO',
 }
 
@@ -13029,7 +13164,8 @@ export type MediaEdge = {
 }
 
 /**
- * Represents a media error.
+ * Represents a media error. This typically occurs when there is an issue with the media itself causing it to fail validation.
+ * Check the media before attempting to upload again.
  *
  */
 export type MediaError = {
@@ -13127,7 +13263,7 @@ export type MediaImage = File &
     /** A word or phrase to share the nature or contents of a media. */
     alt?: Maybe<Scalars['String']>
     /**
-     * The date and time ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) when the product was created.
+     * The date and time ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) when the file was created.
      *
      */
     createdAt: Scalars['DateTime']
@@ -13156,7 +13292,7 @@ export type MediaImage = File &
   }
 
 /**
- * Represents the original source for an Image.
+ * The original source for an image.
  *
  */
 export type MediaImageOriginalSource = {
@@ -13254,7 +13390,8 @@ export enum MediaUserErrorCode {
 }
 
 /**
- * Represents a media warning.
+ * Represents a media warning. This occurs when there is a non-blocking concern regarding your media.
+ * Consider reviewing your media to ensure it is correct and its parameters are as expected.
  *
  */
 export type MediaWarning = {
@@ -13895,7 +14032,8 @@ export type MetafieldReference =
  * you need to create a `MetafieldStorefrontVisibility` record. A `MetafieldStorefrontVisibility` record is a list
  * of the metafields, defined by the `owner_type`, `namespace`, and `key`, to make visible in the Storefront API.
  *
- * See [expose metafields in the Storefront API](https://shopify.dev/api/examples/metafields#exposing-metafields)
+ * Learn about [exposing metafields in the Storefront API]
+ * (https://shopify.dev/custom-storefronts/products-collections/metafields)
  * for more details.
  *
  */
@@ -14053,6 +14191,8 @@ export type MetafieldsSetUserError = DisplayableError & {
 
 /** Possible error codes that can be returned by `MetafieldsSetUserError`. */
 export enum MetafieldsSetUserErrorCode {
+  /** ApiPermission metafields can only be created or updated by the app owner. */
+  AppNotAuthorized = 'APP_NOT_AUTHORIZED',
   /** The input value is blank. */
   Blank = 'BLANK',
   /** The input value isn't included in the list. */
@@ -14094,9 +14234,9 @@ export type Model3d = Media &
     __typename?: 'Model3d'
     /** A word or phrase to share the nature or contents of a media. */
     alt?: Maybe<Scalars['String']>
-    /** The bounding box information of the 3d model. */
+    /** The 3d model's bounding box information. */
     boundingBox?: Maybe<Model3dBoundingBox>
-    /** The filename of the 3d model. */
+    /** The 3d model's filename. */
     filename: Scalars['String']
     /** A globally-unique identifier. */
     id: Scalars['ID']
@@ -14106,11 +14246,11 @@ export type Model3d = Media &
     mediaErrors: Array<MediaError>
     /** The warnings attached to the media. */
     mediaWarnings: Array<MediaWarning>
-    /** The original source for a 3d model. */
+    /** The 3d model's original source. */
     originalSource?: Maybe<Model3dSource>
     /** The preview image for the media. */
     preview?: Maybe<MediaPreviewImage>
-    /** The sources for a 3d model. */
+    /** The 3d model's sources. */
     sources: Array<Model3dSource>
     /** Current status of the media. */
     status: MediaStatus
@@ -14130,18 +14270,24 @@ export type Model3dBoundingBox = {
 }
 
 /**
- * Represents a source for a Shopify hosted 3d model.
+ * A source for a Shopify-hosted 3d model.
+ *
+ * Types of sources include GLB and USDZ formatted 3d models, where the former
+ * is an original 3d model and the latter has been converted from the original.
+ *
+ * If the original source is in GLB format and over 15 MBs in size, then both the
+ * original and the USDZ formatted source are optimized to reduce the file size.
  *
  */
 export type Model3dSource = {
   __typename?: 'Model3dSource'
-  /** The filesize of the 3d model. */
+  /** The 3d model source's filesize. */
   filesize: Scalars['Int']
-  /** The format of the 3d model. */
+  /** The 3d model source's format. */
   format: Scalars['String']
-  /** The MIME type of the 3d model. */
+  /** The 3d model source's MIME type. */
   mimeType: Scalars['String']
-  /** The URL of the 3d model. */
+  /** The 3d model source's URL. */
   url: Scalars['String']
 }
 
@@ -14178,11 +14324,11 @@ export type MoneyV2 = {
   currencyCode: CurrencyCode
 }
 
-/** An individual move to perform of an object to a position. */
+/** A single move of an object to a specific position in a set, using a zero-based index. */
 export type MoveInput = {
   /** The ID of the object to be moved. */
   id: Scalars['ID']
-  /** The new position of the object in the set, using a 0 based index. */
+  /** The new position of the object in the set. */
   newPosition: Scalars['UnsignedInt64']
 }
 
@@ -14208,7 +14354,12 @@ export type Mutation = {
   appSubscriptionCreate?: Maybe<AppSubscriptionCreatePayload>
   /** Updates the capped amount on the usage pricing plan of an app subscription line item. */
   appSubscriptionLineItemUpdate?: Maybe<AppSubscriptionLineItemUpdatePayload>
-  /** Creates an app usage record. */
+  /**
+   * Enables an app to charge a store for features or services on a per-use basis.
+   * The usage charge value is counted towards the `cappedAmount` limit that was specified in the `appUsagePricingDetails` field when the app subscription was created.
+   * If you create an app usage charge that causes the total usage charges in a billing interval to exceed the capped amount, then a `Total price exceeds balance remaining` error is returned.
+   *
+   */
   appUsageRecordCreate?: Maybe<AppUsageRecordCreatePayload>
   /**
    * Starts the cancelation process of a running bulk operation.
@@ -14245,25 +14396,25 @@ export type Mutation = {
   collectionDelete?: Maybe<CollectionDeletePayload>
   /**
    * Publishes a collection to a channel.
-   * @deprecated Use `publishablePublish` instead
+   * @deprecated Use `publishablePublish` instead.
    */
   collectionPublish?: Maybe<CollectionPublishPayload>
-  /** Removes a set of products from a given collection. It can take a long time to run. Instead of returning a collection it returns a job, which should be polled. */
+  /** Removes a set of products from a given collection. The mutation can take a long time to run. Instead of returning an updated collection the mutation returns a job, which should be [polled](https://shopify.dev/api/admin-graphql/latest/queries/job). For use with manual collections only. */
   collectionRemoveProducts?: Maybe<CollectionRemoveProductsPayload>
-  /** Asynchronously reorders a set of products from a given collection. */
+  /** Asynchronously reorders a set of products within a specified collection. Instead of returning an updated collection, this mutation returns a job, which should be [polled](https://shopify.dev/api/admin-graphql/latest/queries/job). The [`Collection.sortOrder`](https://shopify.dev/api/admin-graphql/latest/objects/Collection#field-collection-sortorder) must be `MANUAL`. Displaced products will have their position altered in a consistent manner, with no gaps. */
   collectionReorderProducts?: Maybe<CollectionReorderProductsPayload>
   /**
    * Unpublishes a collection.
-   * @deprecated Use `publishableUnpublish` instead
+   * @deprecated Use `publishableUnpublish` instead.
    */
   collectionUnpublish?: Maybe<CollectionUnpublishPayload>
   /** Updates a collection. */
   collectionUpdate?: Maybe<CollectionUpdatePayload>
   /** Add tax exemptions for the customer. */
   customerAddTaxExemptions?: Maybe<CustomerAddTaxExemptionsPayload>
-  /** Create a new customer. */
+  /** Create a new customer. As of API version 2022-10, apps using protected customer data must meet the protected customer data [requirements](https://shopify.dev/apps/store/data-protection/protected-customer-data). */
   customerCreate?: Maybe<CustomerCreatePayload>
-  /** Delete a customer. */
+  /** Delete a customer. As of API version 2022-10, apps using protected customer data must meet the protected customer data [requirements](https://shopify.dev/apps/store/data-protection/protected-customer-data). */
   customerDelete?: Maybe<CustomerDeletePayload>
   /**
    * Update a customer's email marketing information information.
@@ -14291,7 +14442,7 @@ export type Mutation = {
   customerPaymentMethodRemoteCreate?: Maybe<CustomerPaymentMethodRemoteCreatePayload>
   /**
    * Create a payment method from a credit card stored by Stripe.
-   * @deprecated Use `customerPaymentMethodRemoteCreate` instead
+   * @deprecated Use `customerPaymentMethodRemoteCreate` instead.
    */
   customerPaymentMethodRemoteCreditCardCreate?: Maybe<CustomerPaymentMethodRemoteCreditCardCreatePayload>
   /** Revokes a customer's payment method. */
@@ -14307,7 +14458,7 @@ export type Mutation = {
    *
    */
   customerSmsMarketingConsentUpdate?: Maybe<CustomerSmsMarketingConsentUpdatePayload>
-  /** Updates a customer's attributes. */
+  /** Update a customer's attributes. As of API version 2022-10, apps using protected customer data must meet the protected customer data [requirements](https://shopify.dev/apps/store/data-protection/protected-customer-data). */
   customerUpdate?: Maybe<CustomerUpdatePayload>
   /** Updates a customer's default address. */
   customerUpdateDefaultAddress?: Maybe<CustomerUpdateDefaultAddressPayload>
@@ -14328,7 +14479,7 @@ export type Mutation = {
   discountAutomaticActivate?: Maybe<DiscountAutomaticActivatePayload>
   /** Creates a basic automatic discount. */
   discountAutomaticBasicCreate?: Maybe<DiscountAutomaticBasicCreatePayload>
-  /** Updates a basic automatic discount using its ID and input. */
+  /** Updates a basic automatic discount. */
   discountAutomaticBasicUpdate?: Maybe<DiscountAutomaticBasicUpdatePayload>
   /**
    * Asynchronously delete automatic discounts in bulk if a `search` or `saved_search_id` argument is provided or if a
@@ -14339,7 +14490,7 @@ export type Mutation = {
   discountAutomaticBulkDelete?: Maybe<DiscountAutomaticBulkDeletePayload>
   /** Creates a BXGY automatic discount. */
   discountAutomaticBxgyCreate?: Maybe<DiscountAutomaticBxgyCreatePayload>
-  /** Updates a BXGY automatic discount using its ID and input. */
+  /** Updates an existing Buy X, Get Y (BXGY) automatic discount. */
   discountAutomaticBxgyUpdate?: Maybe<DiscountAutomaticBxgyUpdatePayload>
   /** Deactivates an automatic discount. */
   discountAutomaticDeactivate?: Maybe<DiscountAutomaticDeactivatePayload>
@@ -14352,23 +14503,23 @@ export type Mutation = {
   /** Updates a basic code discount. */
   discountCodeBasicUpdate?: Maybe<DiscountCodeBasicUpdatePayload>
   /**
-   * Asynchronously activate code discounts in bulk using a search query, a `savedSearchId` or a list of IDs.
+   * Asynchronously activate code discounts in bulk using a search query, a saved search ID, or a list of code discount IDs.
    *
    */
   discountCodeBulkActivate?: Maybe<DiscountCodeBulkActivatePayload>
   /**
-   * Asynchronously deactivates code discounts in bulk using a search query, a `savedSearchId` or a list of IDs.
+   * Asynchronously deactivate code discounts in bulk using a search query, a saved search ID, or a list of code discount IDs.
    *
    */
   discountCodeBulkDeactivate?: Maybe<DiscountCodeBulkDeactivatePayload>
   /**
-   * Asynchronously delete code discounts in bulk using a search query, a `savedSearchId` or a list of IDs.
+   * Asynchronously delete code discounts in bulk using a search query, a saved search ID, or a list of code discount IDs.
    *
    */
   discountCodeBulkDelete?: Maybe<DiscountCodeBulkDeletePayload>
-  /** Creates a BXGY code discount. */
+  /** Creates a Buy X get Y (BXGY) code discount. */
   discountCodeBxgyCreate?: Maybe<DiscountCodeBxgyCreatePayload>
-  /** Updates a BXGY code discount. */
+  /** Updates a Buy X, Get Y (BXGY) code discount. */
   discountCodeBxgyUpdate?: Maybe<DiscountCodeBxgyUpdatePayload>
   /** Deactivates a code discount. */
   discountCodeDeactivate?: Maybe<DiscountCodeDeactivatePayload>
@@ -14380,7 +14531,7 @@ export type Mutation = {
   discountCodeFreeShippingUpdate?: Maybe<DiscountCodeFreeShippingUpdatePayload>
   /**
    * Asynchronously delete discount redeem codes in bulk. Specify the redeem codes to delete by providing a
-   * search query, a `savedSearchId`, or a list of redeem code IDs.
+   * search query, a saved search ID, or a list of redeem code IDs.
    *
    */
   discountCodeRedeemCodeBulkDelete?: Maybe<DiscountCodeRedeemCodeBulkDeletePayload>
@@ -14425,17 +14576,17 @@ export type Mutation = {
    *
    */
   fileCreate?: Maybe<FileCreatePayload>
-  /** Deletes file assets. */
+  /** Deletes existing file assets that were uploaded to Shopify. */
   fileDelete?: Maybe<FileDeletePayload>
-  /** Updates a file asset. */
+  /** Updates an existing file asset that was uploaded to Shopify. */
   fileUpdate?: Maybe<FileUpdatePayload>
-  /** Triggers a workflow defined by the merchant in Shopify Flow. To learn more, see [_Create Shopify Flow triggers_](https://shopify.dev/apps/flow/triggers). */
+  /** Triggers any workflows that begin with the trigger specified in the request body. To learn more, refer to [_Create Shopify Flow triggers_](https://shopify.dev/apps/flow/triggers). */
   flowTriggerReceive?: Maybe<FlowTriggerReceivePayload>
   /** Cancels a fulfillment. */
   fulfillmentCancel?: Maybe<FulfillmentCancelPayload>
   /**
    * Creates a fulfillment for an order.
-   * @deprecated Use the new [fulfillmentOrder](https://shopify.dev/tutorials/manage-fulfillments-with-fulfillment-and-fulfillmentorder-resources) APIs to manage fulfillments.
+   * @deprecated Use the new [fulfillmentOrder](https://shopify.dev/apps/fulfillment/fulfillment-service-apps) APIs to manage fulfillments.
    */
   fulfillmentCreate?: Maybe<FulfillmentCreatePayload>
   /**
@@ -14478,7 +14629,7 @@ export type Mutation = {
   fulfillmentServiceUpdate?: Maybe<FulfillmentServiceUpdatePayload>
   /**
    * Updates tracking information for a fulfillment.
-   * @deprecated Use the new [fulfillmentOrder](https://shopify.dev/tutorials/manage-fulfillments-with-fulfillment-and-fulfillmentorder-resources) APIs to manage fulfillments.
+   * @deprecated Use the new [fulfillmentOrder](https://shopify.dev/apps/fulfillment/fulfillment-service-apps) APIs to manage fulfillments.
    */
   fulfillmentTrackingInfoUpdate?: Maybe<FulfillmentTrackingInfoUpdatePayload>
   /** Updates tracking information for a fulfillment. */
@@ -14498,7 +14649,7 @@ export type Mutation = {
   inventoryAdjustQuantity?: Maybe<InventoryAdjustQuantityPayload>
   /** Adjusts the inventory at a location for multiple inventory items. */
   inventoryBulkAdjustQuantityAtLocation?: Maybe<InventoryBulkAdjustQuantityAtLocationPayload>
-  /** Stop tracking an inventory item's quantities at a location. */
+  /** Removes an inventory item's quantities from a location, and turns off inventory at the location. */
   inventoryDeactivate?: Maybe<InventoryDeactivatePayload>
   /** Updates an inventory item. */
   inventoryItemUpdate?: Maybe<InventoryItemUpdatePayload>
@@ -14584,9 +14735,9 @@ export type Mutation = {
    *
    */
   orderClose?: Maybe<OrderClosePayload>
-  /** Adds a custom line item to an existing order. For example, you could add a gift wrapping service as a [custom line item](https://shopify.dev/api/examples/order-editing#add-a-custom-line-item). To learn how to edit existing orders, refer to [Edit an existing order with Admin API](https://shopify.dev/api/examples/order-editing). */
+  /** Adds a custom line item to an existing order. For example, you could add a gift wrapping service as a [custom line item](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing#add-a-custom-line-item). To learn how to edit existing orders, refer to [Edit an existing order with Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing). */
   orderEditAddCustomItem?: Maybe<OrderEditAddCustomItemPayload>
-  /** Adds a discount to a newly added line item on the current order edit. More information on how to use the GraphQL Admin API to edit an existing order can be found in [this guide](https://shopify.dev/api/examples/order-editing). */
+  /** Adds a discount to a newly added line item on the current order edit. More information on how to use the GraphQL Admin API to edit an existing order, refer to [Edit existing orders](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing). */
   orderEditAddLineItemDiscount?: Maybe<OrderEditAddLineItemDiscountPayload>
   /** Adds a line item from an existing product variant. */
   orderEditAddVariant?: Maybe<OrderEditAddVariantPayload>
@@ -14604,7 +14755,7 @@ export type Mutation = {
   orderEditCommit?: Maybe<OrderEditCommitPayload>
   /** Removes a line item discount that was applied as part of an order edit. */
   orderEditRemoveLineItemDiscount?: Maybe<OrderEditRemoveLineItemDiscountPayload>
-  /** Sets the quantity of a line item on an order that is being edited. More information on how to use the GraphQL Admin API to edit an existing order can be found in [this guide](https://shopify.dev/api/examples/order-editing). */
+  /** Sets the quantity of a line item on an order that is being edited. More information on how to use the GraphQL Admin API to edit an existing order, refer to [Edit existing orders](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing). */
   orderEditSetQuantity?: Maybe<OrderEditSetQuantityPayload>
   /** Sends an email invoice for an order. */
   orderInvoiceSend?: Maybe<OrderInvoiceSendPayload>
@@ -14620,21 +14771,25 @@ export type Mutation = {
   orderOpen?: Maybe<OrderOpenPayload>
   /** Updates the fields of an order. */
   orderUpdate?: Maybe<OrderUpdatePayload>
-  /** Create payment terms. */
+  /** Create payment terms on an order. To create payment terms on a draft order, use a draft order mutation and include the request with the `DraftOrderInput`. */
   paymentTermsCreate?: Maybe<PaymentTermsCreatePayload>
-  /** Delete payment terms. */
+  /** Delete payment terms for an order. To delete payment terms on a draft order, use a draft order mutation and include the request with the `DraftOrderInput`. */
   paymentTermsDelete?: Maybe<PaymentTermsDeletePayload>
-  /** Update payment terms. */
+  /** Update payment terms on an order. To update payment terms on a draft order, use a draft order mutation and include the request with the `DraftOrderInput`. */
   paymentTermsUpdate?: Maybe<PaymentTermsUpdatePayload>
   /** Creates a price list. You can use the `priceListCreate` mutation to create a new price list for a country. This enables you to sell your products with international pricing. */
   priceListCreate?: Maybe<PriceListCreatePayload>
-  /** Delete a price list. You can use the `priceListDelete` mutation to delete a price list, so that it no longer applies for products in that country. To delete a price list, you need to specify the price list ID. */
+  /** Deletes a price list. For example, you can delete a price list so that it no longer applies for products in the associated market. */
   priceListDelete?: Maybe<PriceListDeletePayload>
   /** Creates or updates fixed prices on a price list. You can use the `priceListFixedPricesAdd` mutation to set a fixed price for specific product variants. This lets you change product variant pricing on a per country basis. Any existing fixed price list prices for these variants will be overwritten. */
   priceListFixedPricesAdd?: Maybe<PriceListFixedPricesAddPayload>
   /** Deletes specific fixed prices from a price list using a product variant ID. You can use the `priceListFixedPricesDelete` mutation to delete a set of fixed prices from a price list. After deleting the set of fixed prices from the price list, the price of each product variant reverts to the original price that was determined by the price list adjustment. */
   priceListFixedPricesDelete?: Maybe<PriceListFixedPricesDeletePayload>
-  /** Update a price list. You can update a price list to make changes to percentage-based price adjustments. You can use the `priceListUpdate` mutation to update an existing price list for a country. This lets you change product pricing on a per country basis. As part of the mutation, you can change the name, percentage-based adjustment, currency, and country. */
+  /**
+   * Updates a price list.
+   * If you modify the currency, then any fixed prices set on the price list will be deleted.
+   *
+   */
   priceListUpdate?: Maybe<PriceListUpdatePayload>
   /** Activate a price rule. */
   priceRuleActivate?: Maybe<PriceRuleActivatePayload>
@@ -14648,7 +14803,7 @@ export type Mutation = {
   priceRuleDiscountCodeCreate?: Maybe<PriceRuleDiscountCodeCreatePayload>
   /** Update a discount code for a price rule. */
   priceRuleDiscountCodeUpdate?: Maybe<PriceRuleDiscountCodeUpdatePayload>
-  /** Update a price rule using its id and an input. */
+  /** Updates a price rule using its ID and an input. */
   priceRuleUpdate?: Maybe<PriceRuleUpdatePayload>
   /**
    * Deletes a private metafield.
@@ -14668,7 +14823,37 @@ export type Mutation = {
   productAppendImages?: Maybe<ProductAppendImagesPayload>
   /** Changes the status of a product. This allows you to set the availability of the product across all channels. */
   productChangeStatus?: Maybe<ProductChangeStatusPayload>
-  /** Creates a product. */
+  /**
+   * Creates a product.
+   *
+   * If you need to create a product with many
+   * [collections](https://shopify.dev/api/admin-graphql/latest/mutations/productCreate#field-productinput-collectionstojoin),
+   * [tags](https://shopify.dev/api/admin-graphql/latest/mutations/productCreate#field-productinput-tags), and
+   * [product variants](https://shopify.dev/api/admin-graphql/latest/input-objects/ProductVariantInput) that are active at many
+   * [locations](https://shopify.dev/api/admin-graphql/latest/input-objects/InventoryLevelInput), then you
+   * should first create the product with just the variants.
+   *
+   * After the product is created, you can activate the variants at locations
+   * and add the other related objects to the product. This reduces the size of each mutation and increases the likelihood that it will
+   * complete before the operation times out.
+   *
+   * The following example shows how you might break up product creation and object association into multiple steps:
+   *
+   * 1. Create the product with variants. Don't specify any tags or collections on the product, and don't specify
+   * [inventory quantities](https://shopify.dev/api/admin-graphql/latest/input-objects/ProductVariantInput#field-productvariantinput-inventoryquantities)
+   * for each variant.
+   *
+   * 2. After the product is created, add tags to the product using the
+   * [tagsAdd](https://shopify.dev/api/admin-graphql/latest/mutations/tagsAdd) mutation, and add collections using the
+   * [collectionsAddProducts](https://shopify.dev/api/admin-graphql/latest/mutations/collectionAddProducts) mutation.
+   *
+   * 3. Use the [inventoryBulkToggleActivation](https://shopify.dev/api/admin-graphql/latest/mutations/inventoryBulkToggleActivation) mutation
+   * on each [inventory item](https://shopify.dev/api/admin-graphql/latest/objects/InventoryItem) to activate it at the appropriate locations.
+   *
+   * 4. After activating the variants at the locations, adjust inventory quantities at each location using the
+   * [inventoryBulkAdjustQuantityAtLocation](https://shopify.dev/admin-graphql/latest/mutations/inventoryBulkAdjustQuantityAtLocation) mutation.
+   *
+   */
   productCreate?: Maybe<ProductCreatePayload>
   /** Creates media for a product. */
   productCreateMedia?: Maybe<ProductCreateMediaPayload>
@@ -14694,20 +14879,20 @@ export type Mutation = {
   productLeaveSellingPlanGroups?: Maybe<ProductLeaveSellingPlanGroupsPayload>
   /**
    * Publishes a product. Products that are sold exclusively on subscription (`requiresSellingPlan: true`) can only be published on online stores.
-   * @deprecated Use `publishablePublish` instead
+   * @deprecated Use `publishablePublish` instead.
    */
   productPublish?: Maybe<ProductPublishPayload>
   /** Asynchronously reorders a set of images for a given product. */
   productReorderImages?: Maybe<ProductReorderImagesPayload>
-  /** Asynchronously Reoders the media attached to a product. */
+  /** Asynchronously reorders the media attached to a product. */
   productReorderMedia?: Maybe<ProductReorderMediaPayload>
   /**
    * Unpublishes a product.
-   * @deprecated Use `publishableUnpublish` instead
+   * @deprecated Use `publishableUnpublish` instead.
    */
   productUnpublish?: Maybe<ProductUnpublishPayload>
   /**
-   * Updates a product. If you update a product, and only include some variants in the update,
+   * Updates a product. If you update a product and only include some variants in the update,
    * then any variants not included will be deleted. To safely manage variants without the risk of
    * deleting excluded variants, use
    * [productVariantsBulkUpdate](https://shopify.dev/api/admin-graphql/latest/mutations/productvariantsbulkupdate).
@@ -14724,7 +14909,7 @@ export type Mutation = {
   productVariantCreate?: Maybe<ProductVariantCreatePayload>
   /** Deletes a product variant. */
   productVariantDelete?: Maybe<ProductVariantDeletePayload>
-  /** Deletes media from product variants. */
+  /** Detaches media from product variants. */
   productVariantDetachMedia?: Maybe<ProductVariantDetachMediaPayload>
   /**
    * Adds multiple selling plan groups to a product variant.
@@ -14738,13 +14923,25 @@ export type Mutation = {
   productVariantLeaveSellingPlanGroups?: Maybe<ProductVariantLeaveSellingPlanGroupsPayload>
   /** Updates a product variant. */
   productVariantUpdate?: Maybe<ProductVariantUpdatePayload>
-  /** Creates product variants in bulk. */
+  /**
+   * Creates product variants in bulk. If you want to create a single variant, then use
+   * [productVariantCreate](https://shopify.dev/api/admin-graphql/latest/mutations/productvariantcreate).
+   *
+   */
   productVariantsBulkCreate?: Maybe<ProductVariantsBulkCreatePayload>
-  /** Deletes product variants in bulk. */
+  /**
+   * Deletes product variants in bulk. If you want to delete a single variant, then use
+   * [productVariantDelete](https://shopify.dev/api/admin-graphql/latest/mutations/productvariantdelete).
+   *
+   */
   productVariantsBulkDelete?: Maybe<ProductVariantsBulkDeletePayload>
-  /** Bulk reorder product variants. */
+  /** Reorder product variants in bulk. */
   productVariantsBulkReorder?: Maybe<ProductVariantsBulkReorderPayload>
-  /** Updates product variants in bulk. */
+  /**
+   * Updates product variants in bulk. If you want to update a single variant, then use
+   * [productVariantUpdate](https://shopify.dev/api/admin-graphql/latest/mutations/productvariantupdate).
+   *
+   */
   productVariantsBulkUpdate?: Maybe<ProductVariantsBulkUpdatePayload>
   /** Creates a new Google Cloud Pub/Sub webhook subscription. */
   pubSubWebhookSubscriptionCreate?: Maybe<PubSubWebhookSubscriptionCreatePayload>
@@ -14833,20 +15030,28 @@ export type Mutation = {
   shopPolicyUpdate?: Maybe<ShopPolicyUpdatePayload>
   /**
    * Generates the URL and signed paramaters needed to upload an asset to Shopify.
-   * @deprecated Use `stagedUploadsCreate` instead
+   * @deprecated Use `stagedUploadsCreate` instead.
    */
   stagedUploadTargetGenerate?: Maybe<StagedUploadTargetGeneratePayload>
   /**
    * Uploads multiple images.
-   * @deprecated Use `stagedUploadsCreate` instead
+   * @deprecated Use `stagedUploadsCreate` instead.
    */
   stagedUploadTargetsGenerate?: Maybe<StagedUploadTargetsGeneratePayload>
-  /** Creates staged upload target URLs for each input and is the first step in the upload process. The returned upload targets with URLs can be used as endpoints to upload the files. */
+  /**
+   * Creates staged upload targets for each input. This is the first step in the upload process.
+   * The returned staged upload targets' URL and parameter fields can be used to send a request
+   * to upload the file described in the corresponding input.
+   *
+   * For more information on the upload process, refer to
+   * [Upload media to Shopify](https://shopify.dev/apps/online-store/media/products#step-1-upload-media-to-shopify).
+   *
+   */
   stagedUploadsCreate?: Maybe<StagedUploadsCreatePayload>
   /**
    * Activates the specified standard metafield definition from its template.
    *
-   * Refer to the [list of standard metafield definition templates](https://shopify.dev/api/admin/graphql/reference/common-objects/standardMetafieldDefinitionTemplates#examples-Get_a_list_of_standard_metafield_definition_templates).
+   * Refer to the [list of standard metafield definition templates](https://shopify.dev/apps/metafields/definitions/standard-definitions).
    *
    */
   standardMetafieldDefinitionEnable?: Maybe<StandardMetafieldDefinitionEnablePayload>
@@ -14854,7 +15059,10 @@ export type Mutation = {
   storefrontAccessTokenCreate?: Maybe<StorefrontAccessTokenCreatePayload>
   /** Deletes a storefront access token. */
   storefrontAccessTokenDelete?: Maybe<StorefrontAccessTokenDeletePayload>
-  /** Creates a new subscription billing attempt. For more information, refer to [Contracts](https://shopify.dev/apps/subscriptions/contracts#create-a-billing-attempt). */
+  /**
+   * Creates a new subscription billing attempt. For more information, refer to [Create a subscription contract](https://shopify.dev/apps/subscriptions/contracts/create#step-4-create-a-billing-attempt).
+   *
+   */
   subscriptionBillingAttemptCreate?: Maybe<SubscriptionBillingAttemptCreatePayload>
   /** Creates a Subscription Contract. */
   subscriptionContractCreate?: Maybe<SubscriptionContractCreatePayload>
@@ -15757,6 +15965,7 @@ export type MutationOrderEditRemoveLineItemDiscountArgs = {
 export type MutationOrderEditSetQuantityArgs = {
   id: Scalars['ID']
   lineItemId: Scalars['ID']
+  locationId?: InputMaybe<Scalars['ID']>
   quantity: Scalars['Int']
   restock?: InputMaybe<Scalars['Boolean']>
 }
@@ -16409,7 +16618,17 @@ export type MutationWebhookSubscriptionUpdateArgs = {
   webhookSubscription: WebhookSubscriptionInput
 }
 
-/** A signed upload parameter for uploading an asset to Shopify. */
+/**
+ * A signed upload parameter for uploading an asset to Shopify.
+ *
+ * Deprecated in favor of
+ * [StagedUploadParameter](https://shopify.dev/api/admin-graphql/latest/objects/StagedUploadParameter),
+ * which is used in
+ * [StagedMediaUploadTarget](https://shopify.dev/api/admin-graphql/latest/objects/StagedMediaUploadTarget)
+ * and returned by the
+ * [stagedUploadsCreate mutation](https://shopify.dev/api/admin-graphql/latest/mutations/stagedUploadsCreate).
+ *
+ */
 export type MutationsStagedUploadTargetGenerateUploadParameter = {
   __typename?: 'MutationsStagedUploadTargetGenerateUploadParameter'
   /** The upload parameter name. */
@@ -16460,7 +16679,7 @@ export type Node = {
 
 /**
  * An article in the blogging system. You can query articles from
- * [the REST API](https://shopify.dev/api/admin-rest/latest/resources/article
+ * [the REST API](https://shopify.dev/api/admin-rest/latest/resources/article)
  * if you need to access more information about an article. Currently, `OnlineStoreArticle` is
  * only useful to pass an article `id` to the `tagsAdd` mutation. For more information, refer to
  * the [tagsAdd](https://shopify.dev/api/admin-graphql/latest/mutations/tagsadd) mutation.
@@ -16483,7 +16702,7 @@ export type OnlineStoreArticle = HasPublishedTranslations &
 
 /**
  * An article in the blogging system. You can query articles from
- * [the REST API](https://shopify.dev/api/admin-rest/latest/resources/article
+ * [the REST API](https://shopify.dev/api/admin-rest/latest/resources/article)
  * if you need to access more information about an article. Currently, `OnlineStoreArticle` is
  * only useful to pass an article `id` to the `tagsAdd` mutation. For more information, refer to
  * the [tagsAdd](https://shopify.dev/api/admin-graphql/latest/mutations/tagsadd) mutation.
@@ -16544,8 +16763,9 @@ export type OnlineStorePreviewable = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -16602,14 +16822,14 @@ export type Order = CommentEventSubject &
     capturable: Scalars['Boolean']
     /**
      * The total order-level discount amount, before returns, in shop currency.
-     * @deprecated Use `cartDiscountAmountSet` instead
+     * @deprecated Use `cartDiscountAmountSet` instead.
      */
     cartDiscountAmount?: Maybe<Scalars['Money']>
     /** The total order-level discount amount, before returns, in shop and presentment currencies. */
     cartDiscountAmountSet?: Maybe<MoneyBag>
     /**
      * The channel that created the order.
-     * @deprecated Use `publication` instead
+     * @deprecated Use `publication` instead.
      */
     channel?: Maybe<Channel>
     /** Details about the channel that created the order. */
@@ -16689,7 +16909,7 @@ export type Order = CommentEventSubject &
     /**
      * The customer's visits and interactions with the online store before placing the order.
      *
-     * @deprecated Use `customerJourneySummary` instead
+     * @deprecated Use `customerJourneySummary` instead.
      */
     customerJourney?: Maybe<CustomerJourney>
     /**
@@ -16730,7 +16950,7 @@ export type Order = CommentEventSubject &
     /**
      * A list of draft fulfillments that can be created for the order, which includes line items that can be partially fulfilled.
      *
-     * @deprecated Use `fulfillmentOrders` instead
+     * @deprecated Use `fulfillmentOrders` instead.
      */
     draftFulfillments: Array<DraftFulfillment>
     /** Whether the order has had any edits applied. */
@@ -16778,7 +16998,7 @@ export type Order = CommentEventSubject &
     lineItems: LineItemConnection
     /**
      * A list of the order's line items.
-     * @deprecated Use `lineItems` instead
+     * @deprecated Use `lineItems` instead.
      */
     lineItemsMutable: LineItemMutableConnection
     /** List of localization extensions for the resource. */
@@ -16787,7 +17007,7 @@ export type Order = CommentEventSubject &
      * The fulfillment location that was assigned when the order was created.
      * Use the [`FulfillmentOrder`](https://shopify.dev/api/admin-graphql/latest/objects/fulfillmentorder) object for up-to-date fulfillment location information.
      *
-     * @deprecated Use `physicalLocation` instead
+     * @deprecated Use `physicalLocation` instead.
      */
     location?: Maybe<Scalars['String']>
     /** Whether the order can be edited by the merchant. For example, canceled orders can’t be edited. */
@@ -16813,7 +17033,7 @@ export type Order = CommentEventSubject &
     /**
      * The net payment for the order, based on the total amount received minus the total amount refunded, in shop currency.
      *
-     * @deprecated Use `netPaymentSet` instead
+     * @deprecated Use `netPaymentSet` instead.
      */
     netPayment: Scalars['Money']
     /** The net payment for the order, based on the total amount received minus the total amount refunded, in shop and presentment currencies. */
@@ -16936,7 +17156,7 @@ export type Order = CommentEventSubject &
      * The sum of the prices for all line items after discounts and before returns, in shop currency.
      * If `taxesIncluded` is `true`, then the subtotal also includes tax.
      *
-     * @deprecated Use `subtotalPriceSet` instead
+     * @deprecated Use `subtotalPriceSet` instead.
      */
     subtotalPrice?: Maybe<Scalars['Money']>
     /**
@@ -16974,7 +17194,7 @@ export type Order = CommentEventSubject &
      * The authorized amount that is uncaptured or undercaptured, in shop currency.
      * This amount isn't adjusted for returns.
      *
-     * @deprecated Use `totalCapturableSet` instead
+     * @deprecated Use `totalCapturableSet` instead.
      */
     totalCapturable: Scalars['Money']
     /**
@@ -16987,7 +17207,7 @@ export type Order = CommentEventSubject &
      * The total amount discounted on the order before returns, in shop currency.
      * This includes both order and line level discounts.
      *
-     * @deprecated Use `totalDiscountsSet` instead
+     * @deprecated Use `totalDiscountsSet` instead.
      */
     totalDiscounts?: Maybe<Scalars['Money']>
     /**
@@ -17006,7 +17226,7 @@ export type Order = CommentEventSubject &
      * The total price of the order, before returns, in shop currency.
      * This includes taxes and discounts.
      *
-     * @deprecated Use `totalPriceSet` instead
+     * @deprecated Use `totalPriceSet` instead.
      */
     totalPrice: Scalars['Money']
     /**
@@ -17017,14 +17237,14 @@ export type Order = CommentEventSubject &
     totalPriceSet: MoneyBag
     /**
      * The total amount received from the customer before returns, in shop currency.
-     * @deprecated Use `totalReceivedSet` instead
+     * @deprecated Use `totalReceivedSet` instead.
      */
     totalReceived: Scalars['Money']
     /** The total amount received from the customer before returns, in shop and presentment currencies. */
     totalReceivedSet: MoneyBag
     /**
      * The total amount that was refunded, in shop currency.
-     * @deprecated Use `totalRefundedSet` instead
+     * @deprecated Use `totalRefundedSet` instead.
      */
     totalRefunded: Scalars['Money']
     /** The total amount that was refunded, in shop and presentment currencies. */
@@ -17033,21 +17253,21 @@ export type Order = CommentEventSubject &
     totalRefundedShippingSet: MoneyBag
     /**
      * The total shipping amount before discounts and returns, in shop currency.
-     * @deprecated Use `totalShippingPriceSet` instead
+     * @deprecated Use `totalShippingPriceSet` instead.
      */
     totalShippingPrice: Scalars['Money']
     /** The total shipping amount before discounts and returns, in shop and presentment currencies. */
     totalShippingPriceSet: MoneyBag
     /**
      * The total tax amount before returns, in shop currency.
-     * @deprecated Use `totalTaxSet` instead
+     * @deprecated Use `totalTaxSet` instead.
      */
     totalTax?: Maybe<Scalars['Money']>
     /** The total tax amount before returns, in shop and presentment currencies. */
     totalTaxSet?: Maybe<MoneyBag>
     /**
      * The sum of all tip amounts for the order, in shop currency.
-     * @deprecated Use `totalTipReceivedSet` instead
+     * @deprecated Use `totalTipReceivedSet` instead.
      */
     totalTipReceived: MoneyV2
     /** The sum of all tip amounts for the order, in shop and presentment currencies. */
@@ -17066,8 +17286,9 @@ export type Order = CommentEventSubject &
   }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -17087,8 +17308,9 @@ export type OrderAgreementsArgs = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -17107,8 +17329,9 @@ export type OrderDiscountApplicationsArgs = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -17129,8 +17352,9 @@ export type OrderEventsArgs = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -17151,8 +17375,9 @@ export type OrderFulfillmentOrdersArgs = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -17167,8 +17392,9 @@ export type OrderFulfillmentsArgs = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -17187,8 +17413,9 @@ export type OrderLineItemsArgs = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -17207,8 +17434,9 @@ export type OrderLineItemsMutableArgs = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -17229,8 +17457,9 @@ export type OrderLocalizationExtensionsArgs = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -17246,8 +17475,9 @@ export type OrderMetafieldArgs = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -17270,8 +17500,9 @@ export type OrderMetafieldDefinitionsArgs = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -17291,8 +17522,9 @@ export type OrderMetafieldsArgs = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -17311,8 +17543,9 @@ export type OrderNonFulfillableLineItemsArgs = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -17328,8 +17561,9 @@ export type OrderPrivateMetafieldArgs = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -17349,8 +17583,9 @@ export type OrderPrivateMetafieldsArgs = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -17365,8 +17600,9 @@ export type OrderRefundsArgs = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -17381,8 +17617,9 @@ export type OrderRisksArgs = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -17401,8 +17638,9 @@ export type OrderShippingLinesArgs = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -17421,8 +17659,9 @@ export type OrderSuggestedRefundArgs = {
 }
 
 /**
- * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
- * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the `Order` object.
+ * Learn more about
+ * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
  * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
@@ -18015,14 +18254,14 @@ export type OrderTransaction = Node & {
   accountNumber?: Maybe<Scalars['String']>
   /**
    * The amount of money.
-   * @deprecated Use `amountSet` instead
+   * @deprecated Use `amountSet` instead.
    */
   amount: Scalars['Money']
   /** The amount and currency of the transaction in shop and presentment currencies. */
   amountSet: MoneyBag
   /**
    * The amount and currency of the transaction.
-   * @deprecated Use `amountSet` instead
+   * @deprecated Use `amountSet` instead.
    */
   amountV2: MoneyV2
   /** Authorization code associated with the transaction. */
@@ -18055,7 +18294,7 @@ export type OrderTransaction = Node & {
    * Specifies the available amount to refund on the gateway.
    * This value is only available for transactions of type `SuggestedRefund`.
    *
-   * @deprecated Use `maximumRefundableV2` instead
+   * @deprecated Use `maximumRefundableV2` instead.
    */
   maximumRefundable?: Maybe<Scalars['Money']>
   /**
@@ -18072,7 +18311,7 @@ export type OrderTransaction = Node & {
   paymentIcon?: Maybe<Image>
   /**
    * The payment method used for the transaction. This value is `null` if the payment method is unknown.
-   * @deprecated Use `paymentIcon` instead
+   * @deprecated Use `paymentIcon` instead.
    */
   paymentMethod?: Maybe<PaymentMethods>
   /** Date and time when the transaction was processed. */
@@ -18081,7 +18320,7 @@ export type OrderTransaction = Node & {
    * The transaction receipt that the payment gateway attaches to the transaction.
    * The value of this field depends on which payment gateway processed the transaction.
    *
-   * @deprecated Use `receiptJson` instead
+   * @deprecated Use `receiptJson` instead.
    */
   receipt?: Maybe<Scalars['String']>
   /**
@@ -18107,7 +18346,7 @@ export type OrderTransaction = Node & {
    * Specifies the available amount to capture on the gateway.
    * Only available when an amount is capturable or manually mark as paid.
    *
-   * @deprecated Use `totalUnsettledSet` instead
+   * @deprecated Use `totalUnsettledSet` instead.
    */
   totalUnsettled?: Maybe<Scalars['Money']>
   /**
@@ -18120,7 +18359,7 @@ export type OrderTransaction = Node & {
    * Specifies the available amount with currency to capture on the gateway.
    * Only available when an amount is capturable or manually mark as paid.
    *
-   * @deprecated Use `totalUnsettledSet` instead
+   * @deprecated Use `totalUnsettledSet` instead.
    */
   totalUnsettledV2?: Maybe<MoneyV2>
   /** Staff member who was logged into the Shopify POS device when the transaction was processed. */
@@ -18408,9 +18647,9 @@ export type PaymentTerms = Node & {
   paymentSchedules: PaymentScheduleConnection
   /** The name of the payment terms template used to create the payment terms. */
   paymentTermsName: Scalars['String']
-  /** The type of a payment terms template used to create the payment terms. */
+  /** The payment terms template type used to create the payment terms. */
   paymentTermsType: PaymentTermsType
-  /** The translated payment terms name. */
+  /** The payment terms name, translated into the shop admin's preferred language. */
   translatedName: Scalars['String']
 }
 
@@ -18516,9 +18755,9 @@ export type PaymentTermsTemplate = Node & {
 
 /** The type of a payment terms or a payment terms template. */
 export enum PaymentTermsType {
-  /** The payment terms or payment terms template is fixed type. */
+  /** The payment terms or payment terms template is a fixed type. It's due on a specified date. */
   Fixed = 'FIXED',
-  /** The payment terms or payment terms template is net type. */
+  /** The payment terms or payment terms template is a net type. It's due a number of days after issue. */
   Net = 'NET',
   /** The payment terms or payment terms template is due on receipt. */
   Receipt = 'RECEIPT',
@@ -18577,7 +18816,7 @@ export enum PaypalExpressSubscriptionsGatewayStatus {
  * using context rules, which determine price list eligibility.
  *
  *   For more information on price lists, refer to
- *   [*Support different pricing models using the price list API*](https://shopify.dev/api/examples/product-price-lists#update-an-existing-price-list).
+ *   [Support different pricing models](https://shopify.dev/apps/internationalization/product-price-lists).
  *
  */
 export type PriceList = Node & {
@@ -18603,7 +18842,7 @@ export type PriceList = Node & {
  * using context rules, which determine price list eligibility.
  *
  *   For more information on price lists, refer to
- *   [*Support different pricing models using the price list API*](https://shopify.dev/api/examples/product-price-lists#update-an-existing-price-list).
+ *   [Support different pricing models](https://shopify.dev/apps/internationalization/product-price-lists).
  *
  */
 export type PriceListPricesArgs = {
@@ -18615,26 +18854,30 @@ export type PriceListPricesArgs = {
   reverse?: InputMaybe<Scalars['Boolean']>
 }
 
-/** Represents the type and value of price list adjustments. */
+/**
+ * The type and value of a price list adjustment.
+ *
+ * For more information on price lists, refer to
+ * [Support different pricing models](https://shopify.dev/apps/internationalization/product-price-lists).
+ *
+ */
 export type PriceListAdjustment = {
   __typename?: 'PriceListAdjustment'
   /** The type of price adjustment, such as percentage increase or decrease. */
   type: PriceListAdjustmentType
   /**
-   * The value of price adjustment, where positive numbers
-   *           reduce the prices and negative numbers increase them.
+   * The value of price adjustment, where positive numbers reduce the prices and negative numbers
+   * increase them.
+   *
    */
   value: Scalars['Float']
 }
 
-/** Provides the fields and values to use when updating a price list parent adjustment. */
+/** The input fields to set a price list adjustment. */
 export type PriceListAdjustmentInput = {
   /** The type of price adjustment, such as percentage increase or decrease. */
   type: PriceListAdjustmentType
-  /**
-   * The value of the price adjustment, where positive numbers reduce
-   *                the prices and negative numbers increase them.
-   */
+  /** The value of the price adjustment as specified by the `type`. */
   value: Scalars['Float']
 }
 
@@ -18660,13 +18903,23 @@ export type PriceListConnection = {
   pageInfo: PageInfo
 }
 
-/** Represents a set of facts about the customer used to determine price list eligibility. For example, you can specify the country code so that the price list only applies to customers visiting from a specific country. */
+/**
+ * The input field used to filter price lists based on context.
+ * For example, you can specify the country code so that the filtered price lists only apply to customers visiting from a specific country.
+ *
+ */
 export type PriceListContext = {
-  /** The code for the country that the price list applies to. */
+  /** The code of the country that the price list applies to. */
   country?: InputMaybe<CountryCode>
 }
 
-/** Represents a set of facts about the customer used to determine price list eligibility. */
+/**
+ * Facts about the customer that was used to determine the price list eligibility.
+ * For example, if the `PriceListContextRule` is for a US market, then the price list will be eligible to all customers in the US.
+ * For more information on price lists, refer to
+ * [Support different pricing models](https://shopify.dev/apps/internationalization/product-price-lists).
+ *
+ */
 export type PriceListContextRule = {
   __typename?: 'PriceListContextRule'
   /** A list of two letter country codes that determines price list eligibility. */
@@ -18675,13 +18928,17 @@ export type PriceListContextRule = {
   market?: Maybe<Market>
 }
 
-/** The context that the price list applies to. */
+/**
+ * The input fields to set the context that a price list applies to.
+ * For example, the price list might apply to a specific market.
+ *
+ */
 export type PriceListContextRuleInput = {
   /** The market that this price list applies to. */
   marketId?: InputMaybe<Scalars['ID']>
 }
 
-/** Provides the fields and values to use when creating a price list. */
+/** The input fields to create a price list. */
 export type PriceListCreateInput = {
   /** A set of facts about the customer used to determine price list eligibility. */
   contextRule?: InputMaybe<PriceListContextRuleInput>
@@ -18756,15 +19013,15 @@ export type PriceListParent = {
   adjustment: PriceListAdjustment
 }
 
-/** Provides the fields and values to use when creating a price list parent adjustment. */
+/** The input fields to create a price list adjustment. */
 export type PriceListParentCreateInput = {
-  /** Provides the fields and values to use when updating a price list parent adjustment. */
+  /** The relative adjustments to other prices. */
   adjustment: PriceListAdjustmentInput
 }
 
-/** Relative adjustments to other prices. */
+/** The input fields used to update a price list's adjustment. */
 export type PriceListParentUpdateInput = {
-  /** Provides the fields and values to use when updating a price list parent adjustment. */
+  /** The relative adjustments to other prices.. */
   adjustment: PriceListAdjustmentInput
 }
 
@@ -18777,8 +19034,8 @@ export type PriceListPrice = {
   /** The compare-at price of the product variant on this price list. */
   compareAtPrice?: Maybe<MoneyV2>
   /**
-   * The origin of this price, either fixed (defined on the price list)
-   *           or relative (calculated using an adjustment via a price list parent configuration).
+   * The origin of a price, either fixed (defined on the price list) or relative (calculated using a price list adjustment configuration).
+   *
    */
   originType: PriceListPriceOriginType
   /** The price of the product variant on this price list. */
@@ -18824,13 +19081,13 @@ export type PriceListPriceInput = {
 }
 
 /**
- * Represents the origin of a price, either fixed (defined on the price list)
- *         or relative (calculated using an adjustment via a price list parent configuration).
+ * Represents the origin of a price, either fixed (defined on the price list) or relative (calculated using a price list adjustment configuration).
+ *
  */
 export enum PriceListPriceOriginType {
   /** The price is defined on the price list. */
   Fixed = 'FIXED',
-  /** The price is relative to the parent price list. */
+  /** The price is relative to the adjustment type and value. */
   Relative = 'RELATIVE',
 }
 
@@ -18873,11 +19130,11 @@ export enum PriceListSortKeys {
   Relevance = 'RELEVANCE',
 }
 
-/** Provides the fields and values to use when updating a price list. */
+/** The input fields used to update a price list. */
 export type PriceListUpdateInput = {
-  /** A set of facts about buyer context used to determine price list eligibility. */
+  /** A set of facts about the customer used to determine price list eligibility. */
   contextRule?: InputMaybe<PriceListContextRuleInput>
-  /** The three-letter code for fixed prices associated with this price list. */
+  /** The three-letter currency code for fixed prices associated with this price list. */
   currency?: InputMaybe<CurrencyCode>
   /** The unique name of the price list, used as a human-readable identifier. */
   name?: InputMaybe<Scalars['String']>
@@ -18913,7 +19170,10 @@ export enum PriceListUserErrorCode {
   ContextRuleCountryTaken = 'CONTEXT_RULE_COUNTRY_TAKEN',
   /** Only one context rule option may be specified. */
   ContextRuleLimitOneOption = 'CONTEXT_RULE_LIMIT_ONE_OPTION',
-  /** Cannot save the price list with context rule because the limit of context rules per shop was reached. */
+  /**
+   * Cannot save the price list with context rule because the limit of context rules per shop was reached.
+   * @deprecated The limit is removed.
+   */
   ContextRuleLimitReached = 'CONTEXT_RULE_LIMIT_REACHED',
   /** The specified market wasn't found. */
   ContextRuleMarketNotFound = 'CONTEXT_RULE_MARKET_NOT_FOUND',
@@ -18927,13 +19187,13 @@ export enum PriceListUserErrorCode {
   CurrencyMarketMismatch = 'CURRENCY_MARKET_MISMATCH',
   /** The price list currency is not supported by the shop's payment gateway. */
   CurrencyNotSupported = 'CURRENCY_NOT_SUPPORTED',
-  /** The adjustment value must be a positive value and not be greater than 100% for PERCENTAGE_DECREASE and not be greater than 1000% for PERCENTAGE_INCREASE. */
+  /** The adjustment value must be a positive value and not be greater than 100% for `type` `PERCENTAGE_DECREASE` and not be greater than 1000% for `type` `PERCENTAGE_INCREASE`. */
   InvalidAdjustmentValue = 'INVALID_ADJUSTMENT_VALUE',
   /** The context rule's market does not use the price list currency. */
   MarketCurrencyMismatch = 'MARKET_CURRENCY_MISMATCH',
   /** Cannot create price list for a primary market. */
   PriceListNotAllowedForPrimaryMarket = 'PRICE_LIST_NOT_ALLOWED_FOR_PRIMARY_MARKET',
-  /** The PriceList specified does not exist. */
+  /** The specified price list doesn't exist. */
   PriceListNotFound = 'PRICE_LIST_NOT_FOUND',
   /** The input value is already taken. */
   Taken = 'TAKEN',
@@ -18963,7 +19223,7 @@ export type PriceRule = CommentEventSubject &
     endsAt?: Maybe<Scalars['DateTime']>
     /**
      * Quantity of prerequisite items required for the price rule to be applicable,  compared to quantity of entitled items.
-     * @deprecated Use `prerequisiteToEntitlementQuantityRatio` instead
+     * @deprecated Use `prerequisiteToEntitlementQuantityRatio` instead.
      */
     entitlementToPrerequisiteQuantityRatio?: Maybe<PriceRuleEntitlementToPrerequisiteQuantityRatio>
     /** The paginated list of events associated with the price rule. */
@@ -19008,7 +19268,7 @@ export type PriceRule = CommentEventSubject &
     totalSales?: Maybe<MoneyV2>
     /**
      * A list of the price rule's features.
-     * @deprecated Use `features` instead
+     * @deprecated Use `features` instead.
      */
     traits: Array<PriceRuleTrait>
     /** The number of times that the price rule has been used. This value is updated asynchronously and can be different than the actual usage count. */
@@ -19019,7 +19279,7 @@ export type PriceRule = CommentEventSubject &
     validityPeriod: PriceRuleValidityPeriod
     /**
      * The value of the price rule.
-     * @deprecated Use `valueV2` instead
+     * @deprecated Use `valueV2` instead.
      */
     value: PriceRuleValue
     /** The value of the price rule. */
@@ -19058,7 +19318,7 @@ export type PriceRuleActivatePayload = {
   priceRuleUserErrors: Array<PriceRuleUserError>
   /**
    * The list of errors that occurred from executing the mutation.
-   * @deprecated Use `priceRuleUserErrors` instead
+   * @deprecated Use `priceRuleUserErrors` instead.
    */
   userErrors: Array<UserError>
 }
@@ -19096,7 +19356,7 @@ export type PriceRuleCreatePayload = {
   priceRuleUserErrors: Array<PriceRuleUserError>
   /**
    * The list of errors that occurred from executing the mutation.
-   * @deprecated Use `priceRuleUserErrors` instead
+   * @deprecated Use `priceRuleUserErrors` instead.
    */
   userErrors: Array<UserError>
 }
@@ -19145,7 +19405,7 @@ export type PriceRuleDeactivatePayload = {
   priceRuleUserErrors: Array<PriceRuleUserError>
   /**
    * The list of errors that occurred from executing the mutation.
-   * @deprecated Use `priceRuleUserErrors` instead
+   * @deprecated Use `priceRuleUserErrors` instead.
    */
   userErrors: Array<UserError>
 }
@@ -19161,7 +19421,7 @@ export type PriceRuleDeletePayload = {
   shop: Shop
   /**
    * The list of errors that occurred from executing the mutation.
-   * @deprecated Use `priceRuleUserErrors` instead
+   * @deprecated Use `priceRuleUserErrors` instead.
    */
   userErrors: Array<UserError>
 }
@@ -19171,7 +19431,7 @@ export type PriceRuleDiscountCode = Node & {
   __typename?: 'PriceRuleDiscountCode'
   /** The application that created the discount code. */
   app?: Maybe<App>
-  /** The code to use the discount. */
+  /** The code to apply the discount. */
   code: Scalars['String']
   /** A globally-unique identifier. */
   id: Scalars['ID']
@@ -19204,7 +19464,7 @@ export type PriceRuleDiscountCodeCreatePayload = {
   priceRuleUserErrors: Array<PriceRuleUserError>
   /**
    * The list of errors that occurred from executing the mutation.
-   * @deprecated Use `priceRuleUserErrors` instead
+   * @deprecated Use `priceRuleUserErrors` instead.
    */
   userErrors: Array<UserError>
 }
@@ -19238,7 +19498,7 @@ export type PriceRuleDiscountCodeUpdatePayload = {
   priceRuleUserErrors: Array<PriceRuleUserError>
   /**
    * The list of errors that occurred from executing the mutation.
-   * @deprecated Use `priceRuleUserErrors` instead
+   * @deprecated Use `priceRuleUserErrors` instead.
    */
   userErrors: Array<UserError>
 }
@@ -19258,58 +19518,71 @@ export type PriceRuleEdge = {
 /** Quantity of prerequisite items required for the price rule to be applicable, compared to quantity of entitled items. */
 export type PriceRuleEntitlementToPrerequisiteQuantityRatio = {
   __typename?: 'PriceRuleEntitlementToPrerequisiteQuantityRatio'
-  /** The quantity of entitlements in the ratio. */
+  /** The quantity of entitled items in the ratio. */
   entitlementQuantity: Scalars['Int']
-  /** The quantity of prerequisites in the ratio. */
+  /** The quantity of prerequisite items in the ratio. */
   prerequisiteQuantity: Scalars['Int']
 }
 
 /** Specifies the quantity of prerequisite items required for the price rule to be applicable, compared to quantity of entitled items. */
 export type PriceRuleEntitlementToPrerequisiteQuantityRatioInput = {
-  /** The quantity of entitlements in the ratio. */
+  /** The quantity of entitled items in the ratio. */
   entitlementQuantity?: InputMaybe<Scalars['Int']>
-  /** The quantity of prerequisites in the ratio. */
+  /** The quantity of prerequisite items in the ratio. */
   prerequisiteQuantity?: InputMaybe<Scalars['Int']>
 }
 
 /** Possible error codes that could be returned by a price rule mutation. */
 export enum PriceRuleErrorCode {
-  /** The allocation method must be "across" for the provided target selection. */
+  /** The allocation method must be `ACROSS` for the provided target selection. */
   AllocationMethodMustBeAcrossForGivenTargetSelection = 'ALLOCATION_METHOD_MUST_BE_ACROSS_FOR_GIVEN_TARGET_SELECTION',
   /** The discount must apply on either one-time purchase or subscription items, or both. */
   AppliesOnNothing = 'APPLIES_ON_NOTHING',
   /** The input value is blank. */
   Blank = 'BLANK',
+  /** Invalid BOGO target selection. */
   BogoInvalidTargetSelection = 'BOGO_INVALID_TARGET_SELECTION',
+  /** Invalid BOGO target type. */
   BogoInvalidTargetType = 'BOGO_INVALID_TARGET_TYPE',
+  /** Invalid BOGO value type. */
   BogoInvalidValueType = 'BOGO_INVALID_VALUE_TYPE',
+  /** Can't use both prerequisite customers and saved search. */
   BothCustomerAndSavedSearchPrerequisitesSelected = 'BOTH_CUSTOMER_AND_SAVED_SEARCH_PREREQUISITES_SELECTED',
-  /** Cannot have both prerequisite customers and prerequisite segments. */
+  /** Can't have both prerequisite customers and prerequisite segments. */
   BothCustomerAndSegmentPrerequisitesSelected = 'BOTH_CUSTOMER_AND_SEGMENT_PREREQUISITES_SELECTED',
-  /** Cannot have both saved searches and segments prerequisites. */
+  /** Can't have both saved searches and segments prerequisites. */
   BothSavedSearchAndSegmentPrerequisitesSelected = 'BOTH_SAVED_SEARCH_AND_SEGMENT_PREREQUISITES_SELECTED',
+  /** Can't entitle collections in combination with product variants or products. */
   CannotEntitleCollectionsWithProductsOrVariants = 'CANNOT_ENTITLE_COLLECTIONS_WITH_PRODUCTS_OR_VARIANTS',
+  /** Can't use collections as a prequisite in combination with product variants or products. */
   CannotPrerequisiteCollectionWithProductOrVariants = 'CANNOT_PREREQUISITE_COLLECTION_WITH_PRODUCT_OR_VARIANTS',
+  /** The customer prerequisites exceeded the maximum number. */
   CustomerPrerequisitesExceededMax = 'CUSTOMER_PREREQUISITES_EXCEEDED_MAX',
+  /** Invalid customer prerequisites selection. */
   CustomerPrerequisitesInvalidSelection = 'CUSTOMER_PREREQUISITES_INVALID_SELECTION',
+  /** Customer prerequisites are missing. */
   CustomerPrerequisitesMissing = 'CUSTOMER_PREREQUISITES_MISSING',
-  /** Duplicate customer prerequisite id present. */
+  /** A duplicate customer prerequisite ID exists. */
   CustomerPrerequisiteDuplicate = 'CUSTOMER_PREREQUISITE_DUPLICATE',
+  /** A duplicate customer saved search exists. */
   CustomerSavedSearchDuplicate = 'CUSTOMER_SAVED_SEARCH_DUPLICATE',
+  /** The customer saved search exceeded the maximum number. */
   CustomerSavedSearchExceededMax = 'CUSTOMER_SAVED_SEARCH_EXCEEDED_MAX',
+  /** Invalid customer saved search. */
   CustomerSavedSearchInvalid = 'CUSTOMER_SAVED_SEARCH_INVALID',
-  /** Customer segment prerequisites exceeded max number. */
+  /** The customer segment prerequisites exceeded the maximum number. */
   CustomerSegmentExceededMax = 'CUSTOMER_SEGMENT_EXCEEDED_MAX',
-  /** Customer segment prerequisite invalid id. */
+  /** The customer segment prerequisite ID is invalid. */
   CustomerSegmentInvalid = 'CUSTOMER_SEGMENT_INVALID',
-  /** Duplicate customer segment prerequisite id present. */
+  /** A duplicate customer segment prerequisite ID exists. */
   CustomerSegmentPrerequisiteDuplicate = 'CUSTOMER_SEGMENT_PREREQUISITE_DUPLICATE',
+  /** A duplicate discount code exists. */
   DiscountCodeDuplicate = 'DISCOUNT_CODE_DUPLICATE',
   /** The discount end date must be after the start date. */
   EndDateBeforeStartDate = 'END_DATE_BEFORE_START_DATE',
   /** The input value should be equal to the value allowed. */
   EqualTo = 'EQUAL_TO',
-  /** Exceeding the maximum number is allowed. */
+  /** Can't exceed the maximum number. */
   ExceededMax = 'EXCEEDED_MAX',
   /** The input value should be greater than the minimum allowed value. */
   GreaterThan = 'GREATER_THAN',
@@ -19319,28 +19592,51 @@ export enum PriceRuleErrorCode {
   InternalError = 'INTERNAL_ERROR',
   /** The input value is invalid. */
   Invalid = 'INVALID',
+  /** The target type is invalid when defining a prerequisite shipping price range. */
   InvalidTargetTypePrerequisiteShippingPriceRange = 'INVALID_TARGET_TYPE_PREREQUISITE_SHIPPING_PRICE_RANGE',
+  /** Can't add the same collection twice. */
   ItemEntitlementsDuplicateCollection = 'ITEM_ENTITLEMENTS_DUPLICATE_COLLECTION',
+  /** Can't add the same product twice. */
   ItemEntitlementsDuplicateProduct = 'ITEM_ENTITLEMENTS_DUPLICATE_PRODUCT',
+  /** Can't add the same collection twice. */
   ItemEntitlementsDuplicateVariant = 'ITEM_ENTITLEMENTS_DUPLICATE_VARIANT',
+  /** Can't exceed the maximum number of collection entitlements. */
   ItemEntitlementsExceededMaxCollection = 'ITEM_ENTITLEMENTS_EXCEEDED_MAX_COLLECTION',
+  /** Can't exceed the maximum number of product entitlements. */
   ItemEntitlementsExceededMaxProduct = 'ITEM_ENTITLEMENTS_EXCEEDED_MAX_PRODUCT',
+  /** Can't exceed the maximum number of variant entitlements. */
   ItemEntitlementsExceededMaxVariant = 'ITEM_ENTITLEMENTS_EXCEEDED_MAX_VARIANT',
+  /** Invalid collection. */
   ItemEntitlementsInvalidCollection = 'ITEM_ENTITLEMENTS_INVALID_COLLECTION',
+  /** Invalid product. */
   ItemEntitlementsInvalidProduct = 'ITEM_ENTITLEMENTS_INVALID_PRODUCT',
+  /** Invalid combination of target type and selection. */
   ItemEntitlementsInvalidTargetTypeOrSelection = 'ITEM_ENTITLEMENTS_INVALID_TARGET_TYPE_OR_SELECTION',
+  /** Invalid variant. */
   ItemEntitlementsInvalidVariant = 'ITEM_ENTITLEMENTS_INVALID_VARIANT',
+  /** Entitlements are missing. */
   ItemEntitlementsMissing = 'ITEM_ENTITLEMENTS_MISSING',
+  /** Invalid entitlement type. */
   ItemEntitlementInvalidType = 'ITEM_ENTITLEMENT_INVALID_TYPE',
+  /** Can't add the same collection twice. */
   ItemPrerequisitesDuplicateCollection = 'ITEM_PREREQUISITES_DUPLICATE_COLLECTION',
+  /** Can't add the same product twice. */
   ItemPrerequisitesDuplicateProduct = 'ITEM_PREREQUISITES_DUPLICATE_PRODUCT',
+  /** Can't add the same variant twice. */
   ItemPrerequisitesDuplicateVariant = 'ITEM_PREREQUISITES_DUPLICATE_VARIANT',
+  /** Can't exceed the maximum number of item prerequisites. */
   ItemPrerequisitesExceededMax = 'ITEM_PREREQUISITES_EXCEEDED_MAX',
+  /** Invalid collection. */
   ItemPrerequisitesInvalidCollection = 'ITEM_PREREQUISITES_INVALID_COLLECTION',
+  /** Invalid product. */
   ItemPrerequisitesInvalidProduct = 'ITEM_PREREQUISITES_INVALID_PRODUCT',
+  /** Invalid type. */
   ItemPrerequisitesInvalidType = 'ITEM_PREREQUISITES_INVALID_TYPE',
+  /** Invalid variant. */
   ItemPrerequisitesInvalidVariant = 'ITEM_PREREQUISITES_INVALID_VARIANT',
+  /** Item prerequisites must have at least one item prerequisite if the prerequisite quantity ratio is defined. */
   ItemPrerequisitesMissing = 'ITEM_PREREQUISITES_MISSING',
+  /** Item prerequisites must be empty if the prerequisite quantity ratio isn't defined. */
   ItemPrerequisitesMustBeEmpty = 'ITEM_PREREQUISITES_MUST_BE_EMPTY',
   /** The input value should be less than the maximum value allowed. */
   LessThan = 'LESS_THAN',
@@ -19348,23 +19644,29 @@ export enum PriceRuleErrorCode {
   LessThanOrEqualTo = 'LESS_THAN_OR_EQUAL_TO',
   /** Missing a required argument. */
   MissingArgument = 'MISSING_ARGUMENT',
-  /** The recurring cycle limit must be 1 when a discount does not apply on subscription items. */
+  /** The recurring cycle limit must be 1 when a discount doesn't apply on subscription items. */
   MultipleRecurringCycleLimitForNonSubscriptionItems = 'MULTIPLE_RECURRING_CYCLE_LIMIT_FOR_NON_SUBSCRIPTION_ITEMS',
   /** Only one of the minimum subtotal or minimum quantity condition can be defined. */
   PrerequisiteSubtotalAndQuantityRangeBothPresent = 'PREREQUISITE_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT',
   /** The allocation limit must be a non-zero positive number. */
   PriceRuleAllocationLimitIsZero = 'PRICE_RULE_ALLOCATION_LIMIT_IS_ZERO',
-  /** The allocation limit can only be set on buy-one-get-one type discounts. */
+  /** The allocation limit can only be set on Buy x, get y (BXGY) discounts. */
   PriceRuleAllocationLimitOnNonBogo = 'PRICE_RULE_ALLOCATION_LIMIT_ON_NON_BOGO',
   /** The number of discount codes in the shop has reached its limit. */
   PriceRuleExceededMaxDiscountCode = 'PRICE_RULE_EXCEEDED_MAX_DISCOUNT_CODE',
   /** The percentage value must be between 0 and -100. */
   PriceRulePercentageValueOutsideRange = 'PRICE_RULE_PERCENTAGE_VALUE_OUTSIDE_RANGE',
+  /** A duplicate country code exists. */
   ShippingEntitlementsDuplicateCountry = 'SHIPPING_ENTITLEMENTS_DUPLICATE_COUNTRY',
+  /** Can't exceed the maximum number of entitlements. */
   ShippingEntitlementsExceededMax = 'SHIPPING_ENTITLEMENTS_EXCEEDED_MAX',
+  /** The country is unknown. */
   ShippingEntitlementsInvalidCountry = 'SHIPPING_ENTITLEMENTS_INVALID_COUNTRY',
+  /** Invalid target type or selection. */
   ShippingEntitlementsInvalidTargetTypeOrSelection = 'SHIPPING_ENTITLEMENTS_INVALID_TARGET_TYPE_OR_SELECTION',
+  /** Missing entitlements. */
   ShippingEntitlementsMissing = 'SHIPPING_ENTITLEMENTS_MISSING',
+  /** Unsupported destination type. */
   ShippingEntitlementsUnsupportedDestinationType = 'SHIPPING_ENTITLEMENTS_UNSUPPORTED_DESTINATION_TYPE',
   /** The number of discounts in the shop has reached its limit. */
   ShopExceededMaxPriceRules = 'SHOP_EXCEEDED_MAX_PRICE_RULES',
@@ -19376,20 +19678,21 @@ export enum PriceRuleErrorCode {
   TooManyArguments = 'TOO_MANY_ARGUMENTS',
   /** The input value is too short. */
   TooShort = 'TOO_SHORT',
+  /** The variant is already entitled through a product. */
   VariantAlreadyEntitledThroughProduct = 'VARIANT_ALREADY_ENTITLED_THROUGH_PRODUCT',
 }
 
-/** A list of features used by the price rule. */
+/** The list of features that can be supported by a price rule. */
 export enum PriceRuleFeature {
   /** The price rule supports bulk discounts. */
   Bulk = 'BULK',
-  /** The price rule supports quantity BXGY discounts. */
+  /** The price rule supports Buy X, Get Y (BXGY) discounts. */
   BuyOneGetOne = 'BUY_ONE_GET_ONE',
-  /** The price rule supports BXGY discounts using custom allocation limit. */
+  /** The price rule supports Buy X, Get Y (BXGY) discounts that specify a custom allocation limit. */
   BuyOneGetOneWithAllocationLimit = 'BUY_ONE_GET_ONE_WITH_ALLOCATION_LIMIT',
-  /** The price rule supports quantity discounts. */
+  /** The price rule supports discounts that require a quantity. */
   QuantityDiscounts = 'QUANTITY_DISCOUNTS',
-  /** The price rule supports specific customers. */
+  /** The price rule targets specific customers. */
   SpecificCustomers = 'SPECIFIC_CUSTOMERS',
 }
 
@@ -19576,17 +19879,17 @@ export type PriceRulePercentValue = {
 /** Quantity of prerequisite items required for the price rule to be applicable, compared to quantity of entitled items. */
 export type PriceRulePrerequisiteToEntitlementQuantityRatio = {
   __typename?: 'PriceRulePrerequisiteToEntitlementQuantityRatio'
-  /** The quantity of entitlements in the ratio. */
+  /** The quantity of entitled items in the ratio. */
   entitlementQuantity: Scalars['Int']
-  /** The quantity of prerequisites in the ratio. */
+  /** The quantity of prerequisite items in the ratio. */
   prerequisiteQuantity: Scalars['Int']
 }
 
 /** Specifies the quantity of prerequisite items required for the price rule to be applicable, compared to quantity of entitled items. */
 export type PriceRulePrerequisiteToEntitlementQuantityRatioInput = {
-  /** The quantity of entitlements in the ratio. */
+  /** The quantity of entitled items in the ratio. */
   entitlementQuantity?: InputMaybe<Scalars['Int']>
-  /** The quantity of prerequisites in the ratio. */
+  /** The quantity of prerequisite items in the ratio. */
   prerequisiteQuantity?: InputMaybe<Scalars['Int']>
 }
 
@@ -19631,10 +19934,13 @@ export type PriceRuleShareableUrl = {
   url: Scalars['URL']
 }
 
-/** Page type where shareable URL lands. */
+/** The type of page where a shareable price rule URL lands. */
 export enum PriceRuleShareableUrlTargetType {
+  /** The URL lands on a collection page. */
   Collection = 'COLLECTION',
+  /** The URL lands on a home page. */
   Home = 'HOME',
+  /** The URL lands on a product page. */
   Product = 'PRODUCT',
 }
 
@@ -19683,8 +19989,11 @@ export enum PriceRuleSortKeys {
 
 /** The status of the price rule. */
 export enum PriceRuleStatus {
+  /** The price rule is active. */
   Active = 'ACTIVE',
+  /** The price rule is expired. */
   Expired = 'EXPIRED',
+  /** The price rule is scheduled. */
   Scheduled = 'SCHEDULED',
 }
 
@@ -19696,17 +20005,17 @@ export enum PriceRuleTarget {
   ShippingLine = 'SHIPPING_LINE',
 }
 
-/** A list of features used by the price rule. */
+/** The list of features that can be supported by a price rule. */
 export enum PriceRuleTrait {
   /** The price rule supports bulk discounts. */
   Bulk = 'BULK',
-  /** The price rule supports quantity BXGY discounts. */
+  /** The price rule supports Buy X, Get Y (BXGY) discounts. */
   BuyOneGetOne = 'BUY_ONE_GET_ONE',
-  /** The price rule supports BXGY discounts using custom allocation limit. */
+  /** The price rule supports Buy X, Get Y (BXGY) discounts that specify a custom allocation limit. */
   BuyOneGetOneWithAllocationLimit = 'BUY_ONE_GET_ONE_WITH_ALLOCATION_LIMIT',
-  /** The price rule supports quantity discounts. */
+  /** The price rule supports discounts that require a quantity. */
   QuantityDiscounts = 'QUANTITY_DISCOUNTS',
-  /** The price rule supports specific customers. */
+  /** The price rule targets specific customers. */
   SpecificCustomers = 'SPECIFIC_CUSTOMERS',
 }
 
@@ -19721,7 +20030,7 @@ export type PriceRuleUpdatePayload = {
   priceRuleUserErrors: Array<PriceRuleUserError>
   /**
    * The list of errors that occurred from executing the mutation.
-   * @deprecated Use `priceRuleUserErrors` instead
+   * @deprecated Use `priceRuleUserErrors` instead.
    */
   userErrors: Array<UserError>
 }
@@ -19765,10 +20074,17 @@ export type PriceRuleValueInput = {
   percentageValue?: InputMaybe<Scalars['Float']>
 }
 
-/** The value of the percentage pricing object. */
+/**
+ * One type of value given to a customer when a discount is applied to an order.
+ * The application of a discount with this value gives the customer the specified percentage off a specified item.
+ *
+ */
 export type PricingPercentageValue = {
   __typename?: 'PricingPercentageValue'
-  /** The percentage value of the object. */
+  /**
+   * The percentage value of the object. This is a number between -100 (free) and 0 (no discount).
+   *
+   */
   percentage: Scalars['Float']
 }
 
@@ -19907,7 +20223,7 @@ export type Product = HasMetafieldDefinitions &
     availablePublicationCount: Scalars['Int']
     /**
      * The description of the product, complete with HTML formatting.
-     * @deprecated Use `descriptionHtml` instead
+     * @deprecated Use `descriptionHtml` instead.
      */
     bodyHtml?: Maybe<Scalars['String']>
     /** A list of the collections that include the product. */
@@ -19919,7 +20235,10 @@ export type Product = HasMetafieldDefinitions &
      *
      */
     createdAt: Scalars['DateTime']
-    /** The custom product type specified by the merchant. */
+    /**
+     * The custom product type specified by the merchant.
+     * @deprecated Deprecated in API version 2022-10. Use `productType` instead.
+     */
     customProductType?: Maybe<Scalars['String']>
     /**
      * A default cursor that returns the single next record, sorted ascending by ID.
@@ -19934,7 +20253,7 @@ export type Product = HasMetafieldDefinitions &
      * Stripped description of the product, single line with HTML tags removed.
      * Truncated to 60 characters.
      *
-     * @deprecated Use `description` instead
+     * @deprecated Use `description` instead.
      */
     descriptionPlainSummary: Scalars['String']
     /** The featured image for the product. */
@@ -19994,7 +20313,7 @@ export type Product = HasMetafieldDefinitions &
     privateMetafields: PrivateMetafieldConnection
     /**
      * A list of the channels where the product is published.
-     * @deprecated Use `resourcePublications` instead
+     * @deprecated Use `resourcePublications` instead.
      */
     productPublications: ProductPublicationConnection
     /** The product type specified by the merchant. */
@@ -20003,7 +20322,7 @@ export type Product = HasMetafieldDefinitions &
     publicationCount: Scalars['Int']
     /**
      * A list of the channels where the product is published.
-     * @deprecated Use `resourcePublications` instead
+     * @deprecated Use `resourcePublications` instead.
      */
     publications: ProductPublicationConnection
     /**
@@ -20013,12 +20332,12 @@ export type Product = HasMetafieldDefinitions &
     publishedAt?: Maybe<Scalars['DateTime']>
     /**
      * Check to see whether the resource is published to a given channel.
-     * @deprecated Use `publishedOnPublication` instead
+     * @deprecated Use `publishedOnPublication` instead.
      */
     publishedOnChannel: Scalars['Boolean']
     /**
      * Check to see whether the resource is published to the calling app's channel.
-     * @deprecated Use `publishedOnCurrentPublication` instead
+     * @deprecated Use `publishedOnCurrentPublication` instead.
      */
     publishedOnCurrentChannel: Scalars['Boolean']
     /** Check to see whether the resource is published to the calling app's publication. */
@@ -20039,7 +20358,10 @@ export type Product = HasMetafieldDefinitions &
     sellingPlanGroups: SellingPlanGroupConnection
     /** SEO information of the product. */
     seo: Seo
-    /** The standardized product type in the Shopify product taxonomy. */
+    /**
+     * The standardized product type in the Shopify product taxonomy.
+     * @deprecated Deprecated in API version 2022-10. Use `productCategory` instead.
+     */
     standardizedProductType?: Maybe<StandardizedProductType>
     /** The product status. This controls visibility across all channels. */
     status: ProductStatus
@@ -20048,7 +20370,7 @@ export type Product = HasMetafieldDefinitions &
      *
      * As of the `2022-04` version release, the Storefront GraphQL API will no longer return Base64 encoded IDs to match the behavior of the Admin GraphQL API. Therefore, you can safely use the `id` field's value instead.
      *
-     * @deprecated Use `id` instead
+     * @deprecated Use `id` instead.
      */
     storefrontId: Scalars['StorefrontID']
     /**
@@ -20073,7 +20395,7 @@ export type Product = HasMetafieldDefinitions &
     translations: Array<PublishedTranslation>
     /**
      * The list of channels that the resource is not published to.
-     * @deprecated Use `unpublishedPublications` instead
+     * @deprecated Use `unpublishedPublications` instead.
      */
     unpublishedChannels: ChannelConnection
     /** The list of publications that the resource is not published to. */
@@ -20292,7 +20614,7 @@ export type ProductVariantsArgs = {
 export type ProductAppendImagesInput = {
   /** The ID of the product. */
   id: Scalars['ID']
-  /** The images to be appended to the product. */
+  /** A list of images to be appended to the product. */
   images: Array<ImageInput>
 }
 
@@ -20379,7 +20701,11 @@ export type ProductConnection = {
   pageInfo: PageInfo
 }
 
-/** The pricing of a particular product in a given context. */
+/**
+ * The price of a product in a specific country.
+ * Prices vary between countries.
+ *
+ */
 export type ProductContextualPricing = {
   __typename?: 'ProductContextualPricing'
   /** The pricing of the variant with the highest price in the given context. */
@@ -20401,7 +20727,7 @@ export type ProductCreateMediaPayload = {
   product?: Maybe<Product>
   /**
    * The list of errors that occurred from executing the mutation.
-   * @deprecated Use `mediaUserErrors` instead
+   * @deprecated Use `mediaUserErrors` instead.
    */
   userErrors: Array<UserError>
 }
@@ -20420,9 +20746,9 @@ export type ProductCreatePayload = {
 /** Return type for `productDeleteImages` mutation. */
 export type ProductDeleteImagesPayload = {
   __typename?: 'ProductDeleteImagesPayload'
-  /** This is an array of IDs of images to delete. */
+  /** The array of image IDs to delete. */
   deletedImageIds: Array<Scalars['ID']>
-  /** This is the product object. */
+  /** The product object. */
   product?: Maybe<Product>
   /** The list of errors that occurred from executing the mutation. */
   userErrors: Array<UserError>
@@ -20443,11 +20769,11 @@ export type ProductDeleteMediaPayload = {
   deletedProductImageIds?: Maybe<Array<Scalars['ID']>>
   /** The list of errors that occurred from executing the mutation. */
   mediaUserErrors: Array<MediaUserError>
-  /** The product which media was deleted from. */
+  /** The product associated with the deleted media. */
   product?: Maybe<Product>
   /**
    * The list of errors that occurred from executing the mutation.
-   * @deprecated Use `mediaUserErrors` instead
+   * @deprecated Use `mediaUserErrors` instead.
    */
   userErrors: Array<UserError>
 }
@@ -20466,7 +20792,7 @@ export type ProductDeletePayload = {
 /** Return type for `productDuplicate` mutation. */
 export type ProductDuplicatePayload = {
   __typename?: 'ProductDuplicatePayload'
-  /** The asynchronous job duplicating the product images. */
+  /** The asynchronous job that duplicates the product images. */
   imageJob?: Maybe<Job>
   /** The duplicated product. */
   newProduct?: Maybe<Product>
@@ -20507,7 +20833,7 @@ export enum ProductImageSortKeys {
 /** Return type for `productImageUpdate` mutation. */
 export type ProductImageUpdatePayload = {
   __typename?: 'ProductImageUpdatePayload'
-  /** Image updated. */
+  /** The image that has been updated. */
   image?: Maybe<Image>
   /** The list of errors that occurred from executing the mutation. */
   userErrors: Array<UserError>
@@ -20527,7 +20853,7 @@ export type ProductInput = {
   bodyHtml?: InputMaybe<Scalars['String']>
   /** The IDs of the collections that this product will be added to. */
   collectionsToJoin?: InputMaybe<Array<Scalars['ID']>>
-  /** The IDs of collections that will no longer include the product. */
+  /** The IDs of collections that will no longer include the existing product. */
   collectionsToLeave?: InputMaybe<Array<Scalars['ID']>>
   /** The custom product type specified by the merchant. */
   customProductType?: InputMaybe<Scalars['String']>
@@ -20538,7 +20864,8 @@ export type ProductInput = {
   /** The theme template used when viewing the gift card in a store. */
   giftCardTemplateSuffix?: InputMaybe<Scalars['String']>
   /**
-   * A unique human-friendly string for the product. Automatically generated from the product's title.
+   * A unique, human-friendly string for the product.
+   * Automatically generated from the product's title unless otherwise specified.
    *
    */
   handle?: InputMaybe<Scalars['String']>
@@ -20580,7 +20907,7 @@ export type ProductInput = {
   standardizedProductType?: InputMaybe<StandardizedProductTypeInput>
   /** The status of the product. */
   status?: InputMaybe<ProductStatus>
-  /** A comma separated list tags that have been added to the product. */
+  /** A comma separated list of tags that have been added to the product. */
   tags?: InputMaybe<Array<Scalars['String']>>
   /** The theme template used when viewing the product in a store. */
   templateSuffix?: InputMaybe<Scalars['String']>
@@ -20625,9 +20952,9 @@ export enum ProductMediaSortKeys {
 }
 
 /**
- * Product property names like "Size", "Color", and "Material".
+ * The product property names. For example, "Size", "Color", and "Material".
  * Variants are selected based on permutations of these options.
- * 255 characters limit each.
+ * The limit for each product property name is 255 characters.
  *
  */
 export type ProductOption = HasPublishedTranslations &
@@ -20646,9 +20973,9 @@ export type ProductOption = HasPublishedTranslations &
   }
 
 /**
- * Product property names like "Size", "Color", and "Material".
+ * The product property names. For example, "Size", "Color", and "Material".
  * Variants are selected based on permutations of these options.
- * 255 characters limit each.
+ * The limit for each product property name is 255 characters.
  *
  */
 export type ProductOptionTranslationsArgs = {
@@ -20751,7 +21078,7 @@ export type ProductPublishPayload = {
 /** Return type for `productReorderImages` mutation. */
 export type ProductReorderImagesPayload = {
   __typename?: 'ProductReorderImagesPayload'
-  /** The asynchronous job reordering the images. */
+  /** The asynchronous job which reorders the images. */
   job?: Maybe<Job>
   /** The list of errors that occurred from executing the mutation. */
   userErrors: Array<UserError>
@@ -20760,13 +21087,13 @@ export type ProductReorderImagesPayload = {
 /** Return type for `productReorderMedia` mutation. */
 export type ProductReorderMediaPayload = {
   __typename?: 'ProductReorderMediaPayload'
-  /** The asynchronous job reordering the media. */
+  /** The asynchronous job which reorders the media. */
   job?: Maybe<Job>
   /** The list of errors that occurred from executing the mutation. */
   mediaUserErrors: Array<MediaUserError>
   /**
    * The list of errors that occurred from executing the mutation.
-   * @deprecated Use `mediaUserErrors` instead
+   * @deprecated Use `mediaUserErrors` instead.
    */
   userErrors: Array<UserError>
 }
@@ -20870,7 +21197,7 @@ export enum ProductSortKeys {
 
 /** The possible product statuses. */
 export enum ProductStatus {
-  /** The product is ready to sell and is available to customers on the online store, sales channels, and apps. By default, existing products are set to active. */
+  /** The product is ready to sell and can be published to sales channels and apps. Products with an active status aren't automatically published to sales channels, such as the online store, or apps. By default, existing products are set to active. */
   Active = 'ACTIVE',
   /** The product is no longer being sold and isn't available to customers on sales channels and apps. */
   Archived = 'ARCHIVED',
@@ -20915,15 +21242,15 @@ export type ProductUnpublishPayload = {
 /** Return type for `productUpdateMedia` mutation. */
 export type ProductUpdateMediaPayload = {
   __typename?: 'ProductUpdateMediaPayload'
-  /** The updated media. */
+  /** The updated media object. */
   media?: Maybe<Array<Media>>
   /** The list of errors that occurred from executing the mutation. */
   mediaUserErrors: Array<MediaUserError>
-  /** The product which media was updated on. */
+  /** The product on which media was updated. */
   product?: Maybe<Product>
   /**
    * The list of errors that occurred from executing the mutation.
-   * @deprecated Use `mediaUserErrors` instead
+   * @deprecated Use `mediaUserErrors` instead.
    */
   userErrors: Array<UserError>
 }
@@ -20931,7 +21258,7 @@ export type ProductUpdateMediaPayload = {
 /** Return type for `productUpdate` mutation. */
 export type ProductUpdatePayload = {
   __typename?: 'ProductUpdatePayload'
-  /** The updated product. */
+  /** The updated product object. */
   product?: Maybe<Product>
   /** The list of errors that occurred from executing the mutation. */
   userErrors: Array<UserError>
@@ -20964,7 +21291,10 @@ export type ProductVariant = HasMetafieldDefinitions &
     deliveryProfile?: Maybe<DeliveryProfile>
     /** Display name of the variant, based on product's title + variant's title. */
     displayName: Scalars['String']
-    /** The fulfillment service associated with the product. */
+    /**
+     * The fulfillment service associated with the product.
+     * @deprecated Multi-managed inventory introduced a [breaking change](https://shopify.dev/api/release-notes/2022-07#shipping-and-fulfillment) to this field, therefore this field will no longer be supported. Fulfillment services will all be opted into SKU sharing in 2023-04. To see all associated fulfillment services use [InventoryLevelConnection](https://shopify.dev/api/admin-graphql/latest/connections/InventoryLevelConnection#field-location-inventorylevels) and [InventoryLevel#location](https://shopify.dev/api/admin-graphql/latest/objects/InventoryLevel#field-inventorylevel-location).
+     */
     fulfillmentService?: Maybe<FulfillmentService>
     /** Whether changes to the fulfillment service for the product variant are allowed. */
     fulfillmentServiceEditable: EditableProperty
@@ -21003,7 +21333,10 @@ export type ProductVariant = HasMetafieldDefinitions &
      *
      */
     position: Scalars['Int']
-    /** List of prices and compare-at prices in the presentment currencies for this shop. */
+    /**
+     * List of prices and compare-at prices in the presentment currencies for this shop.
+     * @deprecated Use `contextualPricing` instead.
+     */
     presentmentPrices: ProductVariantPricePairConnection
     /** The price of the product variant in the default shop currency. */
     price: Scalars['Money']
@@ -21042,7 +21375,7 @@ export type ProductVariant = HasMetafieldDefinitions &
      *
      * As of the `2022-04` version release, the Storefront GraphQL API will no longer return Base64 encoded IDs to match the behavior of the Admin GraphQL API. Therefore, you can safely use the `id` field's value instead.
      *
-     * @deprecated Use `id` instead
+     * @deprecated Use `id` instead.
      */
     storefrontId: Scalars['StorefrontID']
     /** The tax code for the product variant. */
@@ -21191,7 +21524,11 @@ export type ProductVariantConnection = {
   pageInfo: PageInfo
 }
 
-/** The pricing of a particular product variant in a given context. */
+/**
+ * The price of a product variant in a specific country.
+ * Prices vary between countries.
+ *
+ */
 export type ProductVariantContextualPricing = {
   __typename?: 'ProductVariantContextualPricing'
   /** The final compare-at price after all adjustments are applied. */
@@ -21214,9 +21551,9 @@ export type ProductVariantCreatePayload = {
 /** Return type for `productVariantDelete` mutation. */
 export type ProductVariantDeletePayload = {
   __typename?: 'ProductVariantDeletePayload'
-  /** ID of the deleted product variant. */
+  /** The ID of the deleted product variant. */
   deletedProductVariantId?: Maybe<Scalars['ID']>
-  /** Product of the deleted product variant. */
+  /** The product associated with the deleted product variant. */
   product?: Maybe<Product>
   /** The list of errors that occurred from executing the mutation. */
   userErrors: Array<UserError>
@@ -21259,9 +21596,9 @@ export type ProductVariantInput = {
   barcode?: InputMaybe<Scalars['String']>
   /** The compare-at price of the variant. */
   compareAtPrice?: InputMaybe<Scalars['Money']>
-  /** The ID of the fulfillment service associated with the variant. */
+  /** The ID of the fulfillment service associated with the variant. This argument is deprecated: Multi-managed inventory introduced a [breaking change](https://shopify.dev/api/release-notes/2022-07#shipping-and-fulfillment) to this field, therefore this field will no longer be supported. Fulfillment services will all be opted into SKU sharing in 2023-04. */
   fulfillmentServiceId?: InputMaybe<Scalars['ID']>
-  /** The Harmonized System Code (or HS Tariff Code) for the variant. */
+  /** The Harmonized System code (or HS Tariff code) for the variant. */
   harmonizedSystemCode?: InputMaybe<Scalars['String']>
   /** Specifies the product variant to update or create a new variant if absent. */
   id?: InputMaybe<Scalars['ID']>
@@ -21272,7 +21609,7 @@ export type ProductVariantInput = {
    *
    */
   imageSrc?: InputMaybe<Scalars['String']>
-  /** Inventory Item associated with the variant, used for unit cost. */
+  /** The inventory item associated with the variant. Used for unit cost. */
   inventoryItem?: InputMaybe<InventoryItemInput>
   /**
    * The fulfillment service that tracks the number of items in stock for the product variant. If you track the inventory yourself using the admin, then set the value to `shopify`. Valid values: `shopify` or the handle of a fulfillment service that has inventory management enabled.
@@ -21281,7 +21618,7 @@ export type ProductVariantInput = {
   inventoryManagement?: InputMaybe<ProductVariantInventoryManagement>
   /** Whether customers are allowed to place an order for the product variant when it's out of stock. */
   inventoryPolicy?: InputMaybe<ProductVariantInventoryPolicy>
-  /** Create only field. The inventory quantities at each location where the variant is stocked. */
+  /** The inventory quantities at each location where the variant is stocked. Used as input only to the `productVariantCreate` mutation. */
   inventoryQuantities?: InputMaybe<Array<InventoryLevelInput>>
   /** The URL of the media to associate with the variant. This field can only be used in mutations that create media images and must match one of the URLs being created on the product. This field only accepts one value. */
   mediaSrc?: InputMaybe<Array<Scalars['String']>>
@@ -21296,9 +21633,9 @@ export type ProductVariantInput = {
   position?: InputMaybe<Scalars['Int']>
   /** The price of the variant. */
   price?: InputMaybe<Scalars['Money']>
-  /** The private metafields to associated with this product. */
+  /** The private metafields associated with the product. */
   privateMetafields?: InputMaybe<Array<PrivateMetafieldInput>>
-  /** Create only required field. Specifies the product on which to create the variant. */
+  /** The product to create the variant for. Used as input only to the `productVariantCreate` mutation. */
   productId?: InputMaybe<Scalars['ID']>
   /** Whether the variant requires shipping. */
   requiresShipping?: InputMaybe<Scalars['Boolean']>
@@ -21308,7 +21645,7 @@ export type ProductVariantInput = {
   taxCode?: InputMaybe<Scalars['String']>
   /** Whether the variant is taxable. */
   taxable?: InputMaybe<Scalars['Boolean']>
-  /** This argument is deprecated: Variant title is not a writable field; it is generated from the selected variant options. */
+  /** This argument is deprecated: Variant title is not a writable field. This field is generated from the selected variant options. */
   title?: InputMaybe<Scalars['String']>
   /** The weight of the variant. */
   weight?: InputMaybe<Scalars['Float']>
@@ -21534,9 +21871,9 @@ export type ProductVariantsBulkInput = {
   barcode?: InputMaybe<Scalars['String']>
   /** The compare-at price of the variant. */
   compareAtPrice?: InputMaybe<Scalars['Money']>
-  /** The ID of the fulfillment service associated with the variant. */
+  /** The ID of the fulfillment service associated with the variant. This argument is deprecated: This field is no longer going to be supported. Fulfillment services will all be opted into SKU sharing in 2023-04. */
   fulfillmentServiceId?: InputMaybe<Scalars['ID']>
-  /** The Harmonized System Code (or HS Tariff Code) for the variant. */
+  /** The Harmonized System code (or HS Tariff code) for the variant. */
   harmonizedSystemCode?: InputMaybe<Scalars['String']>
   /** Specifies the product variant to update or delete. */
   id?: InputMaybe<Scalars['ID']>
@@ -21552,8 +21889,8 @@ export type ProductVariantsBulkInput = {
   /** Whether customers are allowed to place an order for the variant when it's out of stock. */
   inventoryPolicy?: InputMaybe<ProductVariantInventoryPolicy>
   /**
-   * Create only field. The inventory quantities at each location where the variant is stocked. The number of elements
-   * in the array of inventory quantities cannot exceed 10 and the amount specified for the plan.
+   * The inventory quantities at each location where the variant is stocked. The number of elements
+   * in the array of inventory quantities cannot exceed 10 and the amount specified for the plan. Used as input only to the `productVariantCreate` mutation.
    *
    */
   inventoryQuantities?: InputMaybe<Array<InventoryLevelInput>>
@@ -21565,7 +21902,7 @@ export type ProductVariantsBulkInput = {
   options?: InputMaybe<Array<Scalars['String']>>
   /** The price of the variant. */
   price?: InputMaybe<Scalars['Money']>
-  /** The private metafields to associated with this product. */
+  /** The private metafields associated with the product. */
   privateMetafields?: InputMaybe<Array<PrivateMetafieldInput>>
   /** Whether the variant requires shipping. */
   requiresShipping?: InputMaybe<Scalars['Boolean']>
@@ -21603,11 +21940,11 @@ export type ProductVariantsBulkReorderUserError = DisplayableError & {
 
 /** Possible error codes that can be returned by `ProductVariantsBulkReorderUserError`. */
 export enum ProductVariantsBulkReorderUserErrorCode {
-  /** Product Variant ids must be uniqe. */
+  /** Product variant IDs must be unique. */
   DuplicatedVariantId = 'DUPLICATED_VARIANT_ID',
-  /** Product Variant position can not be zero or negative number. */
+  /** Product variant position cannot be zero or negative number. */
   InvalidPosition = 'INVALID_POSITION',
-  /** Product Variant does not exist. */
+  /** Product variant does not exist. */
   MissingVariant = 'MISSING_VARIANT',
   /** Product does not exist. */
   ProductDoesNotExist = 'PRODUCT_DOES_NOT_EXIST',
@@ -21643,7 +21980,7 @@ export enum ProductVariantsBulkUpdateUserErrorCode {
   NeedToAddOptionValues = 'NEED_TO_ADD_OPTION_VALUES',
   /** Price cannot take a negative value. */
   NegativePriceValue = 'NEGATIVE_PRICE_VALUE',
-  /** Inventory_quanties cannot be provided during update. */
+  /** Inventory quantities cannot be provided during update. */
   NoInventoryQuantitesDuringUpdate = 'NO_INVENTORY_QUANTITES_DURING_UPDATE',
   /** Inventory quantities cannot be updated with variants API. */
   NoInventoryQuantitiesOnVariantsUpdate = 'NO_INVENTORY_QUANTITIES_ON_VARIANTS_UPDATE',
@@ -21778,7 +22115,7 @@ export type Publication = Node & {
   productPublicationsV3: ResourcePublicationConnection
   /** The list of products published to the publication. */
   products: ProductConnection
-  /** Whether or not this publication supports future publishing. */
+  /** Whether the publication supports future publishing. */
   supportsFuturePublishing: Scalars['Boolean']
 }
 
@@ -21871,8 +22208,7 @@ export type PublicationInput = {
   /** ID of the publication. */
   publicationId?: InputMaybe<Scalars['ID']>
   /**
-   * The date and time that the resource was published. Setting this to a date in the future will schedule
-   * the resource to be published. Only online store channels support future publishing.
+   * The date and time that the resource was published. Setting this to a date in the future will schedule the resource to be published. Only online store channels support future publishing. This field has no effect if you include it in the `publishableUnpublish` mutation.
    *
    */
   publishDate?: InputMaybe<Scalars['DateTime']>
@@ -21890,12 +22226,12 @@ export type Publishable = {
   publicationCount: Scalars['Int']
   /**
    * Check to see whether the resource is published to a given channel.
-   * @deprecated Use `publishedOnPublication` instead
+   * @deprecated Use `publishedOnPublication` instead.
    */
   publishedOnChannel: Scalars['Boolean']
   /**
    * Check to see whether the resource is published to the calling app's channel.
-   * @deprecated Use `publishedOnCurrentPublication` instead
+   * @deprecated Use `publishedOnCurrentPublication` instead.
    */
   publishedOnCurrentChannel: Scalars['Boolean']
   /** Check to see whether the resource is published to the calling app's publication. */
@@ -21908,7 +22244,7 @@ export type Publishable = {
   resourcePublicationsV2: ResourcePublicationV2Connection
   /**
    * The list of channels that the resource is not published to.
-   * @deprecated Use `unpublishedPublications` instead
+   * @deprecated Use `unpublishedPublications` instead.
    */
   unpublishedChannels: ChannelConnection
   /** The list of publications that the resource is not published to. */
@@ -22074,7 +22410,7 @@ export type QueryRoot = {
   appInstallations: AppInstallationConnection
   /**
    * Returns an automatic discount resource by ID.
-   * @deprecated Use `automaticDiscountNode` instead
+   * @deprecated Use `automaticDiscountNode` instead.
    */
   automaticDiscount?: Maybe<DiscountAutomatic>
   /** Returns an automatic discount resource by ID. */
@@ -22085,28 +22421,28 @@ export type QueryRoot = {
   automaticDiscountSavedSearches: SavedSearchConnection
   /**
    * List of automatic discounts.
-   * @deprecated Use `automaticDiscountNodes` instead
+   * @deprecated Use `automaticDiscountNodes` instead.
    */
   automaticDiscounts: DiscountAutomaticConnection
   /** Returns a list of activated carrier services and associated shop locations that support them. */
   availableCarrierServices: Array<DeliveryCarrierServiceAndLocations>
-  /** Returns a list of available locales. */
+  /** A list of available locales. */
   availableLocales: Array<Locale>
   /** Returns a `DeliveryCarrierService` object by ID. */
   carrierService?: Maybe<DeliveryCarrierService>
   /**
    * Lookup a channel by ID.
-   * @deprecated Use `publication` instead
+   * @deprecated Use `publication` instead.
    */
   channel?: Maybe<Channel>
   /**
    * List of the active sales channels.
-   * @deprecated Use `publications` instead
+   * @deprecated Use `publications` instead.
    */
   channels: ChannelConnection
   /** Returns a code discount resource by ID. */
   codeDiscountNode?: Maybe<DiscountCodeNode>
-  /** Returns a code discount identified by its code. */
+  /** Returns a code discount identified by its discount code. */
   codeDiscountNodeByCode?: Maybe<DiscountCodeNode>
   /**
    * List of code discounts. Special fields for query params:
@@ -22118,13 +22454,16 @@ export type QueryRoot = {
   codeDiscountSavedSearches: SavedSearchConnection
   /** Returns a Collection resource by ID. */
   collection?: Maybe<Collection>
-  /** Return a collection by its handle. */
+  /**
+   * Return a collection by its handle.
+   *
+   */
   collectionByHandle?: Maybe<Collection>
-  /** A list of rule conditions to define how collections with rules can be created. */
+  /** Lists all rules that can be used to create smart collections. */
   collectionRulesConditions: Array<CollectionRuleConditions>
-  /** List of the shop's collection saved searches. */
+  /** Returns a list of the shop's collection saved searches. */
   collectionSavedSearches: SavedSearchConnection
-  /** List of collections. */
+  /** Returns a list of collections. */
   collections: CollectionConnection
   /** Return the AppInstallation for the currently authenticated App. */
   currentAppInstallation: AppInstallation
@@ -22164,7 +22503,7 @@ export type QueryRoot = {
   draftOrders: DraftOrderConnection
   /** A list of the shop's file saved searches. */
   fileSavedSearches: SavedSearchConnection
-  /** A list of files. */
+  /** Returns a paginated list of files that have been uploaded to Shopify. */
   files: FileConnection
   /** Returns a Fulfillment resource by ID. */
   fulfillment?: Maybe<Fulfillment>
@@ -22195,7 +22534,7 @@ export type QueryRoot = {
   locations: LocationConnection
   /**
    * Returns a list of all origin locations available for a delivery profile.
-   * @deprecated Use `locationsAvailableForDeliveryProfilesConnection` instead
+   * @deprecated Use `locationsAvailableForDeliveryProfilesConnection` instead.
    */
   locationsAvailableForDeliveryProfiles?: Maybe<Array<Location>>
   /** Returns a list of all origin locations available for a delivery profile. */
@@ -22265,11 +22604,11 @@ export type QueryRoot = {
   priceList?: Maybe<PriceList>
   /** All price lists for a shop. */
   priceLists: PriceListConnection
-  /** Lookup a price rule by ID. */
+  /** Returns a price rule resource by ID. */
   priceRule?: Maybe<PriceRule>
   /** List of the shop's price rule saved searches. */
   priceRuleSavedSearches: SavedSearchConnection
-  /** List of price rules. */
+  /** Returns a list of price rule resources. */
   priceRules: PriceRuleConnection
   /** The primary market of the shop. */
   primaryMarket: Market
@@ -22286,11 +22625,17 @@ export type QueryRoot = {
   privateMetafields: PrivateMetafieldConnection
   /** Returns a Product resource by ID. */
   product?: Maybe<Product>
-  /** Return a product by its handle. */
+  /**
+   * Return a product by its handle.
+   *
+   */
   productByHandle?: Maybe<Product>
-  /** The product resource feedback for the currently authenticated app. */
+  /**
+   * Returns the product resource feedback for the currently authenticated app.
+   *
+   */
   productResourceFeedback?: Maybe<ProductResourceFeedback>
-  /** List of the shop's product saved searches. */
+  /** Returns a list of the shop's product saved searches. */
   productSavedSearches: SavedSearchConnection
   /** Returns a ProductVariant resource by ID. */
   productVariant?: Maybe<ProductVariant>
@@ -22300,9 +22645,12 @@ export type QueryRoot = {
   products: ProductConnection
   /** The list of publicly-accessible Admin API versions, including supported versions, the release candidate, and unstable versions. */
   publicApiVersions: Array<ApiVersion>
-  /** Lookup a publication by ID. */
+  /**
+   * Lookup a publication by ID.
+   *
+   */
   publication?: Maybe<Publication>
-  /** List of the active publications. */
+  /** List of publications. */
   publications: PublicationConnection
   /** Returns a Refund resource by ID. */
   refund?: Maybe<Refund>
@@ -22334,7 +22682,7 @@ export type QueryRoot = {
    *
    */
   shop: Shop
-  /** List of locales available on a shop. */
+  /** A list of locales available on a shop. */
   shopLocales: Array<ShopLocale>
   /** Shopify Payments account information, including balances and payouts. */
   shopifyPaymentsAccount?: Maybe<ShopifyPaymentsAccount>
@@ -22357,9 +22705,9 @@ export type QueryRoot = {
   subscriptionDraft?: Maybe<SubscriptionDraft>
   /** Returns a list of TenderTransactions associated with the shop. */
   tenderTransactions: TenderTransactionConnection
-  /** Translatable resource. */
+  /** A translatable resource. */
   translatableResource?: Maybe<TranslatableResource>
-  /** List of translatable resources. */
+  /** A List of translatable resources. */
   translatableResources: TranslatableResourceConnection
   /** A list of translatable resources by IDs. */
   translatableResourcesByIds: TranslatableResourceConnection
@@ -23077,7 +23425,7 @@ export type QueryRootSegmentMigrationsArgs = {
 export type QueryRootSegmentValueSuggestionsArgs = {
   after?: InputMaybe<Scalars['String']>
   before?: InputMaybe<Scalars['String']>
-  filterQueryName: Scalars['String']
+  filterQueryName?: InputMaybe<Scalars['String']>
   first?: InputMaybe<Scalars['Int']>
   last?: InputMaybe<Scalars['Int']>
   search: Scalars['String']
@@ -23260,7 +23608,7 @@ export type Refund = LegacyInteroperability &
     staffMember?: Maybe<StaffMember>
     /**
      * The total amount across all transactions for the refund.
-     * @deprecated Use `totalRefundedSet` instead
+     * @deprecated Use `totalRefundedSet` instead.
      */
     totalRefunded: MoneyV2
     /** The total amount across all transactions for the refund, in shop and presentment currencies. */
@@ -23382,7 +23730,7 @@ export type RefundLineItem = {
   location?: Maybe<Location>
   /**
    * The price of a refunded line item.
-   * @deprecated Use `priceSet` instead
+   * @deprecated Use `priceSet` instead.
    */
   price: Scalars['Money']
   /** The price of a refunded line item in shop and presentment currencies. */
@@ -23395,14 +23743,14 @@ export type RefundLineItem = {
   restocked: Scalars['Boolean']
   /**
    * The subtotal price of a refunded line item.
-   * @deprecated Use `subtotalSet` instead
+   * @deprecated Use `subtotalSet` instead.
    */
   subtotal: Scalars['Money']
   /** The subtotal price of a refunded line item in shop and presentment currencies. */
   subtotalSet: MoneyBag
   /**
    * The total tax charged on a refunded line item.
-   * @deprecated Use `totalTaxSet` instead
+   * @deprecated Use `totalTaxSet` instead.
    */
   totalTax: Scalars['Money']
   /** The total tax charged on a refunded line item in shop and presentment currencies. */
@@ -23570,7 +23918,7 @@ export type ResourceFeedback = {
   __typename?: 'ResourceFeedback'
   /**
    * Feedback from an app about the steps a merchant needs to take to set up the app on their store.
-   * @deprecated Use `details` instead
+   * @deprecated Use `details` instead.
    */
   appFeedback: Array<AppFeedback>
   /** List of AppFeedback detailing issues regarding a resource. */
@@ -23590,7 +23938,7 @@ export enum ResourceFeedbackState {
 /** A resource limit represents the limits that the resource has. */
 export type ResourceLimit = {
   __typename?: 'ResourceLimit'
-  /** Whether or not the resource is available. */
+  /** Whether the resource is available. */
   available: Scalars['Boolean']
   /** Quantity available. If null the quantity available is unlimited. */
   quantityAvailable?: Maybe<Scalars['Int']>
@@ -23605,7 +23953,7 @@ export type ResourcePublication = {
   __typename?: 'ResourcePublication'
   /**
    * The channel the resource publication is published to.
-   * @deprecated Use `publication` instead
+   * @deprecated Use `publication` instead.
    */
   channel: Channel
   /**
@@ -23711,7 +24059,7 @@ export type SeoInput = {
   title?: InputMaybe<Scalars['String']>
 }
 
-/** An individual sale record associated with a sales agreement. */
+/** An individual sale record associated with a sales agreement. Every money value in an order's sales data is represented in the currency's smallest unit. When amounts are divided across multiple line items, such as taxes or order discounts, the amounts might not divide evenly across all of the line items on the order. To address this, the remaining currency units that couldn't be divided evenly are allocated one at a time, starting with the first line item, until they are all accounted for. In aggregate, the values sum up correctly. In isolation, one line item might have a different tax or discount amount than another line item of the same price, before taxes and discounts. This is because the amount could not be divided evenly across the items. The allocation of currency units across line items is immutable. After they are allocated, currency units are never reallocated or redistributed among the line items. */
 export type Sale = {
   /** The type of order action that the sale represents. */
   actionType: SaleActionType
@@ -23771,7 +24119,7 @@ export type SaleEdge = {
   node: Sale
 }
 
-/** The possible line types for a sale record. */
+/** The possible line types for a sale record. One of the possible order line types for a sale is an adjustment. Sales adjustments occur when a refund is issued for a line item that is either more or less than the total value of the line item. Examples are restocking fees and goodwill payments. When this happens, Shopify produces a sales agreement with sale records for each line item that is returned or refunded and an additional sale record for the adjustment (for example, a restocking fee). The sales records for the returned or refunded items represent the reversal of the original line item sale value. The additional adjustment sale record represents the difference between the original total value of all line items that were refunded, and the actual amount refunded. */
 export enum SaleLineType {
   /** A sale adjustment. */
   Adjustment = 'ADJUSTMENT',
@@ -23800,7 +24148,7 @@ export type SaleTax = {
   taxLine: TaxLine
 }
 
-/** An addition, removal, modification, or other sale commitment associated with an order. */
+/** A contract between a merchant and a customer to do business. Shopify creates a sales agreement whenever an order is placed, edited, or refunded. A sales agreement has one or more sales records, which provide itemized details about the initial agreement or subsequent changes made to the order. For example, when a customer places an order, Shopify creates the order, generates a sales agreement, and records a sale for each line item purchased in the order. A sale record is specific to a type of order line. Order lines can represent different things such as a purchased product, a tip added by a customer, shipping costs collected at checkout, and more. */
 export type SalesAgreement = {
   /** The application that created the agreement. */
   app?: Maybe<App>
@@ -23816,7 +24164,7 @@ export type SalesAgreement = {
   user?: Maybe<StaffMember>
 }
 
-/** An addition, removal, modification, or other sale commitment associated with an order. */
+/** A contract between a merchant and a customer to do business. Shopify creates a sales agreement whenever an order is placed, edited, or refunded. A sales agreement has one or more sales records, which provide itemized details about the initial agreement or subsequent changes made to the order. For example, when a customer places an order, Shopify creates the order, generates a sales agreement, and records a sale for each line item purchased in the order. A sale record is specific to a type of order line. Order lines can represent different things such as a purchased product, a tip added by a customer, shipping costs collected at checkout, and more. */
 export type SalesAgreementSalesArgs = {
   after?: InputMaybe<Scalars['String']>
   before?: InputMaybe<Scalars['String']>
@@ -23956,14 +24304,16 @@ export type SavedSearchUpdatePayload = {
  * Script discount applications capture the intentions of a discount that
  * was created by a Shopify Script for an order's line item or shipping line.
  *
+ * Discount applications don't represent the actual final amount discounted on a line (line item or shipping line). The actual amount discounted on a line is represented by the [DiscountAllocation](https://shopify.dev/api/admin-graphql/latest/objects/discountallocation) object.
+ *
  */
 export type ScriptDiscountApplication = DiscountApplication & {
   __typename?: 'ScriptDiscountApplication'
-  /** The method by which the discount's value is allocated to its entitled items. */
+  /** The method by which the discount's value is applied to its entitled items. */
   allocationMethod: DiscountApplicationAllocationMethod
   /**
    * The description of the application as defined by the Script.
-   * @deprecated Use `title` instead
+   * @deprecated Use `title` instead.
    */
   description: Scalars['String']
   /**
@@ -24411,7 +24761,7 @@ export type SegmentEventFilterParameter = {
   localizedDescription: Scalars['String']
   /** The localized name of the parameter. */
   localizedName: Scalars['String']
-  /** The optionality of the parameter. */
+  /** Whether the parameter is optional. */
   optional: Scalars['Boolean']
   /** The type of the parameter. */
   parameterType: Scalars['String']
@@ -24581,6 +24931,8 @@ export enum SegmentSortKeys {
   CreationDate = 'CREATION_DATE',
   /** Sort by the `id` value. */
   Id = 'ID',
+  /** Sort by the `last_edit_date` value. */
+  LastEditDate = 'LAST_EDIT_DATE',
   /**
    * Sort by relevance to the search terms when the `query` parameter is specified on the connection.
    * Don't use this sort key when no search query is specified.
@@ -24771,8 +25123,8 @@ export type SellingPlanAnchor = {
    */
   day: Scalars['Int']
   /**
-   * The month of the anchor. If type is different than YEARDAY, this field must be null, otherwise it must be
-   * between 1-12.
+   * The month of the anchor. If type is different than YEARDAY, then the value must
+   * be `null` or between 1-12.
    *
    */
   month?: Maybe<Scalars['Int']>
@@ -24796,8 +25148,8 @@ export type SellingPlanAnchorInput = {
    */
   day?: InputMaybe<Scalars['Int']>
   /**
-   * The month of the anchor. If type is different than YEARDAY, this field must be null, otherwise it must be
-   * between 1-12.
+   * The month of the anchor. If type is different than YEARDAY, then the value must
+   * be `null` or between 1-12.
    *
    */
   month?: InputMaybe<Scalars['Int']>
@@ -24827,7 +25179,7 @@ export enum SellingPlanAnchorType {
  */
 export type SellingPlanBillingPolicy = SellingPlanRecurringBillingPolicy
 
-/** Specifies the input fields required to create or update a billing policy type. */
+/** The input fields that are required to create or update a billing policy type. */
 export type SellingPlanBillingPolicyInput = {
   /** The recurring billing policy details. */
   recurring?: InputMaybe<SellingPlanRecurringBillingPolicyInput>
@@ -24856,7 +25208,7 @@ export type SellingPlanConnection = {
  */
 export type SellingPlanDeliveryPolicy = SellingPlanRecurringDeliveryPolicy
 
-/** Specifies the input fields to create or update a delivery policy. */
+/** The input fields that are required to create or update a delivery policy. */
 export type SellingPlanDeliveryPolicyInput = {
   /** The recurring delivery policy details. */
   recurring?: InputMaybe<SellingPlanRecurringDeliveryPolicyInput>
@@ -25335,18 +25687,18 @@ export type SellingPlanPricingPolicyInput = {
   recurring?: InputMaybe<SellingPlanRecurringPricingPolicyInput>
 }
 
-/** Represents the percentage value of a selling plan pricing policy percentage type. */
+/** The percentage value of a selling plan pricing policy percentage type. */
 export type SellingPlanPricingPolicyPercentageValue = {
   __typename?: 'SellingPlanPricingPolicyPercentageValue'
   /** The percentage value. */
   percentage: Scalars['Float']
 }
 
-/** Specifies the input fields required to create or update a pricing policy adjustment value. */
+/** The input fields required to create or update a pricing policy adjustment value. */
 export type SellingPlanPricingPolicyValueInput = {
-  /** Defines fixed value for an fixed amount off or a new policy price. */
+  /** The fixed value for an fixed amount off or a new policy price. */
   fixedValue?: InputMaybe<Scalars['Decimal']>
-  /** Defines percentage value. */
+  /** The percentage value. */
   percentage?: InputMaybe<Scalars['Float']>
 }
 
@@ -25384,7 +25736,7 @@ export type SellingPlanRecurringBillingPolicyInput = {
 /** Represents a recurring selling plan delivery policy. */
 export type SellingPlanRecurringDeliveryPolicy = {
   __typename?: 'SellingPlanRecurringDeliveryPolicy'
-  /** Specific anchor dates upon which the delivery interval calculations should be made. */
+  /** The specific anchor dates upon which the delivery interval calculations should be made. */
   anchors: Array<SellingPlanAnchor>
   /** The date and time when the selling plan delivery policy was created. */
   createdAt: Scalars['DateTime']
@@ -25402,13 +25754,13 @@ export type SellingPlanRecurringDeliveryPolicy = {
   interval: SellingPlanInterval
   /** The number of intervals between deliveries. */
   intervalCount: Scalars['Int']
-  /** Fulfillment or delivery behavior of the first fulfillment when the order is placed before the anchor. The default value for this field is `ASAP`. */
+  /** The fulfillment or delivery behavior of the first fulfillment when the order is placed before the anchor. The default value for this field is `ASAP`. */
   preAnchorBehavior: SellingPlanRecurringDeliveryPolicyPreAnchorBehavior
 }
 
 /** Specifies the input fields to create or update a recurring delivery policy. */
 export type SellingPlanRecurringDeliveryPolicyInput = {
-  /** Specific anchor dates upon which the delivery interval calculations should be made. */
+  /** The specific anchor dates upon which the delivery interval calculations should be made. */
   anchors?: InputMaybe<Array<SellingPlanAnchorInput>>
   /** A buffer period for orders to be included in a cycle. */
   cutoff?: InputMaybe<Scalars['Int']>
@@ -25418,11 +25770,11 @@ export type SellingPlanRecurringDeliveryPolicyInput = {
   interval?: InputMaybe<SellingPlanInterval>
   /** The number of intervals between deliveries. */
   intervalCount?: InputMaybe<Scalars['Int']>
-  /** The pre anchor behavior. It can be either: asap or next. */
+  /** The pre-anchor behavior. It can be either: asap or next. */
   preAnchorBehavior?: InputMaybe<SellingPlanRecurringDeliveryPolicyPreAnchorBehavior>
 }
 
-/** Possible intentions of a Delivery Policy. */
+/** Whether the delivery policy is merchant or buyer-centric. */
 export enum SellingPlanRecurringDeliveryPolicyIntent {
   /**
    * A merchant-centric delivery policy. Mark this delivery policy to define when the merchant should start fulfillment.
@@ -25431,16 +25783,16 @@ export enum SellingPlanRecurringDeliveryPolicyIntent {
   FulfillmentBegin = 'FULFILLMENT_BEGIN',
 }
 
-/** Possible fulfillment or delivery behaviors of the first fulfillment when the orderis placed before the anchor. */
+/** The fulfillment or delivery behaviors of the first fulfillment when the orderis placed before the anchor. */
 export enum SellingPlanRecurringDeliveryPolicyPreAnchorBehavior {
   /**
-   * Orders placed can be fulfilled / delivered immediately. Orders placed inside a cutoff can be fulfilled / delivered at the next anchor.
+   * The orders placed can be fulfilled or delivered immediately. The orders placed inside a cutoff can be fulfilled or delivered at the next anchor.
    *
    */
   Asap = 'ASAP',
   /**
-   * Orders placed can be fulfilled / delivered at the next anchor date.
-   * Orders placed inside a cutoff will skip the next anchor and can be fulfilled /
+   * The orders placed can be fulfilled or delivered at the next anchor date.
+   * The orders placed inside a cutoff will skip the next anchor and can be fulfilled or
    * delivered at the following anchor.
    *
    */
@@ -25494,7 +25846,7 @@ export type ShippingLine = {
   discountAllocations: Array<DiscountAllocation>
   /**
    * The pre-tax shipping price with discounts applied.
-   * @deprecated Use `discountedPriceSet` instead
+   * @deprecated Use `discountedPriceSet` instead.
    */
   discountedPrice: MoneyV2
   /** The pre-tax shipping price with discounts applied. */
@@ -25503,7 +25855,7 @@ export type ShippingLine = {
   id?: Maybe<Scalars['ID']>
   /**
    * The pre-tax shipping price without any discounts applied.
-   * @deprecated Use `originalPriceSet` instead
+   * @deprecated Use `originalPriceSet` instead.
    */
   originalPrice: MoneyV2
   /** The pre-tax shipping price without any discounts applied. */
@@ -25512,7 +25864,7 @@ export type ShippingLine = {
   phone?: Maybe<Scalars['String']>
   /**
    * Returns the price of the shipping line.
-   * @deprecated Use `originalPriceSet` instead
+   * @deprecated Use `originalPriceSet` instead.
    */
   price: Scalars['Money']
   /**
@@ -25647,21 +25999,21 @@ export type ShippingRefund = {
   __typename?: 'ShippingRefund'
   /**
    * The monetary value of the shipping fees to be refunded.
-   * @deprecated Use `amountSet` instead
+   * @deprecated Use `amountSet` instead.
    */
   amount: Scalars['Money']
   /** The monetary value of the shipping fees to be refunded in shop and presentment currencies. */
   amountSet: MoneyBag
   /**
    * The maximum amount of shipping fees currently refundable.
-   * @deprecated Use `maximumRefundableSet` instead
+   * @deprecated Use `maximumRefundableSet` instead.
    */
   maximumRefundable: Scalars['Money']
   /** The maximum amount of shipping fees currently refundable in shop and presentment currencies. */
   maximumRefundableSet: MoneyBag
   /**
    * The monetary value of the tax allocated to shipping fees to be refunded.
-   * @deprecated Use `taxSet` instead
+   * @deprecated Use `taxSet` instead.
    */
   tax: Scalars['Money']
   /** The monetary value of the tax allocated to shipping fees to be refunded in shop and presentment currencies. */
@@ -25699,7 +26051,7 @@ export type Shop = HasMetafields &
     billingAddress: MailingAddress
     /**
      * Exposes the number of channels.
-     * @deprecated Use `publicationCount` instead
+     * @deprecated Use `publicationCount` instead.
      */
     channelCount: Scalars['Int']
     /** List of all channel definitions associated with a shop. */
@@ -25734,7 +26086,7 @@ export type Shop = HasMetafields &
     contactEmail: Scalars['String']
     /** Countries that have been defined in shipping zones for the shop. */
     countriesInShippingZones: CountriesInShippingZones
-    /** The three letter code for the shop's currency. */
+    /** The three letter code for the currency that the shop sells in. */
     currencyCode: CurrencyCode
     /** How currencies are displayed on your store. */
     currencyFormats: CurrencyFormats
@@ -25756,7 +26108,10 @@ export type Shop = HasMetafields &
     customers: CustomerConnection
     /** The shop's meta description used in search engine results. */
     description?: Maybe<Scalars['String']>
-    /** The domains configured for the shop. */
+    /**
+     * The domains configured for the shop.
+     * @deprecated Use `domainsPaginated` instead.
+     */
     domains: Array<Domain>
     /**
      * List of the shop's draft order saved searches.
@@ -25841,7 +26196,7 @@ export type Shop = HasMetafields &
     paymentSettings: PaymentSettings
     /**
      * Number of pending orders on the shop.
-     * @deprecated Use `limitedPendingOrderCount` instead
+     * @deprecated Use `limitedPendingOrderCount` instead.
      */
     pendingOrderCount: Scalars['Int']
     /** The shop's billing plan. */
@@ -25856,7 +26211,7 @@ export type Shop = HasMetafields &
      * @deprecated Use `QueryRoot.priceRules` instead.
      */
     priceRules: PriceRuleConnection
-    /** The shop's primary domain name. */
+    /** The primary domain of the shop's online store. */
     primaryDomain: Domain
     /** Returns a private metafield by namespace and key that belongs to the resource. */
     privateMetafield?: Maybe<PrivateMetafield>
@@ -25917,7 +26272,7 @@ export type Shop = HasMetafields &
     storefrontAccessTokens: StorefrontAccessTokenConnection
     /**
      * The URL of the shop's storefront.
-     * @deprecated Use `url` instead
+     * @deprecated Use `url` instead.
      */
     storefrontUrl: Scalars['URL']
     /** Whether the shop charges taxes for shipping. */
@@ -26532,16 +26887,16 @@ export type ShopFeatures = {
   usingShopifyBalance: Scalars['Boolean']
 }
 
-/** Locale that has been enabled on a shop. */
+/** A locale that's been enabled on a shop. */
 export type ShopLocale = {
   __typename?: 'ShopLocale'
-  /** Locale ISO code. */
+  /** The locale ISO code. */
   locale: Scalars['String']
-  /** Human-readable locale name. */
+  /** The human-readable locale name. */
   name: Scalars['String']
-  /** Whether or not this is the default locale for the shop. */
+  /** Whether the locale is the default locale for the shop. */
   primary: Scalars['Boolean']
-  /** Whether or not the locale is visible to buyers. */
+  /** Whether the locale is visible to buyers. */
   published: Scalars['Boolean']
 }
 
@@ -26568,7 +26923,7 @@ export type ShopLocaleEnablePayload = {
  *
  */
 export type ShopLocaleInput = {
-  /** Specifies the published state of the locale. Only published locales are visible to the buyer. */
+  /** Whether the locale is published. Only published locales are visible to the buyer. */
   published?: InputMaybe<Scalars['Boolean']>
 }
 
@@ -26582,7 +26937,7 @@ export type ShopLocaleUpdatePayload = {
 }
 
 /**
- * Represents the billing plan of the shop.
+ * The billing plan of the shop.
  *
  */
 export type ShopPlan = {
@@ -26707,17 +27062,17 @@ export type ShopifyPaymentsAccount = Node & {
   /** All bank accounts configured for the Shopify Payments account. */
   bankAccounts: ShopifyPaymentsBankAccountConnection
   /**
-   * Statement descriptor used for charges.
+   * The statement descriptor used for charges.
    *
-   * This is what buyers will see on their credit card or bank statements when making a purchase.
+   * The statement descriptor appears on a customer's credit card or bank statement when they make a purchase.
    *
-   * @deprecated Use `chargeStatementDescriptors` instead
+   * @deprecated Use `chargeStatementDescriptors` instead.
    */
   chargeStatementDescriptor?: Maybe<Scalars['String']>
   /**
-   * Statement descriptors used for charges.
+   * The statement descriptors used for charges.
    *
-   * This is what buyers will see on their credit card or bank statements when making a purchase.
+   * These descriptors appear on a customer's credit card or bank statement when they make a purchase.
    *
    */
   chargeStatementDescriptors?: Maybe<ShopifyPaymentsChargeStatementDescriptor>
@@ -26735,12 +27090,12 @@ export type ShopifyPaymentsAccount = Node & {
   notificationSettings: ShopifyPaymentsNotificationSettings
   /** Whether the Shopify Payments account can be onboarded. */
   onboardable: Scalars['Boolean']
-  /** Payout schedule for the account. */
+  /** The payout schedule for the account. */
   payoutSchedule: ShopifyPaymentsPayoutSchedule
   /**
-   * Descriptor used for payouts.
+   * The descriptor used for payouts.
    *
-   * This is what merchants will see on their bank statement when receiving a payout.
+   * The descriptor appears on a merchant's bank statement when they receive a payout.
    *
    */
   payoutStatementDescriptor?: Maybe<Scalars['String']>
@@ -27061,7 +27416,7 @@ export type ShopifyPaymentsPayout = LegacyInteroperability &
     bankAccount?: Maybe<ShopifyPaymentsBankAccount>
     /**
      * The total amount and currency of the payout.
-     * @deprecated Use `net` instead
+     * @deprecated Use `net` instead.
      */
     gross: MoneyV2
     /** A globally-unique identifier. */
@@ -27430,30 +27785,61 @@ export type StaffMemberPrivateData = {
   permissions: Array<StaffMemberPermission>
 }
 
-/** Image to be uploaded. */
+/**
+ * An image to be uploaded.
+ *
+ * Deprecated in favor of
+ * [StagedUploadInput](https://shopify.dev/api/admin-graphql/latest/objects/StagedUploadInput),
+ * which is used by the
+ * [stagedUploadsCreate mutation](https://shopify.dev/api/admin-graphql/latest/mutations/stagedUploadsCreate).
+ *
+ */
 export type StageImageInput = {
-  /** Image filename. */
+  /** The image filename. */
   filename: Scalars['String']
-  /** HTTP method to be used by the Staged Upload. */
+  /** HTTP method to be used by the staged upload. */
   httpMethod?: InputMaybe<StagedUploadHttpMethodType>
-  /** Image MIME type. */
+  /** The image MIME type. */
   mimeType: Scalars['String']
-  /** Image resource. */
+  /** The image resource. */
   resource: StagedUploadTargetGenerateUploadResource
 }
 
-/** Staged media target information. */
+/**
+ * Information about a staged upload target, which should be used to send a request to upload
+ * the file.
+ *
+ * For more information on the upload process, refer to
+ * [Upload media to Shopify](https://shopify.dev/apps/online-store/media/products#step-1-upload-media-to-shopify).
+ *
+ */
 export type StagedMediaUploadTarget = {
   __typename?: 'StagedMediaUploadTarget'
-  /** Parameters of the media to be uploaded. */
+  /** Parameters needed to authenticate a request to upload the file. */
   parameters: Array<StagedUploadParameter>
-  /** The url to be passed as the original_source for the product create media mutation input. */
+  /**
+   * The URL to be passed as `originalSource` in
+   * [CreateMediaInput](https://shopify.dev/api/admin-graphql/latest/input-objects/CreateMediaInput)
+   * and [FileCreateInput](https://shopify.dev/api/admin-graphql/2022-04/input-objects/FileCreateInput)
+   * for the [productCreateMedia](https://shopify.dev/api/admin-graphql/2022-04/mutations/productCreateMedia)
+   * and [fileCreate](https://shopify.dev/api/admin-graphql/2022-04/mutations/fileCreate)
+   * mutations.
+   *
+   */
   resourceUrl?: Maybe<Scalars['URL']>
-  /** Media URL. */
+  /**
+   * The URL to use when sending an request to upload the file. Should be used in conjunction with
+   * the parameters field.
+   *
+   */
   url?: Maybe<Scalars['URL']>
 }
 
-/** Possible HTTP method of a staged upload target. */
+/**
+ * The possible HTTP methods that can be used when sending a request to upload a file using information from a
+ * [StagedMediaUploadTarget](https://shopify.dev/api/admin-graphql/latest/objects/StagedMediaUploadTarget).
+ *
+ */
 export enum StagedUploadHttpMethodType {
   /** The POST HTTP method. */
   Post = 'POST',
@@ -27461,39 +27847,72 @@ export enum StagedUploadHttpMethodType {
   Put = 'PUT',
 }
 
-/** Media to be uploaded. */
+/** The information required to generate staged upload targets. */
 export type StagedUploadInput = {
-  /** Size of the file to upload, in bytes. This is required for VIDEO and MODEL_3D resources. */
+  /**
+   * The size of the file to upload, in bytes. This is required when the request's resource property is set to
+   * [VIDEO](https://shopify.dev/api/admin-graphql/latest/enums/StagedUploadTargetGenerateUploadResource#value-video)
+   * or [MODEL_3D](https://shopify.dev/api/admin-graphql/latest/enums/StagedUploadTargetGenerateUploadResource#value-model3d).
+   *
+   */
   fileSize?: InputMaybe<Scalars['UnsignedInt64']>
-  /** Media filename. */
+  /** The file's name and extension. */
   filename: Scalars['String']
-  /** HTTP method to be used by the Staged Upload. */
+  /**
+   * The HTTP method to be used when sending a request to upload the file using the returned staged
+   * upload target.
+   *
+   */
   httpMethod?: InputMaybe<StagedUploadHttpMethodType>
-  /** Media MIME type. */
+  /** The file's MIME type. */
   mimeType: Scalars['String']
-  /** Media resource. */
+  /** The file's intended Shopify resource type. */
   resource: StagedUploadTargetGenerateUploadResource
 }
 
-/** Upload parameter of a Media. */
+/**
+ * The parameters required to authenticate a file upload request using a
+ * [StagedMediaUploadTarget's url field](https://shopify.dev/api/admin-graphql/latest/objects/StagedMediaUploadTarget#field-stagedmediauploadtarget-url).
+ *
+ * For more information on the upload process, refer to
+ * [Upload media to Shopify](https://shopify.dev/apps/online-store/media/products#step-1-upload-media-to-shopify).
+ *
+ */
 export type StagedUploadParameter = {
   __typename?: 'StagedUploadParameter'
-  /** Parameter name. */
+  /** The parameter's name. */
   name: Scalars['String']
-  /** Parameter value. */
+  /** The parameter's value. */
   value: Scalars['String']
 }
 
-/** Staged target information. */
+/**
+ * Information about the staged target.
+ *
+ * Deprecated in favor of
+ * [StagedMediaUploadTarget](https://shopify.dev/api/admin-graphql/latest/objects/StagedMediaUploadTarget),
+ * which is returned by the
+ * [stagedUploadsCreate mutation](https://shopify.dev/api/admin-graphql/latest/mutations/stagedUploadsCreate).
+ *
+ */
 export type StagedUploadTarget = {
   __typename?: 'StagedUploadTarget'
-  /** Parameters of an image to be uploaded. */
+  /** The parameters of an image to be uploaded. */
   parameters: Array<ImageUploadParameter>
-  /** Image URL. */
+  /** The image URL. */
   url: Scalars['String']
 }
 
-/** Specifies the fields required to generate the URL and parameters needed to upload an asset to Shopify. */
+/**
+ * The required fields and parameters to generate the URL upload an"
+ * asset to Shopify.
+ *
+ * Deprecated in favor of
+ * [StagedUploadInput](https://shopify.dev/api/admin-graphql/latest/objects/StagedUploadInput),
+ * which is used by the
+ * [stagedUploadsCreate mutation](https://shopify.dev/api/admin-graphql/latest/mutations/stagedUploadsCreate).
+ *
+ */
 export type StagedUploadTargetGenerateInput = {
   /** The size of the file to upload, in bytes. */
   fileSize?: InputMaybe<Scalars['UnsignedInt64']>
@@ -27520,25 +27939,86 @@ export type StagedUploadTargetGeneratePayload = {
 
 /** The resource type to receive. */
 export enum StagedUploadTargetGenerateUploadResource {
-  /** BulkOperation resource representation. */
+  /**
+   * Represents bulk mutation variables.
+   *
+   * For example, bulk mutation variables can be used for bulk operations using the
+   * [bulkOperationRunMutation mutation](https://shopify.dev/api/admin-graphql/latest/mutations/bulkOperationRunMutation).
+   *
+   */
   BulkMutationVariables = 'BULK_MUTATION_VARIABLES',
-  /** A collection image. */
+  /**
+   * An image associated with a collection.
+   *
+   * For example, after uploading an image, you can use the
+   * [collectionUpdate mutation](https://shopify.dev/api/admin-graphql/latest/mutations/collectionUpdate)
+   * to add the image to a collection.
+   *
+   */
   CollectionImage = 'COLLECTION_IMAGE',
-  /** Merchandising::GenericFile resource representation. */
+  /**
+   * Represents any file other than HTML.
+   *
+   * For example, after uploading the file, you can add the file to the
+   * [Files page](https://shopify.com/admin/settings/files) in Shopify admin using the
+   * [fileCreate mutation](https://shopify.dev/api/admin-graphql/latest/mutations/fileCreate).
+   *
+   */
   File = 'FILE',
-  /** Merchandising::Image resource representation. */
+  /**
+   * An image.
+   *
+   * For example, after uploading an image, you can add the image to a product using the
+   * [productCreateMedia mutation](https://shopify.dev/api/admin-graphql/latest/mutations/productCreateMedia)
+   * or to the [Files page](https://shopify.com/admin/settings/files) in Shopify admin using the
+   * [fileCreate mutation](https://shopify.dev/api/admin-graphql/latest/mutations/fileCreate).
+   *
+   */
   Image = 'IMAGE',
-  /** Merchandising::Model3d resource representation. */
+  /**
+   * A Shopify hosted 3d model.
+   *
+   * For example, after uploading the 3d model, you can add the 3d model to a product using the
+   * [productCreateMedia mutation](https://shopify.dev/api/admin-graphql/latest/mutations/productCreateMedia).
+   *
+   */
   Model_3D = 'MODEL_3D',
-  /** A product image. */
+  /**
+   * An image that's associated with a product.
+   *
+   * For example, after uploading the image, you can add the image to a product using the
+   * [productCreateMedia mutation](https://shopify.dev/api/admin-graphql/latest/mutations/productCreateMedia).
+   *
+   */
   ProductImage = 'PRODUCT_IMAGE',
-  /** A shop image. */
+  /**
+   * An image.
+   *
+   * For example, after uploading the image, you can add the image to the
+   * [Files page](https://shopify.com/admin/settings/files) in Shopify admin using the
+   * [fileCreate mutation](https://shopify.dev/api/admin-graphql/latest/mutations/fileCreate).
+   *
+   */
   ShopImage = 'SHOP_IMAGE',
-  /** A timeline event. */
-  Timeline = 'TIMELINE',
-  /** RedirectImport resource representation. */
+  /**
+   * Represents a redirect CSV file.
+   *
+   * Example usage: This resource can be used for creating a
+   * [UrlRedirectImport](https://shopify.dev/api/admin-graphql/2022-04/objects/UrlRedirectImport)
+   * object for use in the
+   * [urlRedirectImportCreate mutation](https://shopify.dev/api/admin-graphql/latest/mutations/urlRedirectImportCreate).
+   *
+   */
   UrlRedirectImport = 'URL_REDIRECT_IMPORT',
-  /** Merchandising::Video resource representation. */
+  /**
+   * A Shopify-hosted video.
+   *
+   * For example, after uploading the video, you can add the video to a product using the
+   * [productCreateMedia mutation](https://shopify.dev/api/admin-graphql/latest/mutations/productCreateMedia)
+   * or to the [Files page](https://shopify.com/admin/settings/files) in Shopify admin using the
+   * [fileCreate mutation](https://shopify.dev/api/admin-graphql/latest/mutations/fileCreate).
+   *
+   */
   Video = 'VIDEO',
 }
 
@@ -27812,7 +28292,7 @@ export type SubscriptionBillingAttempt = Node & {
    *
    */
   originTime?: Maybe<Scalars['DateTime']>
-  /** Whether or not the billing attempt is still processing. */
+  /** Whether the billing attempt is still processing. */
   ready: Scalars['Boolean']
   /** The subscription contract. */
   subscriptionContract: SubscriptionContract
@@ -28100,7 +28580,7 @@ export enum SubscriptionContractErrorCode {
   Invalid = 'INVALID',
 }
 
-/** Possible status values of the last payment on a subscription contract. */
+/** The possible status values of the last payment on a subscription contract. */
 export enum SubscriptionContractLastPaymentStatus {
   /** Failed subscription billing attempt. */
   Failed = 'FAILED',
@@ -28117,17 +28597,17 @@ export type SubscriptionContractSetNextBillingDatePayload = {
   userErrors: Array<SubscriptionContractUserError>
 }
 
-/** Possible status values of a subscription. */
+/** The possible status values of a subscription. */
 export enum SubscriptionContractSubscriptionStatus {
-  /** Active subscription contract. */
+  /** The contract is active and continuing per its policies. */
   Active = 'ACTIVE',
-  /** Cancelled subscription contract. */
+  /** The contract was ended by an unplanned customer action. */
   Cancelled = 'CANCELLED',
-  /** Expired subscription contract. */
+  /** The contract has ended per the expected circumstances. All billing and deliverycycles of the subscriptions were executed. */
   Expired = 'EXPIRED',
-  /** Failed subscription contract. */
+  /** The contract ended because billing failed and no further billing attempts are expected. */
   Failed = 'FAILED',
-  /** Paused subscription contract. */
+  /** The contract is temporarily paused and is expected to resume in the future. */
   Paused = 'PAUSED',
 }
 
@@ -28172,12 +28652,9 @@ export type SubscriptionDeliveryMethod = SubscriptionDeliveryMethodShipping
  * This is an input union: one, and only one, field can be provided.
  * The field provided will determine which delivery method is to be used.
  *
- * Note: Only `shipping` is supported for now, but other inputs will be
- * added as they become supported in subscriptions.
- *
  */
 export type SubscriptionDeliveryMethodInput = {
-  /** Shipping delivery method input. */
+  /** The input fields for the shipping delivery method. */
   shipping?: InputMaybe<SubscriptionDeliveryMethodShippingInput>
 }
 
@@ -28236,7 +28713,7 @@ export type SubscriptionDeliveryMethodShippingOptionInput = {
 /** Represents a Subscription Delivery Policy. */
 export type SubscriptionDeliveryPolicy = {
   __typename?: 'SubscriptionDeliveryPolicy'
-  /** Specific anchor dates upon which the delivery interval calculations should be made. */
+  /** The specific anchor dates upon which the delivery interval calculations should be made. */
   anchors: Array<SellingPlanAnchor>
   /** The kind of interval that is associated with this schedule (e.g. Monthly, Weekly, etc). */
   interval: SellingPlanInterval
@@ -28246,7 +28723,7 @@ export type SubscriptionDeliveryPolicy = {
 
 /** Specifies the input fields for a Subscription Delivery Policy. */
 export type SubscriptionDeliveryPolicyInput = {
-  /** Specific anchor dates upon which the delivery interval calculations should be made. */
+  /** The specific anchor dates upon which the delivery interval calculations should be made. */
   anchors?: InputMaybe<Array<SellingPlanAnchorInput>>
   /** The kind of interval that is associated with this schedule (e.g. Monthly, Weekly, etc). */
   interval: SellingPlanInterval
@@ -29042,7 +29519,7 @@ export type SuggestedOrderTransaction = {
   accountNumber?: Maybe<Scalars['String']>
   /**
    * The amount of the transaction.
-   * @deprecated Use `amountSet` instead
+   * @deprecated Use `amountSet` instead.
    */
   amount: Scalars['Money']
   /** The amount and currency of the suggested order transaction in shop and presentment currencies. */
@@ -29055,7 +29532,7 @@ export type SuggestedOrderTransaction = {
   kind: SuggestedOrderTransactionKind
   /**
    * Specifies the available amount to refund on the gateway. Only available within SuggestedRefund.
-   * @deprecated Use `maximumRefundableSet` instead
+   * @deprecated Use `maximumRefundableSet` instead.
    */
   maximumRefundable?: Maybe<Scalars['Money']>
   /** Specifies the available amount to refund on the gateway in shop and presentment currencies. Only available within SuggestedRefund. */
@@ -29075,7 +29552,7 @@ export type SuggestedRefund = {
   __typename?: 'SuggestedRefund'
   /**
    * The total monetary value to be refunded.
-   * @deprecated Use `amountSet` instead
+   * @deprecated Use `amountSet` instead.
    */
   amount: Scalars['Money']
   /** The total monetary value to be refunded in shop and presentment currencies. */
@@ -29084,7 +29561,7 @@ export type SuggestedRefund = {
   discountedSubtotalSet: MoneyBag
   /**
    * The total monetary value available to refund.
-   * @deprecated Use `maximumRefundableSet` instead
+   * @deprecated Use `maximumRefundableSet` instead.
    */
   maximumRefundable: Scalars['Money']
   /** The total monetary value available to refund in shop and presentment currencies. */
@@ -29097,7 +29574,7 @@ export type SuggestedRefund = {
   shipping: ShippingRefund
   /**
    * The sum of all the prices of the line items being refunded.
-   * @deprecated Use `subtotalSet` instead
+   * @deprecated Use `subtotalSet` instead.
    */
   subtotal: Scalars['Money']
   /** The sum of all the prices of the line items being refunded in shop and presentment currencies. */
@@ -29112,7 +29589,7 @@ export type SuggestedRefund = {
   totalTaxSet: MoneyBag
   /**
    * The sum of the taxes being refunded from the order. The value must be positive.
-   * @deprecated Use `totalTaxSet` instead
+   * @deprecated Use `totalTaxSet` instead.
    */
   totalTaxes: Scalars['Money']
 }
@@ -29186,7 +29663,7 @@ export type TaxLine = {
   channelLiable?: Maybe<Scalars['Boolean']>
   /**
    * The amount of tax, in shop currency, after discounts and before returns.
-   * @deprecated Use `priceSet` instead
+   * @deprecated Use `priceSet` instead.
    */
   price: Scalars['Money']
   /** The amount of tax, in shop and presentment currencies, after discounts and before returns. */
@@ -29244,10 +29721,7 @@ export type TenderTransactionCreditCardDetails = {
   __typename?: 'TenderTransactionCreditCardDetails'
   /** The name of the company that issued the customer's credit card. Example: `Visa`. */
   creditCardCompany?: Maybe<Scalars['String']>
-  /**
-   * The customer's credit card number, with all digits except the last 4 redacted. Example: `•••• •••• •••• 1234`
-   *
-   */
+  /** The customer's credit card number, with all digits except the last 4 redacted. Example: `•••• •••• •••• 1234` */
   creditCardNumber?: Maybe<Scalars['String']>
 }
 
@@ -29429,13 +29903,16 @@ export enum TranslatableResourceType {
    *         Translatable fields: `name`.
    */
   ProductOption = 'PRODUCT_OPTION',
-  /** An online store product variant. Translatable fields: `title`, `option1`, `option2`, `option3`. */
+  /** An online store product variant. Translatable fields: `title`, `option1`, `option2`, `option3`. The field `title` has been deprecated. */
   ProductVariant = 'PRODUCT_VARIANT',
   /** A shop. Translatable fields: `meta_title`, `meta_description`. */
   Shop = 'SHOP',
   /** A shop policy. Translatable fields: `body`. */
   ShopPolicy = 'SHOP_POLICY',
-  /** An SMS template. Translatable fields: `body`. */
+  /**
+   * An SMS template. Translatable fields: `body`.
+   * @deprecated `SMS_TEMPLATE` is deprecated, it is no longer a translatable resource type.
+   */
   SmsTemplate = 'SMS_TEMPLATE',
 }
 
@@ -29561,7 +30038,7 @@ export type UpdateMediaInput = {
   alt?: InputMaybe<Scalars['String']>
   /** Specifies the media to update. */
   id: Scalars['ID']
-  /** The source from which to update the media preview image. May be an external URL or signed upload URL. */
+  /** The source from which to update the media preview image. May be an external URL or staged upload URL. */
   previewImageSource?: InputMaybe<Scalars['String']>
 }
 
@@ -29883,17 +30360,21 @@ export type Video = File &
     /** A word or phrase to share the nature or contents of a media. */
     alt?: Maybe<Scalars['String']>
     /**
-     * The date and time ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) when the product was created.
+     * The date and time ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) when the file was created.
      *
      */
     createdAt: Scalars['DateTime']
-    /** The duration of the video. Only available when `status` is READY. */
+    /**
+     * The video's duration in milliseconds. This value is `null` unless the video's status field is
+     * [READY](https://shopify.dev/api/admin-graphql/latest/enums/MediaStatus#value-ready).
+     *
+     */
     duration?: Maybe<Scalars['Int']>
     /** Any errors that have occurred on the file. */
     fileErrors: Array<FileError>
     /** The status of the file. */
     fileStatus: FileStatus
-    /** The filename of the video. */
+    /** The video's filename. */
     filename: Scalars['String']
     /** A globally-unique identifier. */
     id: Scalars['ID']
@@ -29903,11 +30384,19 @@ export type Video = File &
     mediaErrors: Array<MediaError>
     /** The warnings attached to the media. */
     mediaWarnings: Array<MediaWarning>
-    /** The original source for a video. Value is `null` when `status` is PROCESSING. */
+    /**
+     * The video's original source. This value is `null` unless the video's status field is
+     * [READY](https://shopify.dev/api/admin-graphql/latest/enums/MediaStatus#value-ready).
+     *
+     */
     originalSource?: Maybe<VideoSource>
     /** The preview image for the media. */
     preview?: Maybe<MediaPreviewImage>
-    /** The sources for a video. Sources are only available when `status` is READY. */
+    /**
+     * The video's sources. This value is empty unless the video's status field is
+     * [READY](https://shopify.dev/api/admin-graphql/latest/enums/MediaStatus#value-ready).
+     *
+     */
     sources: Array<VideoSource>
     /** Current status of the media. */
     status: MediaStatus
@@ -29916,20 +30405,26 @@ export type Video = File &
 /**
  * Represents a source for a Shopify hosted video.
  *
+ * Types of sources include the original video, lower resolution versions of the original video,
+ * and an m3u8 playlist file.
+ *
+ * Only [videos](https://shopify.dev/api/admin-graphql/latest/objects/video) with a status field
+ * of [READY](https://shopify.dev/api/admin-graphql/latest/enums/MediaStatus#value-ready) have sources.
+ *
  */
 export type VideoSource = {
   __typename?: 'VideoSource'
-  /** The size of the video file in bytes. */
+  /** The video source's file size in bytes. */
   fileSize?: Maybe<Scalars['Int']>
-  /** The format of the video source. */
+  /** The video source's file format extension. */
   format: Scalars['String']
-  /** The height of the video. */
+  /** The video source's height. */
   height: Scalars['Int']
-  /** The video MIME type. */
+  /** The video source's MIME type. */
   mimeType: Scalars['String']
-  /** The URL of the video. */
+  /** The video source's URL. */
   url: Scalars['String']
-  /** The width of the video. */
+  /** The video source's width. */
   width: Scalars['Int']
 }
 
@@ -29968,7 +30463,7 @@ export type WebhookSubscription = LegacyInteroperability &
     __typename?: 'WebhookSubscription'
     /**
      * The destination URI to which the webhook subscription will send a message when an event occurs.
-     * @deprecated Use `endpoint` instead
+     * @deprecated Use `endpoint` instead.
      */
     callbackUrl: Scalars['URL']
     /** The date and time when the webhook subscription was created. */
@@ -30214,13 +30709,13 @@ export enum WebhookSubscriptionTopic {
   OrdersCreate = 'ORDERS_CREATE',
   /** The webhook topic for `orders/delete` events. Occurs whenever an order is deleted. Requires the `read_orders` scope. */
   OrdersDelete = 'ORDERS_DELETE',
-  /** The webhook topic for `orders/edited` events. Occurs whenever an order is edited. Requires the `read_orders` scope. */
+  /** The webhook topic for `orders/edited` events. Occurs whenever an order is edited. Requires at least one of the following scopes: read_orders, read_marketplace_orders. */
   OrdersEdited = 'ORDERS_EDITED',
   /** The webhook topic for `orders/fulfilled` events. Occurs whenever an order is fulfilled. Requires at least one of the following scopes: read_orders, read_marketplace_orders. */
   OrdersFulfilled = 'ORDERS_FULFILLED',
   /** The webhook topic for `orders/paid` events. Occurs whenever an order is paid. Requires at least one of the following scopes: read_orders, read_marketplace_orders. */
   OrdersPaid = 'ORDERS_PAID',
-  /** The webhook topic for `orders/partially_fulfilled` events. Occurs whenever an order is partially fulfilled. Requires the `read_orders` scope. */
+  /** The webhook topic for `orders/partially_fulfilled` events. Occurs whenever an order is partially fulfilled. Requires at least one of the following scopes: read_orders, read_marketplace_orders. */
   OrdersPartiallyFulfilled = 'ORDERS_PARTIALLY_FULFILLED',
   /** The webhook topic for `orders/updated` events. Occurs whenever an order is updated. Requires at least one of the following scopes: read_orders, read_marketplace_orders. */
   OrdersUpdated = 'ORDERS_UPDATED',
@@ -30380,9 +30875,43 @@ export type DeliveryProfileUpdatePayload = {
   userErrors: Array<UserError>
 }
 
-export type ProductsQueryVariables = Exact<{ [key: string]: never }>
+export type GetProductQueryVariables = Exact<{
+  productHandle: Scalars['String']
+}>
 
-export type ProductsQuery = {
+export type GetProductQuery = {
+  __typename?: 'QueryRoot'
+  productByHandle?: {
+    __typename?: 'Product'
+    id: string
+    title: string
+    handle: string
+    tags: Array<string>
+    priceRangeV2: {
+      __typename?: 'ProductPriceRangeV2'
+      minVariantPrice: { __typename?: 'MoneyV2'; amount: any }
+    }
+    bg: Array<{
+      __typename?: 'PublishedTranslation'
+      key: string
+      locale: string
+      value?: string | null
+    }>
+    images: {
+      __typename?: 'ImageConnection'
+      edges: Array<{
+        __typename?: 'ImageEdge'
+        node: { __typename?: 'Image'; altText?: string | null; url: any }
+      }>
+    }
+  } | null
+}
+
+export type GetProductsQueryVariables = Exact<{
+  first: Scalars['Int']
+}>
+
+export type GetProductsQuery = {
   __typename?: 'QueryRoot'
   products: {
     __typename?: 'ProductConnection'
@@ -30416,9 +30945,86 @@ export type ProductsQuery = {
   }
 }
 
-export const ProductsDocument = gql`
-  query Products {
-    products(first: 5) {
+export const GetProductDocument = gql`
+  query GetProduct($productHandle: String!) {
+    productByHandle(handle: $productHandle) {
+      id
+      title
+      handle
+      tags
+      priceRangeV2 {
+        minVariantPrice {
+          amount
+        }
+      }
+      bg: translations(locale: "bg") {
+        key
+        locale
+        value
+      }
+      images(first: 1) {
+        edges {
+          node {
+            altText
+            url
+          }
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useGetProductQuery__
+ *
+ * To run a query within a React component, call `useGetProductQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProductQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProductQuery({
+ *   variables: {
+ *      productHandle: // value for 'productHandle'
+ *   },
+ * });
+ */
+export function useGetProductQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetProductQuery,
+    GetProductQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetProductQuery, GetProductQueryVariables>(
+    GetProductDocument,
+    options
+  )
+}
+export function useGetProductLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetProductQuery,
+    GetProductQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetProductQuery, GetProductQueryVariables>(
+    GetProductDocument,
+    options
+  )
+}
+export type GetProductQueryHookResult = ReturnType<typeof useGetProductQuery>
+export type GetProductLazyQueryHookResult = ReturnType<
+  typeof useGetProductLazyQuery
+>
+export type GetProductQueryResult = Apollo.QueryResult<
+  GetProductQuery,
+  GetProductQueryVariables
+>
+export const GetProductsDocument = gql`
+  query GetProducts($first: Int!) {
+    products(first: $first) {
       edges {
         node {
           id
@@ -30450,46 +31056,50 @@ export const ProductsDocument = gql`
 `
 
 /**
- * __useProductsQuery__
+ * __useGetProductsQuery__
  *
- * To run a query within a React component, call `useProductsQuery` and pass it any options that fit your needs.
- * When your component renders, `useProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetProductsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useProductsQuery({
+ * const { data, loading, error } = useGetProductsQuery({
  *   variables: {
+ *      first: // value for 'first'
  *   },
  * });
  */
-export function useProductsQuery(
-  baseOptions?: Apollo.QueryHookOptions<ProductsQuery, ProductsQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<ProductsQuery, ProductsQueryVariables>(
-    ProductsDocument,
-    options
-  )
-}
-export function useProductsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    ProductsQuery,
-    ProductsQueryVariables
+export function useGetProductsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetProductsQuery,
+    GetProductsQueryVariables
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<ProductsQuery, ProductsQueryVariables>(
-    ProductsDocument,
+  return Apollo.useQuery<GetProductsQuery, GetProductsQueryVariables>(
+    GetProductsDocument,
     options
   )
 }
-export type ProductsQueryHookResult = ReturnType<typeof useProductsQuery>
-export type ProductsLazyQueryHookResult = ReturnType<
-  typeof useProductsLazyQuery
+export function useGetProductsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetProductsQuery,
+    GetProductsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetProductsQuery, GetProductsQueryVariables>(
+    GetProductsDocument,
+    options
+  )
+}
+export type GetProductsQueryHookResult = ReturnType<typeof useGetProductsQuery>
+export type GetProductsLazyQueryHookResult = ReturnType<
+  typeof useGetProductsLazyQuery
 >
-export type ProductsQueryResult = Apollo.QueryResult<
-  ProductsQuery,
-  ProductsQueryVariables
+export type GetProductsQueryResult = Apollo.QueryResult<
+  GetProductsQuery,
+  GetProductsQueryVariables
 >
