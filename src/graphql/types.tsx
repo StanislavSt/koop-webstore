@@ -15055,7 +15055,7 @@ export type Mutation = {
    *
    */
   standardMetafieldDefinitionEnable?: Maybe<StandardMetafieldDefinitionEnablePayload>
-  /** Creates a storefront access token. */
+  /** Creates a storefront access token. An app can have a maximum of 100 active storefront access tokens for each shop. */
   storefrontAccessTokenCreate?: Maybe<StorefrontAccessTokenCreatePayload>
   /** Deletes a storefront access token. */
   storefrontAccessTokenDelete?: Maybe<StorefrontAccessTokenDeletePayload>
@@ -25578,7 +25578,7 @@ export enum SellingPlanGroupUserErrorCode {
   SellingPlanBillingPolicyMissing = 'SELLING_PLAN_BILLING_POLICY_MISSING',
   /** Must include at least one selling plan. */
   SellingPlanCountLowerBound = 'SELLING_PLAN_COUNT_LOWER_BOUND',
-  /** Exceeded the selling plan limit (20). */
+  /** Exceeded the selling plan limit (31). */
   SellingPlanCountUpperBound = 'SELLING_PLAN_COUNT_UPPER_BOUND',
   /** Missing delivery policy. */
   SellingPlanDeliveryPolicyMissing = 'SELLING_PLAN_DELIVERY_POLICY_MISSING',
@@ -28146,7 +28146,9 @@ export type StandardizedProductTypeInput = {
 }
 
 /**
- * Token used to delegate unauthenticated access scopes to clients that need to access the unautheticated Storefront API.
+ * A token that's used to delegate unauthenticated access scopes to clients that need to access
+ * the unauthenticated Storefront API. An app can have a maximum of 100 active storefront access
+ * tokens for each shop.
  *
  */
 export type StorefrontAccessToken = Node & {
@@ -30875,6 +30877,89 @@ export type DeliveryProfileUpdatePayload = {
   userErrors: Array<UserError>
 }
 
+export type GetArtistQueryVariables = Exact<{
+  artistHandle: Scalars['String']
+}>
+
+export type GetArtistQuery = {
+  __typename?: 'QueryRoot'
+  collectionByHandle?: {
+    __typename?: 'Collection'
+    title: string
+    handle: string
+    products: {
+      __typename?: 'ProductConnection'
+      nodes: Array<{
+        __typename?: 'Product'
+        title: string
+        description: string
+        priceRangeV2: {
+          __typename?: 'ProductPriceRangeV2'
+          minVariantPrice: { __typename?: 'MoneyV2'; amount: any }
+        }
+        bg: Array<{
+          __typename?: 'PublishedTranslation'
+          key: string
+          locale: string
+          value?: string | null
+        }>
+        images: {
+          __typename?: 'ImageConnection'
+          edges: Array<{
+            __typename?: 'ImageEdge'
+            node: { __typename?: 'Image'; altText?: string | null; url: any }
+          }>
+        }
+      }>
+    }
+    metafields: {
+      __typename?: 'MetafieldConnection'
+      edges: Array<{
+        __typename?: 'MetafieldEdge'
+        node: {
+          __typename?: 'Metafield'
+          key: string
+          id: string
+          value: string
+          type: string
+        }
+      }>
+    }
+  } | null
+}
+
+export type GetCollectionsQueryVariables = Exact<{
+  first: Scalars['Int']
+}>
+
+export type GetCollectionsQuery = {
+  __typename?: 'QueryRoot'
+  collections: {
+    __typename?: 'CollectionConnection'
+    edges: Array<{
+      __typename?: 'CollectionEdge'
+      node: {
+        __typename?: 'Collection'
+        title: string
+        handle: string
+        metafields: {
+          __typename?: 'MetafieldConnection'
+          edges: Array<{
+            __typename?: 'MetafieldEdge'
+            node: {
+              __typename?: 'Metafield'
+              key: string
+              id: string
+              value: string
+              type: string
+            }
+          }>
+        }
+      }
+    }>
+  }
+}
+
 export type GetProductQueryVariables = Exact<{
   productHandle: Scalars['String']
 }>
@@ -30945,6 +31030,167 @@ export type GetProductsQuery = {
   }
 }
 
+export const GetArtistDocument = gql`
+  query GetArtist($artistHandle: String!) {
+    collectionByHandle(handle: $artistHandle) {
+      title
+      handle
+      products(first: 5) {
+        nodes {
+          title
+          priceRangeV2 {
+            minVariantPrice {
+              amount
+            }
+          }
+          bg: translations(locale: "bg") {
+            key
+            locale
+            value
+          }
+          images(first: 1) {
+            edges {
+              node {
+                altText
+                url
+              }
+            }
+          }
+          description
+        }
+      }
+      metafields(first: 10) {
+        edges {
+          node {
+            key
+            id
+            value
+            type
+          }
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useGetArtistQuery__
+ *
+ * To run a query within a React component, call `useGetArtistQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetArtistQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetArtistQuery({
+ *   variables: {
+ *      artistHandle: // value for 'artistHandle'
+ *   },
+ * });
+ */
+export function useGetArtistQuery(
+  baseOptions: Apollo.QueryHookOptions<GetArtistQuery, GetArtistQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetArtistQuery, GetArtistQueryVariables>(
+    GetArtistDocument,
+    options
+  )
+}
+export function useGetArtistLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetArtistQuery,
+    GetArtistQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetArtistQuery, GetArtistQueryVariables>(
+    GetArtistDocument,
+    options
+  )
+}
+export type GetArtistQueryHookResult = ReturnType<typeof useGetArtistQuery>
+export type GetArtistLazyQueryHookResult = ReturnType<
+  typeof useGetArtistLazyQuery
+>
+export type GetArtistQueryResult = Apollo.QueryResult<
+  GetArtistQuery,
+  GetArtistQueryVariables
+>
+export const GetCollectionsDocument = gql`
+  query GetCollections($first: Int!) {
+    collections(first: $first) {
+      edges {
+        node {
+          title
+          handle
+          metafields(first: 3) {
+            edges {
+              node {
+                key
+                id
+                value
+                type
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useGetCollectionsQuery__
+ *
+ * To run a query within a React component, call `useGetCollectionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCollectionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCollectionsQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *   },
+ * });
+ */
+export function useGetCollectionsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetCollectionsQuery,
+    GetCollectionsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetCollectionsQuery, GetCollectionsQueryVariables>(
+    GetCollectionsDocument,
+    options
+  )
+}
+export function useGetCollectionsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetCollectionsQuery,
+    GetCollectionsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetCollectionsQuery, GetCollectionsQueryVariables>(
+    GetCollectionsDocument,
+    options
+  )
+}
+export type GetCollectionsQueryHookResult = ReturnType<
+  typeof useGetCollectionsQuery
+>
+export type GetCollectionsLazyQueryHookResult = ReturnType<
+  typeof useGetCollectionsLazyQuery
+>
+export type GetCollectionsQueryResult = Apollo.QueryResult<
+  GetCollectionsQuery,
+  GetCollectionsQueryVariables
+>
 export const GetProductDocument = gql`
   query GetProduct($productHandle: String!) {
     productByHandle(handle: $productHandle) {
