@@ -1,3 +1,3 @@
-import CustomerCarePage from '../components/customerCare/CustomerCarePage'
+import OrderPage from '../components/Order/OrderPage'
 
-export default CustomerCarePage
+export default OrderPage

@@ -20,7 +20,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
     query: GetProducts,
     variables: { first: 100 },
   })
-
   const paths = data.products.edges.map((edge) => ({
     params: { handle: edge.node.handle },
   }))

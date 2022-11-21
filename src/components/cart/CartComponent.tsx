@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client'
 
-const GET_CART_ITEMS = gql`
+export const GET_CART_ITEMS = gql`
   query GetCartItems {
     cartItems @client
   }
@@ -18,12 +18,7 @@ export const Cart = () => {
       {data && data.cartItems.length === 0 ? (
         <p>Cart is empty</p>
       ) : (
-        <ul>
-          {data &&
-            data.cartItems.map((item: any, index: number) => (
-              <li key={index}>{item.title}</li>
-            ))}
-        </ul>
+        <p>{data.cartItems.length}</p>
       )}
     </>
   )

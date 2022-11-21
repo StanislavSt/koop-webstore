@@ -31301,7 +31301,7 @@ export const GetProductDocument = gql`
           }
         }
       }
-      variants(first: 2) {
+      variants(first: 1) {
         edges {
           node {
             id
@@ -31387,7 +31387,7 @@ export const GetProductsDocument = gql`
               }
             }
           }
-          variants(first: 2) {
+          variants(first: 1) {
             edges {
               node {
                 id

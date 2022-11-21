@@ -8,30 +8,25 @@ import Link from 'next/link'
 import { Cart } from '../cart/CartComponent'
 import CreateCheckout from '../../graphql/queries/CreateCheckout'
 import storefrontClient from '../../graphql/apollo-client-storefront'
+import { useQuery } from '@apollo/client'
+import { GET_CART_ITEMS } from '../cart/CartComponent'
 
 const IndexPage = ({ products }: GetProductsQuery) => {
   const { locale } = useRouter()
+  const { data } = useQuery(GET_CART_ITEMS)
+
   async function createCheckout() {
     const variables = {
       input: {
-        lineItems: [
-          {
-            variantId: 'gid://shopify/ProductVariant/40326411059336',
-            quantity: 1,
-          },
-          {
-            variantId: 'gid://shopify/ProductVariant/40326412435592',
-            quantity: 1,
-          },
-        ],
+        lineItems: [...data.cartItems],
       },
     }
 
-    const { data } = await storefrontClient.mutate({
+    const checkoutData = await storefrontClient.mutate({
       mutation: CreateCheckout,
       variables,
     })
-    const { webUrl } = data.checkoutCreate.checkout
+    const { webUrl } = checkoutData.data.checkoutCreate.checkout
     window.location.href = webUrl
   }
   return (
