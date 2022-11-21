@@ -25,6 +25,13 @@ const GetProduct = gql`
           }
         }
       }
+      variants(first: 5) {
+        edges {
+          node {
+            id
+          }
+        }
+      }
     }
   }
 `
