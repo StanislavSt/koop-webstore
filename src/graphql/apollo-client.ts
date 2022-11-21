@@ -10,7 +10,6 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      'Access-Control-Allow-Origin': '*',
       'X-Shopify-Access-Token': token ? `${token}` : '',
     },
   }
