@@ -5766,7 +5766,7 @@ export enum DeliveryLegacyModeBlockedReason {
 }
 
 /**
- * A location group is a collection of active locations. They share zones and delivery methods across delivery
+ * A location group is a collection of locations. They share zones and delivery methods across delivery
  * profiles.
  *
  */
@@ -5774,12 +5774,12 @@ export type DeliveryLocationGroup = Node & {
   __typename?: 'DeliveryLocationGroup'
   /** A globally-unique identifier. */
   id: Scalars['ID']
-  /** A list of active locations that are part of this location group. */
+  /** A list of all locations that are part of this location group. */
   locations: LocationConnection
 }
 
 /**
- * A location group is a collection of active locations. They share zones and delivery methods across delivery
+ * A location group is a collection of locations. They share zones and delivery methods across delivery
  * profiles.
  *
  */
@@ -7878,6 +7878,8 @@ export type DraftFulfillment = {
  * - Take pre-orders.
  * - Save an order as a draft and resume working on it later.
  *
+ * For Draft orders in multiple currencies `presentment_money` is the source of truth for what a customer is going to be charged and `shop_money` is an estimate of what the merchant might receive in their local currency.
+ *
  * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
  *
  */
@@ -8009,6 +8011,8 @@ export type DraftOrder = CommentEventSubject &
  * - Take pre-orders.
  * - Save an order as a draft and resume working on it later.
  *
+ * For Draft orders in multiple currencies `presentment_money` is the source of truth for what a customer is going to be charged and `shop_money` is an estimate of what the merchant might receive in their local currency.
+ *
  * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
  *
  */
@@ -8033,6 +8037,8 @@ export type DraftOrderEventsArgs = {
  * - Take pre-orders.
  * - Save an order as a draft and resume working on it later.
  *
+ * For Draft orders in multiple currencies `presentment_money` is the source of truth for what a customer is going to be charged and `shop_money` is an estimate of what the merchant might receive in their local currency.
+ *
  * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
  *
  */
@@ -8054,6 +8060,8 @@ export type DraftOrderLineItemsArgs = {
  * - Sell products at discount or wholesale rates.
  * - Take pre-orders.
  * - Save an order as a draft and resume working on it later.
+ *
+ * For Draft orders in multiple currencies `presentment_money` is the source of truth for what a customer is going to be charged and `shop_money` is an estimate of what the merchant might receive in their local currency.
  *
  * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
  *
@@ -8079,6 +8087,8 @@ export type DraftOrderLocalizationExtensionsArgs = {
  * - Take pre-orders.
  * - Save an order as a draft and resume working on it later.
  *
+ * For Draft orders in multiple currencies `presentment_money` is the source of truth for what a customer is going to be charged and `shop_money` is an estimate of what the merchant might receive in their local currency.
+ *
  * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
  *
  */
@@ -8097,6 +8107,8 @@ export type DraftOrderMetafieldArgs = {
  * - Sell products at discount or wholesale rates.
  * - Take pre-orders.
  * - Save an order as a draft and resume working on it later.
+ *
+ * For Draft orders in multiple currencies `presentment_money` is the source of truth for what a customer is going to be charged and `shop_money` is an estimate of what the merchant might receive in their local currency.
  *
  * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
  *
@@ -8121,6 +8133,8 @@ export type DraftOrderMetafieldsArgs = {
  * - Take pre-orders.
  * - Save an order as a draft and resume working on it later.
  *
+ * For Draft orders in multiple currencies `presentment_money` is the source of truth for what a customer is going to be charged and `shop_money` is an estimate of what the merchant might receive in their local currency.
+ *
  * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
  *
  */
@@ -8139,6 +8153,8 @@ export type DraftOrderPrivateMetafieldArgs = {
  * - Sell products at discount or wholesale rates.
  * - Take pre-orders.
  * - Save an order as a draft and resume working on it later.
+ *
+ * For Draft orders in multiple currencies `presentment_money` is the source of truth for what a customer is going to be charged and `shop_money` is an estimate of what the merchant might receive in their local currency.
  *
  * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
  *
@@ -9489,7 +9505,10 @@ export type FulfillmentLineItemInput = {
  */
 export type FulfillmentOrder = Node & {
   __typename?: 'FulfillmentOrder'
-  /** The fulfillment order's assigned location. This is the location expected to perform fulfillment. */
+  /**
+   * The fulfillment order's assigned location. This is the location where the fulfillment is expected to happen.
+   *
+   */
   assignedLocation: FulfillmentOrderAssignedLocation
   /** Delivery method of this fulfillment order. */
   deliveryMethod?: Maybe<DeliveryMethod>
@@ -9625,8 +9644,7 @@ export enum FulfillmentOrderAction {
 }
 
 /**
- * Represents the assigned location of a fulfillment order, which is a snapshot of the location
- * at which the fulfillment order was created. The assigned location is expected to perform fulfillment.
+ * The fulfillment order's assigned location. This is the location where the fulfillment is expected to happen.
  *
  */
 export type FulfillmentOrderAssignedLocation = {
@@ -9640,9 +9658,9 @@ export type FulfillmentOrderAssignedLocation = {
   /** The two-letter country code of the location. */
   countryCode: CountryCode
   /**
-   * The location where the fulfillment order was created. This can differ from the
-   * `FulfillmentOrderAssignedLocation` if the location was updated since the fulfillment order
-   * was closed.
+   * The location where the fulfillment is expected to happen. This value might be different from
+   * `FulfillmentOrderAssignedLocation` if the location's attributes were updated
+   * after the fulfillment order was closed.
    *
    */
   location?: Maybe<Location>
@@ -10229,9 +10247,24 @@ export type FulfillmentOriginAddressInput = {
  */
 export type FulfillmentService = {
   __typename?: 'FulfillmentService'
-  /** The callback URL the fulfillment service has registered for requests. */
+  /**
+   * The callback URL that the fulfillment service has registered for requests. The following considerations apply:
+   *
+   * - Shopify queries the <code>callback_url/fetch_tracking_numbers</code> endpoint to retrieve tracking numbers
+   *     for orders, if `inventoryManagement` is set to `true`.
+   * - Shopify queries the <code>callback_url/fetch_stock</code> endpoint to retrieve inventory levels,
+   *     if `trackingSupport` is set to `true`.
+   * - Shopify uses the <code>callback_url/fulfillment_order_notification</code> endpoint to send
+   *     [fulfillment and cancellation requests](https://shopify.dev/apps/fulfillment/fulfillment-service-apps/manage-fulfillments#step-2-receive-fulfillment-requests-and-cancellations),
+   *     if the fulfillment service has opted in to the fulfillment order based workflow for managing fulfillments
+   *     (`fulfillmentOrdersOptIn` is set to `true`).
+   *
+   */
   callbackUrl?: Maybe<Scalars['URL']>
-  /** Whether the fulfillment service has opted into fulfillment order based requests. */
+  /**
+   * Whether the fulfillment service uses the [fulfillment order based workflow](https://shopify.dev/apps/fulfillment/fulfillment-service-apps/manage-fulfillments) for managing fulfillments.
+   *
+   */
   fulfillmentOrdersOptIn: Scalars['Boolean']
   /** Human-readable unique identifier for this fulfillment service. */
   handle: Scalars['String']
@@ -14557,7 +14590,17 @@ export type Mutation = {
   draftOrderInvoicePreview?: Maybe<DraftOrderInvoicePreviewPayload>
   /** Sends an email invoice for a draft order. */
   draftOrderInvoiceSend?: Maybe<DraftOrderInvoiceSendPayload>
-  /** Updates a draft order. */
+  /**
+   * Updates a draft order.
+   *
+   * If a checkout has been started for a draft order, any update to the draft will unlink the checkout. Checkouts
+   * are created but not immediately completed when opening the merchant credit card modal in the admin, and when a
+   * buyer opens the invoice URL. This is usually fine, but there is an edge case where a checkout is in progress
+   * and the draft is updated before the checkout completes. This will not interfere with the checkout and order
+   * creation, but if the link from draft to checkout is broken the draft will remain open even after the order is
+   * created.
+   *
+   */
   draftOrderUpdate?: Maybe<DraftOrderUpdatePayload>
   /**
    * Creates a new Amazon EventBridge webhook subscription.
@@ -14827,11 +14870,14 @@ export type Mutation = {
    * Creates a product.
    *
    * If you need to create a product with many
-   * [collections](https://shopify.dev/api/admin-graphql/latest/mutations/productCreate#field-productinput-collectionstojoin),
-   * [tags](https://shopify.dev/api/admin-graphql/latest/mutations/productCreate#field-productinput-tags), and
-   * [product variants](https://shopify.dev/api/admin-graphql/latest/input-objects/ProductVariantInput) that are active at many
-   * [locations](https://shopify.dev/api/admin-graphql/latest/input-objects/InventoryLevelInput), then you
-   * should first create the product with just the variants.
+   * [variants](https://shopify.dev/api/admin-graphql/latest/input-objects/ProductVariantInput)
+   * that are active at several
+   * [locations](https://shopify.dev/api/admin-graphql/latest/input-objects/InventoryLevelInput),
+   * especially with a lot of
+   * [collections](https://shopify.dev/api/admin-graphql/latest/mutations/productCreate#field-productinput-collectionstojoin)
+   * and
+   * [tags](https://shopify.dev/api/admin-graphql/latest/mutations/productCreate#field-productinput-tags),
+   * then you should first create the product with just the variants.
    *
    * After the product is created, you can activate the variants at locations
    * and add the other related objects to the product. This reduces the size of each mutation and increases the likelihood that it will
@@ -14851,19 +14897,41 @@ export type Mutation = {
    * on each [inventory item](https://shopify.dev/api/admin-graphql/latest/objects/InventoryItem) to activate it at the appropriate locations.
    *
    * 4. After activating the variants at the locations, adjust inventory quantities at each location using the
-   * [inventoryBulkAdjustQuantityAtLocation](https://shopify.dev/admin-graphql/latest/mutations/inventoryBulkAdjustQuantityAtLocation) mutation.
+   * [inventoryBulkAdjustQuantityAtLocation](https://shopify.dev/api/admin-graphql/latest/mutations/inventoryBulkAdjustQuantityAtLocation) mutation.
    *
    */
   productCreate?: Maybe<ProductCreatePayload>
   /** Creates media for a product. */
   productCreateMedia?: Maybe<ProductCreateMediaPayload>
-  /** Deletes a product, including all associated variants and media. */
+  /**
+   * Deletes a product, including all associated variants and media.
+   *
+   * As of API version `2023-01`, if you need to delete a large product, such as one that has many
+   * [variants](https://shopify.dev/api/admin-graphql/latest/input-objects/ProductVariantInput)
+   * that are active at several
+   * [locations](https://shopify.dev/api/admin-graphql/latest/input-objects/InventoryLevelInput),
+   * you may encounter timeout errors. To avoid these timeout errors, you can instead use the asynchronous
+   * [ProductDeleteAsync](https://shopify.dev/api/admin-graphql/2023-01/mutations/productDeleteAsync)
+   * mutation.
+   *
+   */
   productDelete?: Maybe<ProductDeletePayload>
   /** Removes product images from the product. */
   productDeleteImages?: Maybe<ProductDeleteImagesPayload>
   /** Deletes media for a product. */
   productDeleteMedia?: Maybe<ProductDeleteMediaPayload>
-  /** Duplicates a product. */
+  /**
+   * Duplicates a product.
+   *
+   * As of API version `2023-01`, if you need to duplicate a large product, such as one that has many
+   * [variants](https://shopify.dev/api/admin-graphql/latest/input-objects/ProductVariantInput)
+   * that are active at several
+   * [locations](https://shopify.dev/api/admin-graphql/latest/input-objects/InventoryLevelInput),
+   * you may encounter timeout errors. To avoid these timeout errors, you can instead use the asynchronous
+   * [ProductDuplicateAsync](https://shopify.dev/api/admin-graphql/2023-01/mutations/productDuplicateAsync)
+   * mutation.
+   *
+   */
   productDuplicate?: Maybe<ProductDuplicatePayload>
   /** Updates an image of a product. */
   productImageUpdate?: Maybe<ProductImageUpdatePayload>
@@ -16792,10 +16860,7 @@ export type Order = CommentEventSubject &
     alerts: Array<ResourceAlert>
     /** The application that created the order. */
     app?: Maybe<OrderApp>
-    /**
-     * The billing address of the customer.
-     *
-     */
+    /** The billing address of the customer. */
     billingAddress?: Maybe<MailingAddress>
     /** Whether the billing address matches the shipping address. */
     billingAddressMatchesShippingAddress: Scalars['Boolean']
@@ -16899,10 +16964,7 @@ export type Order = CommentEventSubject &
      *
      */
     customAttributes: Array<Attribute>
-    /**
-     * The customer that placed the order.
-     *
-     */
+    /** The customer that placed the order. */
     customer?: Maybe<Customer>
     /** Whether the customer agreed to receive marketing materials. */
     customerAcceptsMarketing: Scalars['Boolean']
@@ -16922,7 +16984,7 @@ export type Order = CommentEventSubject &
      *
      */
     customerLocale?: Maybe<Scalars['String']>
-    /** A list of discounts that are applied to the order. */
+    /** A list of discounts that are applied to the order, not including order edits and refunds. */
     discountApplications: DiscountApplicationConnection
     /** The discount code used for the order. */
     discountCode?: Maybe<Scalars['String']>
@@ -17117,10 +17179,7 @@ export type Order = CommentEventSubject &
      *
      */
     refundable: Scalars['Boolean']
-    /**
-     * A list of refunds that have been applied to the order.
-     *
-     */
+    /** A list of refunds that have been applied to the order. */
     refunds: Array<Refund>
     /** The URL of the source that the order originated from, if found in the domain registry. */
     registeredSourceUrl?: Maybe<Scalars['URL']>
@@ -22399,7 +22458,7 @@ export type QueryRoot = {
    */
   appByHandle?: Maybe<App>
   /**
-   * Fetches app by apiKey.
+   * Fetches an app by its client ID.
    * Returns null if the app doesn't exist.
    *
    */
@@ -23948,7 +24007,13 @@ export type ResourceLimit = {
   quantityUsed?: Maybe<Scalars['Int']>
 }
 
-/** A resource publication represents that a resource has been published to a publication. */
+/**
+ * A resource publication represents information about the publication of a resource.
+ * An instance of `ResourcePublication`, unlike `ResourcePublicationV2`, can be neither published or scheduled to be published.
+ *
+ * See [ResourcePublicationV2](/api/admin-graphql/latest/objects/ResourcePublicationV2) for more context.
+ *
+ */
 export type ResourcePublication = {
   __typename?: 'ResourcePublication'
   /**
@@ -23997,7 +24062,10 @@ export type ResourcePublicationEdge = {
 }
 
 /**
- * A resource publication represents that a resource either has been published or will be published to a publication.
+ * A resource publication represents information about the publication of a resource.
+ * Unlike `ResourcePublication`, an instance of `ResourcePublicationV2` can't be unpublished. It must either be published or scheduled to be published.
+ *
+ * See [ResourcePublication](/api/admin-graphql/latest/objects/ResourcePublication) for more context.
  *
  */
 export type ResourcePublicationV2 = {
@@ -26135,7 +26203,10 @@ export type Shop = HasMetafields &
     enabledPresentmentCurrencies: Array<CurrencyCode>
     /** The set of features enabled for the shop. */
     features: ShopFeatures
-    /** The paginated list of merchant-managed and third-party fulfillment orders. */
+    /**
+     * The paginated list of merchant-managed and third-party fulfillment orders.
+     * @deprecated Use `QueryRoot.fulfillmentOrders` instead.
+     */
     fulfillmentOrders: FulfillmentOrderConnection
     /** List of the shop's installed fulfillment services. */
     fulfillmentServices: Array<FulfillmentService>
@@ -26995,7 +27066,7 @@ export enum ShopPolicyType {
   RefundPolicy = 'REFUND_POLICY',
   /** The shipping policy. */
   ShippingPolicy = 'SHIPPING_POLICY',
-  /** The subscription policy. */
+  /** The purchase options cancellation policy. */
   SubscriptionPolicy = 'SUBSCRIPTION_POLICY',
   /** The terms of sale. */
   TermsOfSale = 'TERMS_OF_SALE',
@@ -30989,6 +31060,13 @@ export type GetProductQuery = {
         node: { __typename?: 'Image'; altText?: string | null; url: any }
       }>
     }
+    variants: {
+      __typename?: 'ProductVariantConnection'
+      edges: Array<{
+        __typename?: 'ProductVariantEdge'
+        node: { __typename?: 'ProductVariant'; id: string }
+      }>
+    }
   } | null
 }
 
@@ -31023,6 +31101,13 @@ export type GetProductsQuery = {
           edges: Array<{
             __typename?: 'ImageEdge'
             node: { __typename?: 'Image'; altText?: string | null; url: any }
+          }>
+        }
+        variants: {
+          __typename?: 'ProductVariantConnection'
+          edges: Array<{
+            __typename?: 'ProductVariantEdge'
+            node: { __typename?: 'ProductVariant'; id: string }
           }>
         }
       }
@@ -31216,6 +31301,13 @@ export const GetProductDocument = gql`
           }
         }
       }
+      variants(first: 2) {
+        edges {
+          node {
+            id
+          }
+        }
+      }
     }
   }
 `
@@ -31292,6 +31384,13 @@ export const GetProductsDocument = gql`
               node {
                 altText
                 url
+              }
+            }
+          }
+          variants(first: 2) {
+            edges {
+              node {
+                id
               }
             }
           }

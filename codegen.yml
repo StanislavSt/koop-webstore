@@ -3,7 +3,7 @@ schema:
   - ${NEXT_PUBLIC_SHOPIFY_ADMIN_API_URL}:
       headers:
         X-Shopify-Access-Token: ${NEXT_PUBLIC_SHOPIFY_ACCESS_TOKEN}
-documents: 'src/graphql/**'
+documents: ['src/graphql/**', '!src/graphql/queries/CreateCheckout.ts']
 generates:
   src/graphql/types.tsx:
     plugins:
