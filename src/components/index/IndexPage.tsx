@@ -11,7 +11,6 @@ import storefrontClient from '../../graphql/apollo-client-storefront'
 
 const IndexPage = ({ products }: GetProductsQuery) => {
   const { locale } = useRouter()
-  const cart = [{ variantId: 'gid://shopify/ProductVariant/40326411059336', quantity: 2 }]
   async function createCheckout() {
     const variables = {
       input: {
