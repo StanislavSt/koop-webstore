@@ -1,5 +1,6 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client'
+import { ApolloClient, createHttpLink } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
+import { CustomInMemoryCache } from './cache'
 
 const httpLink = createHttpLink({
   uri: process.env.NEXT_PUBLIC_SHOPIFY_ADMIN_API_URL,
@@ -14,10 +15,11 @@ const authLink = setContext((_, { headers }) => {
     },
   }
 })
+
 const client = new ApolloClient({
   ssrMode: typeof window === 'undefined',
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache()
+  cache: CustomInMemoryCache,
 })
 
 export default client

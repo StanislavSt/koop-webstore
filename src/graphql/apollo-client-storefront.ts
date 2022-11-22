@@ -17,7 +17,7 @@ const authLink = setContext((_, { headers }) => {
 const storefrontClient = new ApolloClient({
   ssrMode: typeof window === 'undefined',
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 })
 
 export default storefrontClient
