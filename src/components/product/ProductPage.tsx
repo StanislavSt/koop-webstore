@@ -2,14 +2,16 @@ import { GetProductQuery } from '../../graphql/types'
 import Layout from '../layout/Layout'
 import { cartItemsVar } from '../../graphql/cache'
 import { useReactiveVar } from '@apollo/client'
+import { useState } from 'react'
 const ProductPage = ({
   product,
 }: {
   product: GetProductQuery['productByHandle']
 }) => {
+  let selectedInit: {[key: string]: string} = {};
+  let [selected, setSelected] = useState(selectedInit)
   const CartItemsVar = useReactiveVar(cartItemsVar)
   const firstImage = product?.images.edges[0].node
-  console.log(product)
   return (
     <Layout title="Product page">
       <div className="bg-white">
@@ -41,7 +43,14 @@ const ProductPage = ({
                   <ul>
                     {option.values.map(value => (
                       <li>
-                        <button>{value}</button>
+                        <button 
+                          onClick={()=> {
+                            setSelected({
+                              ...selected,
+                              [option.name]: value
+                            })
+                          }}
+                        >{value}</button>
                       </li>
                     ))}
                   </ul>
