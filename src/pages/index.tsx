@@ -13,7 +13,7 @@ export const getStaticProps: GetStaticProps = async () => {
     GetProductsQueryVariables
   >({
     query: GetProducts,
-    variables: { first: 10 },
+    variables: { first: 15 },
   })
 
   return {
