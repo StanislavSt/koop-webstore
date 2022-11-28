@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import Layout from '../layout/Layout'
 
-const OrderPage = () => {
+const DeliveryPage = () => {
   const { locale } = useRouter()
   const title = locale === 'bg' ? 'Доставка' : 'Delivery'
   return (
@@ -9,4 +9,4 @@ const OrderPage = () => {
   )
 }
 
-export default OrderPage
+export default DeliveryPage

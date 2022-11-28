@@ -8,7 +8,6 @@ const Footer = () => {
   return (
     <footer className="w-full border-t border-t-black flex justify-between  pt-4 pb-8">
       <section className="flex gap-[40px] items-end">
-        <span className="text-[49px] leading-10">BY: </span>
         <Image
           src="/KO-OP_Logo_2-01 1.png"
           width={119}
