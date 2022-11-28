@@ -25,12 +25,12 @@ const GetProduct = gql`
           }
         }
       }
-      options{
+      options {
         name
         values
         id
       }
-      variants(first: 3) {
+      variants(first: 30) {
         edges {
           node {
             selectedOptions {
@@ -43,7 +43,6 @@ const GetProduct = gql`
             availableForSale
             inventoryQuantity
             displayName
-            
           }
         }
       }
