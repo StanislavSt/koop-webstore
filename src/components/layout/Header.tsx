@@ -1,110 +1,27 @@
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
-
-const Filters = [
-  {
-    format: 'print',
-    technique: ['sito', 'rizo', 'zin'],
-  },
-  {
-    format: 'book',
-    technique: ['book'],
-  },
-  {
-    format: 'object',
-    technique: ['digital', 'glass', 'magazine', 'rock', 'wood'],
-  },
-]
+import Filters from './FIlters'
+import LanguageSwitcher from './LanguageSwitcher'
+import { Button } from '../common/Button'
+import { useTranslation } from 'next-i18next'
 
 const Header = () => {
-  const [selectedFormat, setSelectedFormat] = useState('')
-  const [selectedTechniques, setSelectedTechniques] = useState<string[]>([])
+  const { t } = useTranslation()
 
-  useEffect(() => {
-    setSelectedTechniques([])
-  }, [selectedFormat])
-
-  const isTechniqueSelected = (technique: string) =>
-    selectedTechniques.some((x) => x === technique)
-
-  const clearFilters = () => {
-    setSelectedFormat('')
-    setSelectedTechniques([])
-  }
   return (
-    <header className="flex mt-3">
-      <section className="flex gap-[10rem] min-h-[13rem]">
-        <div className="flex flex-col justify-between">
-          <div>
-            <h3 id="format" className="text-[#1E90FF] text-[20px]">
-              format
-            </h3>
-            <ul
-              aria-labelledby="format"
-              className="inline-flex flex-col text-[48px] uppercase leading-[36px] items-start"
-            >
-              {Filters.map((filter) => (
-                <li
-                  key={filter.format}
-                  className={`cursor-pointer hover:text-[#1E90FF] ${
-                    filter.format === selectedFormat && 'text-[#1E90FF]'
-                  }`}
-                  onClick={() => setSelectedFormat(filter.format)}
-                >
-                  {filter.format}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <button
-            onClick={() => clearFilters()}
-            className="bg-black text-white rounded-[4px] w-[105px] h-[21px] text-left px-1  hover:opacity-70"
-          >
-            clear filters
-          </button>
-        </div>
-        <div className="min-w-[350px]">
-          {selectedFormat && (
-            <>
-              <h3 id="format" className="text-[#1E90FF] text-[20px]">
-                technique
-              </h3>
-              <ul
-                aria-labelledby="format"
-                className="inline-flex flex-col text-[48px] uppercase leading-[36px] items-start"
-              >
-                {Filters.find(
-                  (filter) => filter.format === selectedFormat
-                )?.technique.map((technique) => (
-                  <li
-                    key={technique}
-                    className={`cursor-pointer hover:text-[#1E90FF] ${
-                      isTechniqueSelected(technique) && 'text-[#1E90FF]'
-                    }`}
-                    onClick={() =>
-                      setSelectedTechniques([...selectedTechniques, technique])
-                    }
-                  >
-                    {technique}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-        </div>
-      </section>
-      <h1 className="text-[185px] leading-[170px]">LOGO</h1>
-      <section className="ml-[3rem] w-full flex justify-between">
+    <header className="flex mt-3 mx-5">
+      <div className="flex-grow">
+        <Filters />
+      </div>
+      <h1 className="hidden uppercase lg:block lg:text-[110px] xl:text-[155px] 2xl:text-[185px] leading-[170px]">
+        {t('logo')}
+      </h1>
+      <section className="ml-[3rem] flex gap-[1rem] lg:gap-[2rem] xl:gap-[3rem] 2xl:gap-[5rem] justify-between">
         <Link href="/info">
-          <a className="bg-black text-white rounded-[4px] w-[90px] h-[21px] text-left px-2 hover:opacity-70">
-            info
-          </a>
+          <Button>{t('info')}</Button>
         </Link>
         <div className="flex flex-col items-end">
-          <button className="bg-black text-white rounded-[4px] w-[90px] h-[21px] text-right px-2">
-            english
-          </button>
-          <h3 className="text-[#1E90FF] text-[20px]">cart: 2</h3>
+          <LanguageSwitcher />
+          <h3 className="text-[#1E90FF] text-[20px]">{t('cart')}: 2</h3>
         </div>
       </section>
     </header>
