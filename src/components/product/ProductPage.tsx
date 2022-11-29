@@ -5,6 +5,7 @@ import { cartItemsVar } from '../../graphql/cache'
 import { useReactiveVar } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import { Cart } from '../cart/CartComponent'
+import { Button } from '../common'
 const ProductPage = ({ product }: { product: Product }) => {
   const selectedInit: { [key: string]: string } = {}
   const [selectedOptions, setSelected] = useState(selectedInit)
@@ -42,6 +43,7 @@ const ProductPage = ({ product }: { product: Product }) => {
 
   const CartItemsVar = useReactiveVar(cartItemsVar)
   const firstImage = product?.images.edges[0].node
+
   return (
     <Layout title="Product page">
       <div className="bg-white">
@@ -55,8 +57,8 @@ const ProductPage = ({ product }: { product: Product }) => {
               alt={firstImage?.altText || ''}
             />
           </div>
-          <div className="py-5">
-            <button
+          <div className="py-20">
+            <Button
               onClick={() => {
                 if (!product || !selectedVariant) return
                 cartItemsVar([
@@ -66,19 +68,17 @@ const ProductPage = ({ product }: { product: Product }) => {
               }}
             >
               Add to Cart
-            </button>
-            <Cart />
-            <div>
+            </Button>
+            <div className="flex pt-6">
               {product &&
                 product.options.map((option) => (
                   <div key={option.id}>
-                    <h3 className="bg-black text-white"> {option.name}</h3>
-                    <ul>
+                    <ul className='flex-1 w-60'>
                       {option.values.map((value) => (
                         <li key={option.id}>
-                          <button
+                          <Button
                             key={option.id}
-                            className="hover:bg-sky-700  active:bg-violet-700"
+                            className="hover:bg-sky-700 "
                             onClick={() => {
                               setSelected({
                                 ...selectedOptions,
@@ -87,7 +87,7 @@ const ProductPage = ({ product }: { product: Product }) => {
                             }}
                           >
                             {value}
-                          </button>
+                          </Button>
                         </li>
                       ))}
                     </ul>
