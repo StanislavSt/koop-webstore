@@ -1,24 +1,31 @@
 /* eslint-disable @next/next/no-img-element */
-import { Collection, CollectionEdge, Product, ProductOption, ProductVariantEdge } from '../../graphql/types'
+import { Collection, Metafield, Product, ProductOption, ProductVariant, ProductVariantEdge } from '../../graphql/types'
 import Layout from '../layout/Layout'
 import { cartItemsVar } from '../../graphql/cache'
 import { useReactiveVar } from '@apollo/client'
 import { useEffect, useState } from 'react'
-import { Cart } from '../cart/CartComponent'
 import { Button } from '../common'
 import Link from 'next/link'
 import { getArtist } from '../../utils/getArtist'
+import { getMaterial } from '../../utils/getMaterial'
 const ProductPage = ({ product }: { product: Product }) => {
   const selectedInit: { [key: string]: string } = {}
   const [selectedOptions, setSelected] = useState(selectedInit)
-  const [selectedVariant, setVariant] = useState<string | null | undefined>(
+  const [selectedVariantId, setVariantId] = useState<string | null | undefined>(
     null
   )
+  const [selectedVariant, setVariant] = useState<ProductVariant | null | undefined>(
+    null
+  )
+
+
+
   useEffect(() => {
     chooseVariant()
   })
-  
+
   const artist: Collection | undefined = getArtist(product.collections).node
+  const material: Metafield | undefined = getMaterial(product)
 
   const compare = (variant: ProductVariantEdge) => {
     if (!product) return
@@ -42,7 +49,10 @@ const ProductPage = ({ product }: { product: Product }) => {
     const variant = product?.variants.edges.filter((variant) => {
       return compare(variant)
     })
-    setVariant(variant && variant[0] && variant[0].node.id)
+    if (variant) {
+      setVariant(variant[0]?.node)
+      setVariantId(variant && variant[0] && variant[0].node.id)
+    }
   }
 
   const isOptionAvailable = (option: ProductOption, product: Product) => {
@@ -50,7 +60,6 @@ const ProductPage = ({ product }: { product: Product }) => {
   }
 
   const CartItemsVar = useReactiveVar(cartItemsVar)
-  const firstImage = product?.images.edges[0].node
 
   return (
     <Layout title="Product page">
@@ -69,26 +78,18 @@ const ProductPage = ({ product }: { product: Product }) => {
               )
               )}
           </div>
-          <div >
+          <div className='pb-2' >
             <h1 className="uppercase pt-10">{product?.title}</h1>
-            <div>
+            {artist && <div>
               <Link href={`/artist/${artist?.handle}`}>
                 <Button >
                   {artist?.title}
                 </Button>
               </Link>
-            </div>
-            <Button
-              onClick={() => {
-                if (!product || !selectedVariant) return
-                cartItemsVar([
-                  ...CartItemsVar,
-                  { variantId: selectedVariant, quantity: 1 },
-                ])
-              }}
-            >
-              Add to Cart
-            </Button>
+            </div>}
+            {material && <div>
+              <p className="text-sm">{material.value}</p>
+            </div>}
             <div className="flex pt-6">
               {product &&
                 product.options.map((option) => (
@@ -97,9 +98,9 @@ const ProductPage = ({ product }: { product: Product }) => {
                       {option.values.map((value) => (
                         <li key={value}>
                           <Button
-                            key={value + 1}
+                            key={value + 'but'}
                             disabled={true}
-                            className="hover:bg-sky-700 "
+                            className="hover:bg-cyan-500 w-32"
                             onClick={() => {
                               setSelected({
                                 ...selectedOptions,
@@ -115,6 +116,21 @@ const ProductPage = ({ product }: { product: Product }) => {
                   </div>
                 ))}
             </div>
+            {selectedVariant ? <h1>{selectedVariant.price}</h1> : <h1>{product.priceRangeV2.minVariantPrice.amount}</h1>}
+            <Button
+              className='bg-cyan-500 w-32'
+              onClick={() => {
+                if (!product || !selectedVariantId) return
+                cartItemsVar([
+                  ...CartItemsVar,
+                  { variantId: selectedVariantId, quantity: 1 },
+                ])
+              }}
+            >
+              Add to Cart
+            </Button>
+            <hr className="my-8 h-px bg-gray-200 border-0 dark:bg-gray-700" />
+
           </div>
         </div>
       </div>

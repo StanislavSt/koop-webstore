@@ -30,6 +30,14 @@ const GetProduct = gql`
         values
         id
       }
+      metafields(first: 5) {
+        edges {
+          node {
+            key
+            value
+          }
+        }
+      }
       collections(first: 5){
         edges {
           node {
