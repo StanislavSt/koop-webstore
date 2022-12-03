@@ -30,7 +30,22 @@ const Filters = () => {
   const isTechniqueSelected = (technique: string) =>
     selectedTechniques.some((x) => x === technique)
 
-  const clearFilters = () => {
+  // Example for calling the GetProductsByTag query
+  // const getProductsByTag = async () => {
+  //   const { data } = await client.query<
+  //     GetProductsByTagQuery,
+  //     GetProductsByTagQueryVariables
+  //   >({
+  //     query: GetProductsByTag,
+  //     variables: {
+  //       first: 100,
+  //       query: formatProductsByTagQuery(selectedFormat, selectedTechniques),
+  //     },
+  //   })
+
+  // }
+
+  const clearFilters = async () => {
     setSelectedFormat('')
     setSelectedTechniques([])
   }
