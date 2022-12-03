@@ -1332,7 +1332,7 @@ export enum BulkMutationErrorCode {
   InvalidMutation = 'INVALID_MUTATION',
   /** The JSONL file submitted via the `stagedUploadsCreate` mutation is invalid. Update the file and try again. */
   InvalidStagedUploadFile = 'INVALID_STAGED_UPLOAD_FILE',
-  /** The JSONL file could not be found. Try [uploading the file](https://shopify.dev/api/usage/bulk-operations/imports#generate-the-uploaded-url-and-parameters) again, and check that you've entered the URL correctly for the `bulkOperationRunMutationUploadPath` mutation argument. */
+  /** The JSONL file could not be found. Try [uploading the file](https://shopify.dev/api/usage/bulk-operations/imports#generate-the-uploaded-url-and-parameters) again, and check that you've entered the URL correctly for the `stagedUploadPath` mutation argument. */
   NoSuchFile = 'NO_SUCH_FILE',
   /** The operation did not run because another bulk mutation is already running. [Wait for the operation to finish](https://shopify.dev/api/usage/bulk-operations/imports#wait-for-the-operation-to-finish) before retrying this operation. */
   OperationInProgress = 'OPERATION_IN_PROGRESS',
@@ -6145,11 +6145,21 @@ export type DeliveryProfileEdge = {
 export type DeliveryProfileInput = {
   /** The list of condition IDs to delete. */
   conditionsToDelete?: InputMaybe<Array<Scalars['ID']>>
-  /** The list of location groups to be created in the delivery profile. */
+  /**
+   * The list of location groups to be created in the delivery profile.
+   *
+   * **Note:** due to the potential complexity of the nested data, it is recommended to send no more than 5 location groups per each request.
+   *
+   */
   locationGroupsToCreate?: InputMaybe<Array<DeliveryProfileLocationGroupInput>>
   /** The list of location groups to be deleted from the delivery profile. */
   locationGroupsToDelete?: InputMaybe<Array<Scalars['ID']>>
-  /** The list of location groups to be updated in the delivery profile. */
+  /**
+   * The list of location groups to be updated in the delivery profile.
+   *
+   * **Note:** due to the potential complexity of the nested data, it is recommended to send no more than 5 location groups per each request.
+   *
+   */
   locationGroupsToUpdate?: InputMaybe<Array<DeliveryProfileLocationGroupInput>>
   /** The list of method definition IDs to delete. */
   methodDefinitionsToDelete?: InputMaybe<Array<Scalars['ID']>>
@@ -6246,9 +6256,19 @@ export type DeliveryProfileLocationGroupInput = {
   id?: InputMaybe<Scalars['ID']>
   /** The list of location IDs to be moved to this location group. */
   locations?: InputMaybe<Array<Scalars['ID']>>
-  /** The list of location group zones to create. */
+  /**
+   * The list of location group zones to create.
+   *
+   * **Note:** due to the potential complexity of the nested data, it is recommended to send no more than 5 zones per each request.
+   *
+   */
   zonesToCreate?: InputMaybe<Array<DeliveryLocationGroupZoneInput>>
-  /** The list of location group zones to update. */
+  /**
+   * The list of location group zones to update.
+   *
+   * **Note:** due to the potential complexity of the nested data, it is recommended to send no more than 5 zones per each request.
+   *
+   */
   zonesToUpdate?: InputMaybe<Array<DeliveryLocationGroupZoneInput>>
 }
 
@@ -9508,6 +9528,19 @@ export type FulfillmentOrder = Node & {
   /**
    * The fulfillment order's assigned location. This is the location where the fulfillment is expected to happen.
    *
+   * The fulfillment order's assigned location might change in the following cases:
+   *
+   * - The fulfillment order has been entirely moved to a new location. For example, the [fulfillmentOrderMove](
+   *   https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentOrderMove
+   *   ) mutation has been called, and you see the original fulfillment order in the [movedFulfillmentOrder](
+   *   https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentOrderMove#field-fulfillmentordermovepayload-movedfulfillmentorder
+   *   ) field within the mutation's response.
+   * - Work on the fulfillment order has not yet begun, which means that the fulfillment order has the
+   *     [OPEN](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-open),
+   *     [SCHEDULED](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-scheduled), or
+   *     [ON_HOLD](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-onhold)
+   *     status, and the shop's location properties might be undergoing edits (for example, in the Shopify admin).
+   *
    */
   assignedLocation: FulfillmentOrderAssignedLocation
   /** Delivery method of this fulfillment order. */
@@ -9646,6 +9679,39 @@ export enum FulfillmentOrderAction {
 /**
  * The fulfillment order's assigned location. This is the location where the fulfillment is expected to happen.
  *
+ *  The fulfillment order's assigned location might change in the following cases:
+ *
+ *   - The fulfillment order has been entirely moved to a new location. For example, the [fulfillmentOrderMove](
+ *     https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentOrderMove
+ *     ) mutation has been called, and you see the original fulfillment order in the [movedFulfillmentOrder](
+ *     https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentOrderMove#field-fulfillmentordermovepayload-movedfulfillmentorder
+ *     ) field within the mutation's response.
+ *
+ *   - Work on the fulfillment order has not yet begun, which means that the fulfillment order has the
+ *       [OPEN](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-open),
+ *       [SCHEDULED](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-scheduled), or
+ *       [ON_HOLD](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-onhold)
+ *       status, and the shop's location properties might be undergoing edits (for example, in the Shopify admin).
+ *
+ * If the [fulfillmentOrderMove](
+ * https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentOrderMove
+ * ) mutation has moved the fulfillment order's line items to a new location,
+ * but hasn't moved the fulfillment order instance itself, then the original fulfillment order's assigned location
+ * doesn't change.
+ * This happens if the fulfillment order is being split during the move, or if all line items can be moved
+ * to an existing fulfillment order at a new location.
+ *
+ * Once the fulfillment order has been taken into work or canceled,
+ * which means that the fulfillment order has the
+ * [IN_PROGRESS](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-inprogress),
+ * [CLOSED](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-closed),
+ * [CANCELLED](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-cancelled), or
+ * [INCOMPLETE](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-incomplete)
+ * status, `FulfillmentOrderAssignedLocation` acts as a snapshot of the shop's location content.
+ * Up-to-date shop's location data may be queried through [location](
+ *   https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrderAssignedLocation#field-fulfillmentorderassignedlocation-location
+ * ) connection.
+ *
  */
 export type FulfillmentOrderAssignedLocation = {
   __typename?: 'FulfillmentOrderAssignedLocation'
@@ -9660,7 +9726,7 @@ export type FulfillmentOrderAssignedLocation = {
   /**
    * The location where the fulfillment is expected to happen. This value might be different from
    * `FulfillmentOrderAssignedLocation` if the location's attributes were updated
-   * after the fulfillment order was closed.
+   * after the fulfillment order was taken into work of canceled.
    *
    */
   location?: Maybe<Location>
@@ -9821,7 +9887,7 @@ export type FulfillmentOrderInternationalDuties = {
 }
 
 /**
- * A line item that belongs to a fulfillment order.
+ * Associates an order line item with quantities requiring fulfillment from the respective fulfillment order.
  *
  */
 export type FulfillmentOrderLineItem = Node & {
@@ -10001,9 +10067,9 @@ export enum FulfillmentOrderMerchantRequestKind {
 /** Return type for `fulfillmentOrderMove` mutation. */
 export type FulfillmentOrderMovePayload = {
   __typename?: 'FulfillmentOrderMovePayload'
-  /** A new fulfillment order representing of the all line items that were moved to the new location. */
+  /** The original or new fulfillment order that represents all of the line items that were moved to the new location. */
   movedFulfillmentOrder?: Maybe<FulfillmentOrder>
-  /** The fulfillment order that was moved. On success, this fulfillment order will be closed. */
+  /** The fulfillment order that was moved. If the fulfillment order has been partially fulfilled manually, and the unfulfilled item is successfully moved to a third-party fulfillment service, then fulfillment order will be closed. In all other use cases this fulfillment order will stay open and the location will be updated. */
   originalFulfillmentOrder?: Maybe<FulfillmentOrder>
   /**
    * A new fulfillment order representing the remaining line items that are still assigned to the original
@@ -10278,7 +10344,10 @@ export type FulfillmentService = {
   productBased: Scalars['Boolean']
   /** The name of the fulfillment service as seen by merchants. */
   serviceName: Scalars['String']
-  /** Shipping methods associated with the fulfillment service provider. */
+  /**
+   * Shipping methods associated with the fulfillment service provider. Applies only to Fulfill By Amazon fulfillment service.
+   * @deprecated The Fulfillment by Amazon feature will no longer be supported from March 30, 2023. To continue using Amazon fulfillment, merchants need to set up a Multi-Channel Fulfillment solution recommended by Amazon: https://help.shopify.com/manual/shipping/fulfillment-services/amazon#activate-fulfillment-by-amazon
+   */
   shippingMethods: Array<ShippingMethod>
   /** Type associated with the fulfillment service. */
   type: FulfillmentServiceType
@@ -11275,7 +11344,7 @@ export type LimitedPendingOrderCount = {
   count: Scalars['Int']
 }
 
-/** Represents a single line item on an order. */
+/** Represents individual products and quantities purchased in the associated order. */
 export type LineItem = Node & {
   __typename?: 'LineItem'
   /**
@@ -11410,7 +11479,7 @@ export type LineItem = Node & {
   vendor?: Maybe<Scalars['String']>
 }
 
-/** Represents a single line item on an order. */
+/** Represents individual products and quantities purchased in the associated order. */
 export type LineItemImageArgs = {
   crop?: InputMaybe<CropRegion>
   maxHeight?: InputMaybe<Scalars['Int']>
@@ -11418,7 +11487,7 @@ export type LineItemImageArgs = {
   scale?: InputMaybe<Scalars['Int']>
 }
 
-/** Represents a single line item on an order. */
+/** Represents individual products and quantities purchased in the associated order. */
 export type LineItemTaxLinesArgs = {
   first?: InputMaybe<Scalars['Int']>
 }
@@ -16836,7 +16905,7 @@ export type OnlineStorePreviewable = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17350,7 +17419,7 @@ export type Order = CommentEventSubject &
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17372,7 +17441,7 @@ export type OrderAgreementsArgs = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17393,7 +17462,7 @@ export type OrderDiscountApplicationsArgs = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17416,7 +17485,7 @@ export type OrderEventsArgs = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17439,7 +17508,7 @@ export type OrderFulfillmentOrdersArgs = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17456,7 +17525,7 @@ export type OrderFulfillmentsArgs = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17477,7 +17546,7 @@ export type OrderLineItemsArgs = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17498,7 +17567,7 @@ export type OrderLineItemsMutableArgs = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17521,7 +17590,7 @@ export type OrderLocalizationExtensionsArgs = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17539,7 +17608,7 @@ export type OrderMetafieldArgs = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17564,7 +17633,7 @@ export type OrderMetafieldDefinitionsArgs = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17586,7 +17655,7 @@ export type OrderMetafieldsArgs = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17607,7 +17676,7 @@ export type OrderNonFulfillableLineItemsArgs = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17625,7 +17694,7 @@ export type OrderPrivateMetafieldArgs = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17647,7 +17716,7 @@ export type OrderPrivateMetafieldsArgs = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17664,7 +17733,7 @@ export type OrderRefundsArgs = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17681,7 +17750,7 @@ export type OrderRisksArgs = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17702,7 +17771,7 @@ export type OrderShippingLinesArgs = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -17723,7 +17792,7 @@ export type OrderSuggestedRefundArgs = {
  * [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
  *
  * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
- * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
  * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
  * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
  *
@@ -31070,6 +31139,52 @@ export type GetProductQuery = {
   } | null
 }
 
+export type GetProductsByTagQueryVariables = Exact<{
+  first: Scalars['Int']
+  query: Scalars['String']
+}>
+
+export type GetProductsByTagQuery = {
+  __typename?: 'QueryRoot'
+  products: {
+    __typename?: 'ProductConnection'
+    edges: Array<{
+      __typename?: 'ProductEdge'
+      node: {
+        __typename?: 'Product'
+        id: string
+        title: string
+        handle: string
+        tags: Array<string>
+        priceRangeV2: {
+          __typename?: 'ProductPriceRangeV2'
+          minVariantPrice: { __typename?: 'MoneyV2'; amount: any }
+        }
+        bg: Array<{
+          __typename?: 'PublishedTranslation'
+          key: string
+          locale: string
+          value?: string | null
+        }>
+        images: {
+          __typename?: 'ImageConnection'
+          edges: Array<{
+            __typename?: 'ImageEdge'
+            node: { __typename?: 'Image'; altText?: string | null; url: any }
+          }>
+        }
+        variants: {
+          __typename?: 'ProductVariantConnection'
+          edges: Array<{
+            __typename?: 'ProductVariantEdge'
+            node: { __typename?: 'ProductVariant'; id: string }
+          }>
+        }
+      }
+    }>
+  }
+}
+
 export type GetProductsQueryVariables = Exact<{
   first: Scalars['Int']
 }>
@@ -31359,6 +31474,97 @@ export type GetProductLazyQueryHookResult = ReturnType<
 export type GetProductQueryResult = Apollo.QueryResult<
   GetProductQuery,
   GetProductQueryVariables
+>
+export const GetProductsByTagDocument = gql`
+  query GetProductsByTag($first: Int!, $query: String!) {
+    products(first: $first, query: $query) {
+      edges {
+        node {
+          id
+          title
+          handle
+          tags
+          priceRangeV2 {
+            minVariantPrice {
+              amount
+            }
+          }
+          bg: translations(locale: "bg") {
+            key
+            locale
+            value
+          }
+          images(first: 1) {
+            edges {
+              node {
+                altText
+                url
+              }
+            }
+          }
+          variants(first: 1) {
+            edges {
+              node {
+                id
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useGetProductsByTagQuery__
+ *
+ * To run a query within a React component, call `useGetProductsByTagQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProductsByTagQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProductsByTagQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      query: // value for 'query'
+ *   },
+ * });
+ */
+export function useGetProductsByTagQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetProductsByTagQuery,
+    GetProductsByTagQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetProductsByTagQuery, GetProductsByTagQueryVariables>(
+    GetProductsByTagDocument,
+    options
+  )
+}
+export function useGetProductsByTagLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetProductsByTagQuery,
+    GetProductsByTagQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    GetProductsByTagQuery,
+    GetProductsByTagQueryVariables
+  >(GetProductsByTagDocument, options)
+}
+export type GetProductsByTagQueryHookResult = ReturnType<
+  typeof useGetProductsByTagQuery
+>
+export type GetProductsByTagLazyQueryHookResult = ReturnType<
+  typeof useGetProductsByTagLazyQuery
+>
+export type GetProductsByTagQueryResult = Apollo.QueryResult<
+  GetProductsByTagQuery,
+  GetProductsByTagQueryVariables
 >
 export const GetProductsDocument = gql`
   query GetProducts($first: Int!) {
