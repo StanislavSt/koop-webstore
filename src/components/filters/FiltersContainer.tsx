@@ -1,7 +1,9 @@
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Image from 'next/image'
 import Filters from './Filters'
 import { Button } from '../common'
-import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import CloseIcon from '../../../public/mobile_close.svg'
 
 const FiltersContainer = () => {
   const { t } = useTranslation()
@@ -19,17 +21,22 @@ const FiltersContainer = () => {
       >
         {t('filters')}
       </Button>
-      {isMobileFiltersOpen && (
-        <div className="block sm:hidden fixed top-0 h-[100vh] w-[100vw] bg-white z-10">
+
+      <div
+        className={`block transition-all sm:hidden fixed top-0 -ml-3  w-[100vw] bg-white z-10 ${
+          isMobileFiltersOpen ? 'h-[100vh]' : 'h-0'
+        }`}
+      >
+        <div className={`${isMobileFiltersOpen ? 'block' : 'hidden'}`}>
           <Filters />
           <button
-            className="fixed bottom-10 text-[50px] color-[#1E90FF] -rotate-90"
+            className="fixed bottom-1 left-1/2  -translate-x-1/2"
             onClick={() => setIsMobileFiltersOpen(false)}
           >
-            {'>'}
+            <Image src={CloseIcon} alt="Close Icon" width={48} height={104} />
           </button>
         </div>
-      )}
+      </div>
     </>
   )
 }

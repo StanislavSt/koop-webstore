@@ -37,7 +37,7 @@ const Filters = () => {
 
   return (
     <>
-      <section className="h-full w-full sm:w-auto sm:h-auto flex flex-col sm:flex-row gap-[2rem] md:gap-[3rem] lg:gap-[5rem] xl:gap-[8rem] 2xl:gap-[10rem] min-h-[13rem]">
+      <section className="h-full w-full m-5 sm:m-0 sm:w-auto sm:h-auto flex flex-col sm:flex-row gap-[2rem] md:gap-[3rem] lg:gap-[5rem] xl:gap-[8rem] 2xl:gap-[10rem] min-h-[13rem]">
         <div className="flex flex-col justify-between items-start">
           <div>
             <h3
