@@ -9508,6 +9508,19 @@ export type FulfillmentOrder = Node & {
   /**
    * The fulfillment order's assigned location. This is the location where the fulfillment is expected to happen.
    *
+   * The fulfillment order's assigned location might change in the following cases:
+   *
+   * - The fulfillment order has been entirely moved to a new location. For example, the [fulfillmentOrderMove](
+   *   https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentOrderMove
+   *   ) mutation has been called, and you see the original fulfillment order in the [movedFulfillmentOrder](
+   *   https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentOrderMove#field-fulfillmentordermovepayload-movedfulfillmentorder
+   *   ) field within the mutation's response.
+   * - Work on the fulfillment order has not yet begun, which means that the fulfillment order has the
+   *     [OPEN](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-open),
+   *     [SCHEDULED](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-scheduled), or
+   *     [ON_HOLD](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-onhold)
+   *     status, and the shop's location properties might be undergoing edits (for example, in the Shopify admin).
+   *
    */
   assignedLocation: FulfillmentOrderAssignedLocation
   /** Delivery method of this fulfillment order. */
@@ -9646,6 +9659,39 @@ export enum FulfillmentOrderAction {
 /**
  * The fulfillment order's assigned location. This is the location where the fulfillment is expected to happen.
  *
+ *  The fulfillment order's assigned location might change in the following cases:
+ *
+ *   - The fulfillment order has been entirely moved to a new location. For example, the [fulfillmentOrderMove](
+ *     https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentOrderMove
+ *     ) mutation has been called, and you see the original fulfillment order in the [movedFulfillmentOrder](
+ *     https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentOrderMove#field-fulfillmentordermovepayload-movedfulfillmentorder
+ *     ) field within the mutation's response.
+ *
+ *   - Work on the fulfillment order has not yet begun, which means that the fulfillment order has the
+ *       [OPEN](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-open),
+ *       [SCHEDULED](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-scheduled), or
+ *       [ON_HOLD](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-onhold)
+ *       status, and the shop's location properties might be undergoing edits (for example, in the Shopify admin).
+ *
+ * If the [fulfillmentOrderMove](
+ * https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentOrderMove
+ * ) mutation has moved the fulfillment order's line items to a new location,
+ * but hasn't moved the fulfillment order instance itself, then the original fulfillment order's assigned location
+ * doesn't change.
+ * This happens if the fulfillment order is being split during the move, or if all line items can be moved
+ * to an existing fulfillment order at a new location.
+ *
+ * Once the fulfillment order has been taken into work or canceled,
+ * which means that the fulfillment order has the
+ * [IN_PROGRESS](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-inprogress),
+ * [CLOSED](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-closed),
+ * [CANCELLED](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-cancelled), or
+ * [INCOMPLETE](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-incomplete)
+ * status, `FulfillmentOrderAssignedLocation` acts as a snapshot of the shop's location content.
+ * Up-to-date shop's location data may be queried through [location](
+ *   https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrderAssignedLocation#field-fulfillmentorderassignedlocation-location
+ * ) connection.
+ *
  */
 export type FulfillmentOrderAssignedLocation = {
   __typename?: 'FulfillmentOrderAssignedLocation'
@@ -9660,7 +9706,7 @@ export type FulfillmentOrderAssignedLocation = {
   /**
    * The location where the fulfillment is expected to happen. This value might be different from
    * `FulfillmentOrderAssignedLocation` if the location's attributes were updated
-   * after the fulfillment order was closed.
+   * after the fulfillment order was taken into work of canceled.
    *
    */
   location?: Maybe<Location>
@@ -9821,7 +9867,7 @@ export type FulfillmentOrderInternationalDuties = {
 }
 
 /**
- * A line item that belongs to a fulfillment order.
+ * Associates an order line item with quantities requiring fulfillment from the respective fulfillment order.
  *
  */
 export type FulfillmentOrderLineItem = Node & {
@@ -11275,7 +11321,7 @@ export type LimitedPendingOrderCount = {
   count: Scalars['Int']
 }
 
-/** Represents a single line item on an order. */
+/** Represents individual products and quantities purchased in the associated order. */
 export type LineItem = Node & {
   __typename?: 'LineItem'
   /**
@@ -11410,7 +11456,7 @@ export type LineItem = Node & {
   vendor?: Maybe<Scalars['String']>
 }
 
-/** Represents a single line item on an order. */
+/** Represents individual products and quantities purchased in the associated order. */
 export type LineItemImageArgs = {
   crop?: InputMaybe<CropRegion>
   maxHeight?: InputMaybe<Scalars['Int']>
@@ -11418,7 +11464,7 @@ export type LineItemImageArgs = {
   scale?: InputMaybe<Scalars['Int']>
 }
 
-/** Represents a single line item on an order. */
+/** Represents individual products and quantities purchased in the associated order. */
 export type LineItemTaxLinesArgs = {
   first?: InputMaybe<Scalars['Int']>
 }
@@ -31060,11 +31106,49 @@ export type GetProductQuery = {
         node: { __typename?: 'Image'; altText?: string | null; url: any }
       }>
     }
+    options: Array<{
+      __typename?: 'ProductOption'
+      name: string
+      values: Array<string>
+      id: string
+    }>
+    collections: {
+      __typename?: 'CollectionConnection'
+      edges: Array<{
+        __typename?: 'CollectionEdge'
+        node: {
+          __typename?: 'Collection'
+          id: string
+          handle: string
+          title: string
+          metafields: {
+            __typename?: 'MetafieldConnection'
+            edges: Array<{
+              __typename?: 'MetafieldEdge'
+              node: { __typename?: 'Metafield'; key: string; value: string }
+            }>
+          }
+        }
+      }>
+    }
     variants: {
       __typename?: 'ProductVariantConnection'
       edges: Array<{
         __typename?: 'ProductVariantEdge'
-        node: { __typename?: 'ProductVariant'; id: string }
+        node: {
+          __typename?: 'ProductVariant'
+          id: string
+          price: any
+          title: string
+          availableForSale: boolean
+          inventoryQuantity?: number | null
+          displayName: string
+          selectedOptions: Array<{
+            __typename?: 'SelectedOption'
+            name: string
+            value: string
+          }>
+        }
       }>
     }
   } | null
@@ -31293,7 +31377,7 @@ export const GetProductDocument = gql`
         locale
         value
       }
-      images(first: 1) {
+      images(first: 5) {
         edges {
           node {
             altText
@@ -31301,10 +31385,41 @@ export const GetProductDocument = gql`
           }
         }
       }
-      variants(first: 1) {
+      options {
+        name
+        values
+        id
+      }
+      collections(first: 5) {
         edges {
           node {
             id
+            handle
+            title
+            metafields(first: 5) {
+              edges {
+                node {
+                  key
+                  value
+                }
+              }
+            }
+          }
+        }
+      }
+      variants(first: 30) {
+        edges {
+          node {
+            selectedOptions {
+              name
+              value
+            }
+            id
+            price
+            title
+            availableForSale
+            inventoryQuantity
+            displayName
           }
         }
       }

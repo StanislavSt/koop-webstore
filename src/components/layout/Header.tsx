@@ -1,8 +1,9 @@
 import Link from 'next/link'
+import { useTranslation } from 'next-i18next'
+
 import LanguageSwitcher from './LanguageSwitcher'
 import FiltersContainer from '../filters/FiltersContainer'
 import { Button } from '../common/Button'
-import { useTranslation } from 'next-i18next'
 
 const Header = () => {
   const { t } = useTranslation()

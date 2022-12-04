@@ -17,7 +17,7 @@ const GetProduct = gql`
         locale
         value
       }
-      images(first: 1) {
+      images(first: 5) {
         edges {
           node {
             altText
@@ -25,10 +25,50 @@ const GetProduct = gql`
           }
         }
       }
-      variants(first: 1) {
+      options {
+        name
+        values
+        id
+      }
+      metafields(first: 5) {
+        edges {
+          node {
+            key
+            value
+          }
+        }
+      }
+      collections(first: 5) {
         edges {
           node {
             id
+            handle
+            title
+
+            metafields(first: 5) {
+              edges {
+                node {
+                  key
+                  value
+                }
+              }
+            }
+          }
+        }
+      }
+      variants(first: 30) {
+        edges {
+          node {
+            selectedOptions {
+              name
+              value
+            }
+            id
+            price
+            title
+            availableForSale
+            inventoryQuantity
+            displayName
           }
         }
       }

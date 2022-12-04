@@ -14,13 +14,14 @@ export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
     GetProductsQueryVariables
   >({
     query: GetProducts,
-    variables: { first: 10 },
+    variables: { first: 15 },
   })
 
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
       products: data.products,
+      revalidate: 10,
     },
   }
 }

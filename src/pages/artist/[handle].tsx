@@ -45,5 +45,6 @@ export const getStaticProps = async ({
     props: {
       artist: data.collectionByHandle,
     },
+    revalidate: 10,
   }
 }
