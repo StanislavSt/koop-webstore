@@ -38,14 +38,14 @@ const GetProduct = gql`
           }
         }
       }
-      collections(first: 5){
+      collections(first: 5) {
         edges {
           node {
             id
             handle
             title
-            
-            metafields (first: 5){
+
+            metafields(first: 5) {
               edges {
                 node {
                   key
