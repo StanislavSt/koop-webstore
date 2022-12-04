@@ -1,5 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import { Collection, Metafield, Product, ProductOption, ProductVariant, ProductVariantEdge } from '../../graphql/types'
+import {
+  Collection,
+  Metafield,
+  Product,
+  ProductVariant,
+  ProductVariantEdge,
+} from '../../graphql/types'
 import Layout from '../layout/Layout'
 import { cartItemsVar } from '../../graphql/cache'
 import { useReactiveVar } from '@apollo/client'
@@ -14,17 +20,15 @@ const ProductPage = ({ product }: { product: Product }) => {
   const [selectedVariantId, setVariantId] = useState<string | null | undefined>(
     null
   )
-  const [selectedVariant, setVariant] = useState<ProductVariant | null | undefined>(
-    null
-  )
-
-
+  const [selectedVariant, setVariant] = useState<
+    ProductVariant | null | undefined
+  >(null)
 
   useEffect(() => {
     chooseVariant()
   })
 
-  const artist: Collection | undefined = getArtist(product.collections).node
+  const artist: Collection | undefined = getArtist(product.collections)?.node
   const material: Metafield | undefined = getMaterial(product)
 
   const compare = (variant: ProductVariantEdge) => {
@@ -55,9 +59,9 @@ const ProductPage = ({ product }: { product: Product }) => {
     }
   }
 
-  const isOptionAvailable = (option: ProductOption, product: Product) => {
-    // if variants with specific option are !availableForSale
-  }
+  // const isOptionAvailable = (option: ProductOption, product: Product) => {
+  //   // if variants with specific option are !availableForSale
+  // }
 
   const CartItemsVar = useReactiveVar(cartItemsVar)
 
@@ -68,33 +72,34 @@ const ProductPage = ({ product }: { product: Product }) => {
         <div className="px-12 grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-2 xl:grid-cols-2 xl:gap-x-8">
           <div className="py-5">
             {product &&
-              product?.images.edges.map(imageEdge => (
+              product?.images.edges.map((imageEdge) => (
                 <img
                   key={imageEdge.node?.id}
                   className="px-5 py-5"
                   src={imageEdge.node?.url}
                   alt={imageEdge.node?.altText || ''}
                 />
-              )
-              )}
+              ))}
           </div>
-          <div className='pb-2' >
+          <div className="pb-2">
             <h1 className="uppercase pt-10">{product?.title}</h1>
-            {artist && <div>
-              <Link href={`/artist/${artist?.handle}`}>
-                <Button >
-                  {artist?.title}
-                </Button>
-              </Link>
-            </div>}
-            {material && <div>
-              <p className="text-sm">{material.value}</p>
-            </div>}
+            {artist && (
+              <div>
+                <Link href={`/artist/${artist?.handle}`}>
+                  <Button>{artist?.title}</Button>
+                </Link>
+              </div>
+            )}
+            {material && (
+              <div>
+                <p className="text-sm">{material.value}</p>
+              </div>
+            )}
             <div className="flex pt-6">
               {product &&
                 product.options.map((option) => (
                   <div key={option.id}>
-                    <ul className='flex-1 w-60'>
+                    <ul className="flex-1 w-60">
                       {option.values.map((value) => (
                         <li key={value}>
                           <Button
@@ -116,9 +121,13 @@ const ProductPage = ({ product }: { product: Product }) => {
                   </div>
                 ))}
             </div>
-            {selectedVariant ? <h1>{selectedVariant.price}</h1> : <h1>{product.priceRangeV2.minVariantPrice.amount}</h1>}
+            {selectedVariant ? (
+              <h1>{selectedVariant.price}</h1>
+            ) : (
+              <h1>{product.priceRangeV2.minVariantPrice.amount}</h1>
+            )}
             <Button
-              className='bg-cyan-500 w-32'
+              className="bg-cyan-500 w-32"
               onClick={() => {
                 if (!product || !selectedVariantId) return
                 cartItemsVar([
@@ -130,7 +139,6 @@ const ProductPage = ({ product }: { product: Product }) => {
               Add to Cart
             </Button>
             <hr className="my-8 h-px bg-gray-200 border-0 dark:bg-gray-700" />
-
           </div>
         </div>
       </div>
