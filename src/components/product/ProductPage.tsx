@@ -14,6 +14,7 @@ import { Button } from '../common'
 import Link from 'next/link'
 import { getArtist } from '../../utils/getArtist'
 import { getMaterial } from '../../utils/getMaterial'
+
 const ProductPage = ({ product }: { product: Product }) => {
   const selectedInit: { [key: string]: string } = {}
   const [selectedOptions, setSelected] = useState(selectedInit)
@@ -104,7 +105,6 @@ const ProductPage = ({ product }: { product: Product }) => {
                         <li key={value}>
                           <Button
                             key={value + 'but'}
-                            disabled={true}
                             className="hover:bg-cyan-500 w-32"
                             onClick={() => {
                               setSelected({
