@@ -36,74 +36,69 @@ const Filters = () => {
   }
 
   return (
-    <>
-      <section className="h-full w-full m-5 sm:m-0 sm:w-auto sm:h-auto flex flex-col sm:flex-row gap-[2rem] md:gap-[3rem] lg:gap-[5rem] xl:gap-[8rem] 2xl:gap-[10rem] min-h-[13rem]">
-        <div className="flex flex-col justify-between items-start">
-          <div>
+    <section className="h-full w-full m-5 sm:m-0 sm:w-auto sm:h-auto flex flex-col sm:flex-row gap-[2rem] md:gap-[3rem] lg:gap-[5rem] xl:gap-[8rem] 2xl:gap-[10rem] min-h-[13rem]">
+      <div className="flex flex-col justify-between items-start">
+        <div>
+          <h3
+            id="format"
+            className="text-[#1E90FF] text-[20px] sm:text-[15px] md:text-[20px] ml-[0.15rem]"
+          >
+            {t('format')}
+          </h3>
+          <ul
+            aria-labelledby="format"
+            className="inline-flex flex-col text-[48px] sm:text-[34px] md:text-[48px] leading-[72%] uppercase md:leading-[36px] items-start"
+          >
+            {filterValues.map((filter) => (
+              <li
+                key={filter.format}
+                className={`cursor-pointer hover:text-[#1E90FF] ${
+                  filter.format === selectedFormat && 'text-[#1E90FF]'
+                }`}
+                onClick={() => setSelectedFormat(filter.format)}
+              >
+                {t(filter.format)}
+              </li>
+            ))}
+          </ul>
+        </div>
+        {selectedFormat && (
+          <Button onClick={() => clearFilters()}>{t('clear filters')}</Button>
+        )}
+      </div>
+      <div className="min-w-[10rem] md:min-w-[15rem] lg:min-w-0">
+        {selectedFormat && (
+          <>
             <h3
               id="format"
-              className="text-[#1E90FF] text-[20px] sm:text-[15px] md:text-[20px] ml-[0.15rem]"
+              className="text-[#1E90FF] text-[20px] md:text-[20px] ml-[0.15rem]"
             >
-              {t('format')}
+              {t('technique')}
             </h3>
             <ul
               aria-labelledby="format"
-              className="inline-flex flex-col text-[48px] sm:text-[34px] md:text-[48px] leading-[72%] uppercase md:leading-[36px] items-start"
+              className="inline-flex flex-col  text-[48px] md:text-[48px] leading-[72%] uppercase  md:leading-[36px] items-start"
             >
-              {filterValues.map((filter) => (
-                <li
-                  key={filter.format}
-                  className={`cursor-pointer hover:text-[#1E90FF] ${
-                    filter.format === selectedFormat && 'text-[#1E90FF]'
-                  }`}
-                  onClick={() => setSelectedFormat(filter.format)}
-                >
-                  {t(filter.format)}
-                </li>
-              ))}
+              {filterValues
+                .find((filter) => filter.format === selectedFormat)
+                ?.technique.map((technique) => (
+                  <li
+                    key={technique}
+                    className={`cursor-pointer hover:text-[#1E90FF] ${
+                      isTechniqueSelected(technique) && 'text-[#1E90FF]'
+                    }`}
+                    onClick={() =>
+                      setSelectedTechniques([...selectedTechniques, technique])
+                    }
+                  >
+                    {t(technique)}
+                  </li>
+                ))}
             </ul>
-          </div>
-          {selectedFormat && (
-            <Button onClick={() => clearFilters()}>{t('clear filters')}</Button>
-          )}
-        </div>
-        <div className="min-w-[10rem] md:min-w-[15rem] lg:min-w-0">
-          {selectedFormat && (
-            <>
-              <h3
-                id="format"
-                className="text-[#1E90FF] text-[20px] md:text-[20px] ml-[0.15rem]"
-              >
-                {t('technique')}
-              </h3>
-              <ul
-                aria-labelledby="format"
-                className="inline-flex flex-col  text-[48px] md:text-[48px] leading-[72%] uppercase  md:leading-[36px] items-start"
-              >
-                {filterValues
-                  .find((filter) => filter.format === selectedFormat)
-                  ?.technique.map((technique) => (
-                    <li
-                      key={technique}
-                      className={`cursor-pointer hover:text-[#1E90FF] ${
-                        isTechniqueSelected(technique) && 'text-[#1E90FF]'
-                      }`}
-                      onClick={() =>
-                        setSelectedTechniques([
-                          ...selectedTechniques,
-                          technique,
-                        ])
-                      }
-                    >
-                      {t(technique)}
-                    </li>
-                  ))}
-              </ul>
-            </>
-          )}
-        </div>
-      </section>
-    </>
+          </>
+        )}
+      </div>
+    </section>
   )
 }
 export default Filters

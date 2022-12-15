@@ -17,5 +17,10 @@
   "sito": "sito",
   "rizo": "rizo",
   "zin": "zin",
-  "filters": "filters"
+  "filters": "filters",
+  "close": "close",
+  "checkout": "checkout",
+  "bgn": "bgn",
+  "total": "total",
+  "remove": "remove"
 }

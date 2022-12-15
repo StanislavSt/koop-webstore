@@ -5,44 +5,18 @@ import { useRouter } from 'next/router'
 import Layout from '../layout/Layout'
 import { GetProductsQuery } from '../../graphql/types'
 import Link from 'next/link'
-import { Cart } from '../cart/CartComponent'
-import CreateCheckout from '../../graphql/queries/CreateCheckout'
-import storefrontClient from '../../graphql/apollo-client-storefront'
-import { useQuery } from '@apollo/client'
-import { GET_CART_ITEMS } from '../cart/CartComponent'
+import { Cart } from '../cart/Cart'
 
 const IndexPage = ({ products }: GetProductsQuery) => {
   const { locale } = useRouter()
-  const { data } = useQuery(GET_CART_ITEMS)
 
-  async function createCheckout() {
-    const variables = {
-      input: {
-        lineItems: [...data.cartItems],
-      },
-    }
-
-    const checkoutData = await storefrontClient.mutate({
-      mutation: CreateCheckout,
-      variables,
-    })
-    const { webUrl } = checkoutData.data.checkoutCreate.checkout
-    window.location.href = webUrl
-  }
   return (
     <Layout title="Home Page">
       <div className="bg-white">
         <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
           <Cart />
           <h2 className="sr-only">Products</h2>
-          <button
-            onClick={() => {
-              createCheckout()
-            }}
-            title="Go to checkout"
-          >
-            Go to checkout
-          </button>
+
           <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
             {products.edges.map(({ node: product }) => (
               <Link href={`product/${product.handle}`} key={product.id}>

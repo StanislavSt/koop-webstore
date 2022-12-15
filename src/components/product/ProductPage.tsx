@@ -7,7 +7,7 @@ import {
   ProductVariantEdge,
 } from '../../graphql/types'
 import Layout from '../layout/Layout'
-import { cartItemsVar } from '../../graphql/cache'
+import { CartItem, cartItemsVar } from '../../graphql/cache'
 import { useReactiveVar } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import { Button } from '../common'
@@ -65,6 +65,27 @@ const ProductPage = ({ product }: { product: Product }) => {
   // }
 
   const CartItemsVar = useReactiveVar(cartItemsVar)
+
+  const updateCartItemQuantity = (cartItem: CartItem) => {
+    const currentQuantity = cartItem.quantity
+
+    const filteredCartItems = CartItemsVar.filter(
+      (x) => x.variantId !== cartItem.variantId
+    )
+    return (
+      selectedVariantId &&
+      cartItemsVar([
+        ...filteredCartItems,
+        {
+          variantId: selectedVariantId,
+          quantity: currentQuantity + 1,
+          price: selectedVariant?.price,
+          title: product?.title,
+          selectedOptions: selectedOptions,
+        },
+      ])
+    )
+  }
 
   return (
     <Layout title="Product page">
@@ -130,10 +151,22 @@ const ProductPage = ({ product }: { product: Product }) => {
               className="bg-cyan-500 w-32"
               onClick={() => {
                 if (!product || !selectedVariantId) return
-                cartItemsVar([
-                  ...CartItemsVar,
-                  { variantId: selectedVariantId, quantity: 1 },
-                ])
+
+                const cartItemExists = CartItemsVar.find(
+                  (cartItem) => cartItem.variantId === selectedVariantId
+                )
+                cartItemExists
+                  ? updateCartItemQuantity(cartItemExists)
+                  : cartItemsVar([
+                      ...CartItemsVar,
+                      {
+                        variantId: selectedVariantId,
+                        quantity: 1,
+                        price: selectedVariant?.price,
+                        title: product?.title,
+                        selectedOptions: selectedOptions,
+                      },
+                    ])
               }}
             >
               Add to Cart

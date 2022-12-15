@@ -4,6 +4,7 @@ import { useTranslation } from 'next-i18next'
 import LanguageSwitcher from './LanguageSwitcher'
 import FiltersContainer from '../filters/FiltersContainer'
 import { Button } from '../common/Button'
+import { Cart } from '../cart/Cart'
 
 const Header = () => {
   const { t } = useTranslation()
@@ -22,7 +23,7 @@ const Header = () => {
         </div>
         <div className="flex flex-col items-end">
           <LanguageSwitcher />
-          <h3 className="text-[#1E90FF] text-[20px]">{t('cart')}: 2</h3>
+          <Cart />
         </div>
       </section>
     </header>
