@@ -54,9 +54,12 @@ const ProductPage = ({ product }: { product: Product }) => {
     const variant = product?.variants.edges.filter((variant) => {
       return compare(variant)
     })
-    if (variant) {
+    if (variant.length > 1) {
       setVariant(variant[0]?.node)
       setVariantId(variant && variant[0] && variant[0].node.id)
+    } else {
+      setVariant(product.variants.edges[0].node)
+      setVariantId(product.variants.edges[0].node.id)
     }
   }
 
@@ -119,6 +122,7 @@ const ProductPage = ({ product }: { product: Product }) => {
             )}
             <div className="flex pt-6">
               {product &&
+                product.options.length > 1 &&
                 product.options.map((option) => (
                   <div key={option.id}>
                     <ul className="flex-1 w-60">
