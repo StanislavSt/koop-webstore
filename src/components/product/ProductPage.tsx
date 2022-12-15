@@ -24,6 +24,7 @@ const ProductPage = ({ product }: { product: Product }) => {
   const [selectedVariant, setVariant] = useState<
     ProductVariant | null | undefined
   >(null)
+  const [price, setPrice] = useState(product.variants.edges[0].node.price)
 
   useEffect(() => {
     chooseVariant()
@@ -31,7 +32,6 @@ const ProductPage = ({ product }: { product: Product }) => {
 
   const artist: Collection | undefined = getArtist(product.collections)?.node
   const material: Metafield | undefined = getMaterial(product)
-
   const compare = (variant: ProductVariantEdge) => {
     if (!product) return
     const matching: { [key: string]: boolean } = {}
@@ -54,12 +54,14 @@ const ProductPage = ({ product }: { product: Product }) => {
     const variant = product?.variants.edges.filter((variant) => {
       return compare(variant)
     })
-    if (variant.length > 1) {
+    if (variant.length == 1) {
       setVariant(variant[0]?.node)
       setVariantId(variant && variant[0] && variant[0].node.id)
+      setPrice(variant[0].node.price)
     } else {
       setVariant(product.variants.edges[0].node)
       setVariantId(product.variants.edges[0].node.id)
+      setPrice(product.variants.edges[0].node.price)
     }
   }
 
@@ -120,17 +122,24 @@ const ProductPage = ({ product }: { product: Product }) => {
                 <p className="text-sm">{material.value}</p>
               </div>
             )}
-            <div className="flex pt-6">
+            <div className="flex flex-col pt-6">
               {product &&
                 product.options.length > 1 &&
                 product.options.map((option) => (
                   <div key={option.id}>
-                    <ul className="flex-1 w-60">
+                    <span className="text-cyan-600">{option.name}</span>
+                    <ul className="flex">
                       {option.values.map((value) => (
-                        <li key={value}>
+                        <li key={value} className="pr-2">
                           <Button
                             key={value + 'but'}
-                            className="hover:bg-cyan-500 w-32"
+                            disabled={
+                              !!product.variants.edges.find((variant) => {
+                                variant.node.displayName.includes(value) &&
+                                  variant.node.availableForSale === false
+                              })
+                            }
+                            className="bg-white text-black border border-black w-32 focus:bg-black focus:text-white"
                             onClick={() => {
                               setSelected({
                                 ...selectedOptions,
@@ -146,11 +155,8 @@ const ProductPage = ({ product }: { product: Product }) => {
                   </div>
                 ))}
             </div>
-            {selectedVariant ? (
-              <h1>{selectedVariant.price}</h1>
-            ) : (
-              <h1>{product.priceRangeV2.minVariantPrice.amount}</h1>
-            )}
+            <h1>{price}</h1>
+
             <Button
               className="bg-cyan-500 w-32"
               onClick={() => {
