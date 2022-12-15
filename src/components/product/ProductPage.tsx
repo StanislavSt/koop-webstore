@@ -117,11 +117,6 @@ const ProductPage = ({ product }: { product: Product }) => {
                 </Link>
               </div>
             )}
-            {material && (
-              <div>
-                <p className="text-sm">{material.value}</p>
-              </div>
-            )}
             <div className="flex flex-col pt-6">
               {product &&
                 product.options.length > 1 &&
@@ -133,12 +128,6 @@ const ProductPage = ({ product }: { product: Product }) => {
                         <li key={value} className="pr-2">
                           <Button
                             key={value + 'but'}
-                            disabled={
-                              !!product.variants.edges.find((variant) => {
-                                variant.node.displayName.includes(value) &&
-                                  variant.node.availableForSale === false
-                              })
-                            }
                             className="bg-white text-black border border-black w-32 focus:bg-black focus:text-white"
                             onClick={() => {
                               setSelected({
@@ -181,7 +170,13 @@ const ProductPage = ({ product }: { product: Product }) => {
             >
               Add to Cart
             </Button>
-            <hr className="my-8 h-px bg-gray-200 border-0 dark:bg-gray-700" />
+            <hr className="my-6 h-px bg-gray-200 border-0 dark:bg-gray-700" />
+            {material && (
+              <div>
+                <p>{material.value}</p>
+              </div>
+            )}
+            <hr className="my-6 h-px bg-gray-200 border-0 dark:bg-gray-700" />
           </div>
         </div>
       </div>
