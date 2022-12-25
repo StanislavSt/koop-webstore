@@ -10,12 +10,12 @@ const Header = () => {
   const { t } = useTranslation()
 
   return (
-    <header className="flex mt-3 px-3 justify-between">
+    <header className="flex justify-between px-3 mt-3">
       <FiltersContainer />
-      <h1 className="hidden uppercase lg:block lg:text-[110px] xl:text-[155px] 2xl:text-[185px] leading-[170px]">
+      <h1 className="hidden uppercase lg:block leading-[170px] lg:text-[90px] xl:text-[155px] 2xl:text-[185px]">
         {t('logo')}
       </h1>
-      <section className="flex-col sm:flex-row ml-[3rem] flex gap-[1rem] lg:gap-[2rem] xl:gap-[3rem] 2xl:gap-[5rem] justify-between">
+      <section className="flex flex-col justify-between sm:flex-row ml-[3rem] gap-[1rem] lg:gap-[2rem] xl:gap-[3rem] 2xl:gap-[5rem]">
         <div className="hidden sm:block">
           <Link href="/info">
             <Button>{t('info')}</Button>

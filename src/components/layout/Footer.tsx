@@ -6,8 +6,8 @@ const Footer = () => {
   const { locale } = useRouter()
 
   return (
-    <footer className="w-full border-t border-t-black flex justify-between  pt-4 pb-8">
-      <section className="flex gap-[40px] items-end">
+    <footer className="flex justify-between pt-4 pb-8 w-full border-t border-t-black">
+      <section className="flex items-end gap-[40px]">
         <Image
           src="/KO-OP_Logo_2-01 1.png"
           width={119}
@@ -15,18 +15,18 @@ const Footer = () => {
           objectFit="contain"
           alt="logo"
         />
-        <ul className="flex flex-wrap gap-7 uppercase max-w-4xl justify-center text-[20px] leading-4">
-          <li className="hover:opacity-50 cursor-pointer">
+        <ul className="flex flex-wrap gap-7 justify-center max-w-4xl leading-4 uppercase text-[20px]">
+          <li className="cursor-pointer hover:opacity-50">
             <Link href="/terms-and-conditions">
               <a>{locale === 'bg' ? 'Общи Условия' : 'Terms & Conditions'}</a>
             </Link>
           </li>
-          <li className="hover:opacity-50 cursor-pointer ">
+          <li className="cursor-pointer hover:opacity-50">
             <Link href="/about">
               <a>{locale === 'bg' ? 'За нас' : 'About'}</a>
             </Link>
           </li>
-          <li className="hover:opacity-50 cursor-pointer">
+          <li className="cursor-pointer hover:opacity-50">
             <Link href="/customer-care">
               {locale === 'bg' ? 'Доставка' : 'Order'}
             </Link>
@@ -34,7 +34,7 @@ const Footer = () => {
         </ul>
       </section>
       <section className="flex items-end">
-        <ul className="flex gap-[75px] mr-5">
+        <ul className="flex mr-5 gap-[75px]">
           <li className="leading-4">
             bul. &quot;Yanko Sakazov&quot; 17,
             <br /> 1527 Sofia, Bulgaria

@@ -11,7 +11,7 @@ const FiltersContainer = () => {
   return (
     <>
       {/* Desktop View */}
-      <div className="hidden sm:block flex-grow">
+      <div className="hidden flex-grow sm:block">
         <Filters />
       </div>
       {/* Mobile View */}
@@ -30,7 +30,7 @@ const FiltersContainer = () => {
         <div className={`${isMobileFiltersOpen ? 'block' : 'hidden'}`}>
           <Filters />
           <button
-            className="fixed bottom-1 left-1/2  -translate-x-1/2"
+            className="fixed bottom-1 left-1/2 -translate-x-1/2"
             onClick={() => setIsMobileFiltersOpen(false)}
           >
             <Image src={CloseIcon} alt="Close Icon" width={48} height={104} />

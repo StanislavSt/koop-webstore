@@ -95,21 +95,21 @@ const ProductPage = ({ product }: { product: Product }) => {
   return (
     <Layout title="Product page">
       <div className="bg-white">
-        <div className="max-w-xs mx-auto py-5 px-4 sm:py-10 sm:px-6 lg:max-w-7xl lg:px-15"></div>
-        <div className="px-12 grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-2 xl:grid-cols-2 xl:gap-x-8">
+        <div className="py-5 px-4 mx-auto max-w-xs sm:py-10 sm:px-6 lg:max-w-7xl lg:px-15"></div>
+        <div className="grid grid-cols-1 gap-x-6 gap-y-10 px-12 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 xl:gap-x-8">
           <div className="py-5">
             {product &&
               product?.images.edges.map((imageEdge) => (
                 <img
                   key={imageEdge.node?.id}
-                  className="px-5 py-5"
+                  className="py-5 px-5"
                   src={imageEdge.node?.url}
                   alt={imageEdge.node?.altText || ''}
                 />
               ))}
           </div>
           <div className="pb-2">
-            <h1 className="uppercase pt-10">{product?.title}</h1>
+            <h1 className="pt-10 uppercase">{product?.title}</h1>
             {artist && (
               <div>
                 <Link href={`/artist/${artist?.handle}`}>
@@ -128,7 +128,7 @@ const ProductPage = ({ product }: { product: Product }) => {
                         <li key={value} className="pr-2">
                           <Button
                             key={value + 'but'}
-                            className="bg-white text-black border border-black w-32 focus:bg-black focus:text-white"
+                            className="w-32 text-black bg-white border border-black focus:text-white focus:bg-black"
                             onClick={() => {
                               setSelected({
                                 ...selectedOptions,
@@ -147,7 +147,7 @@ const ProductPage = ({ product }: { product: Product }) => {
             <h1>{price}</h1>
 
             <Button
-              className="bg-cyan-500 w-32"
+              className="w-32 bg-cyan-500"
               onClick={() => {
                 if (!product || !selectedVariantId) return
 
