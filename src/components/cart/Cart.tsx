@@ -29,16 +29,24 @@ export const Cart = () => {
   if (error) return <p>ERROR: {error.message}</p>
 
   async function createCheckout() {
+    if (!data?.cartItems) return
     const variables = {
       input: {
-        lineItems: [...(data?.cartItems ?? [])],
+        lineItems: [
+          ...data.cartItems.map((item) => {
+            return {
+              variantId: item.variantId,
+              quantity: item.quantity,
+            }
+          }),
+        ],
       },
     }
-
     const checkoutData = await storefrontClient.mutate({
       mutation: CreateCheckout,
       variables,
     })
+
     const { webUrl } = checkoutData.data.checkoutCreate.checkout
     window.location.href = webUrl
   }
