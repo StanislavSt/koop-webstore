@@ -176,9 +176,17 @@ const ProductPage = ({ product }: { product: Product }) => {
             </Button>
             <hr className="h-px bg-black border-0 dark:bg-gray-700 my-[20px]" />
             {material && (
-              <div>
-                <p>{material.value}</p>
-              </div>
+              <>
+                <div>
+                  <p>{material.value}</p>
+                </div>
+                <hr className="h-px bg-black border-0 dark:bg-gray-700 my-[20px]" />
+              </>
+            )}
+            {product && (
+              <div
+                dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+              />
             )}
             <hr className="h-px bg-black border-0 dark:bg-gray-700 my-[20px]" />
           </div>

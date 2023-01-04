@@ -7,6 +7,8 @@ const GetProduct = gql`
       title
       handle
       tags
+      description
+      descriptionHtml
       priceRangeV2 {
         minVariantPrice {
           amount
