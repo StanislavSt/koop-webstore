@@ -31300,6 +31300,25 @@ export type GetProductsQuery = {
             node: { __typename?: 'ProductVariant'; id: string }
           }>
         }
+        collections: {
+          __typename?: 'CollectionConnection'
+          edges: Array<{
+            __typename?: 'CollectionEdge'
+            node: {
+              __typename?: 'Collection'
+              id: string
+              handle: string
+              title: string
+              metafields: {
+                __typename?: 'MetafieldConnection'
+                edges: Array<{
+                  __typename?: 'MetafieldEdge'
+                  node: { __typename?: 'Metafield'; key: string; value: string }
+                }>
+              }
+            }
+          }>
+        }
       }
     }>
   }
@@ -31622,6 +31641,23 @@ export const GetProductsDocument = gql`
             edges {
               node {
                 id
+              }
+            }
+          }
+          collections(first: 5) {
+            edges {
+              node {
+                id
+                handle
+                title
+                metafields(first: 5) {
+                  edges {
+                    node {
+                      key
+                      value
+                    }
+                  }
+                }
               }
             }
           }

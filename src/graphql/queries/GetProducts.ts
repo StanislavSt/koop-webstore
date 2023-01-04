@@ -34,6 +34,23 @@ const GetProducts = gql`
               }
             }
           }
+          collections(first: 5) {
+            edges {
+              node {
+                id
+                handle
+                title
+                metafields(first: 5) {
+                  edges {
+                    node {
+                      key
+                      value
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }

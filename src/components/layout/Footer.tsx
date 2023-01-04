@@ -1,40 +1,20 @@
 import Link from 'next/link'
-import { useRouter } from 'next/router'
-import Image from 'next/image'
+import { useTranslation } from 'next-i18next'
+
+import { Button } from '../common/Button'
 
 const Footer = () => {
-  const { locale } = useRouter()
+  const { t } = useTranslation()
 
   return (
-    <footer className="flex justify-between pt-4 pb-8 w-full border-t border-t-black">
+    <footer className="flex flex-col justify-between px-3 pt-4 pb-8 w-full border-t sm:flex-row gap-[1rem] border-t-black">
       <section className="flex items-end gap-[40px]">
-        <Image
-          src="/KO-OP_Logo_2-01 1.png"
-          width={119}
-          height={26}
-          objectFit="contain"
-          alt="logo"
-        />
-        <ul className="flex flex-wrap gap-7 justify-center max-w-4xl leading-4 uppercase text-[20px]">
-          <li className="cursor-pointer hover:opacity-50">
-            <Link href="/terms-and-conditions">
-              <a>{locale === 'bg' ? 'Общи Условия' : 'Terms & Conditions'}</a>
-            </Link>
-          </li>
-          <li className="cursor-pointer hover:opacity-50">
-            <Link href="/about">
-              <a>{locale === 'bg' ? 'За нас' : 'About'}</a>
-            </Link>
-          </li>
-          <li className="cursor-pointer hover:opacity-50">
-            <Link href="/customer-care">
-              {locale === 'bg' ? 'Доставка' : 'Order'}
-            </Link>
-          </li>
-        </ul>
+        <Link href="/info">
+          <Button>{t('info')}</Button>
+        </Link>
       </section>
       <section className="flex items-end">
-        <ul className="flex mr-5 gap-[75px]">
+        <ul className="flex flex-col mr-5 sm:flex-row gap-[1rem] sm:gap-[75px]">
           <li className="leading-4">
             bul. &quot;Yanko Sakazov&quot; 17,
             <br /> 1527 Sofia, Bulgaria
