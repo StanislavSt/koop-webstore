@@ -1,9 +1,9 @@
-import { CollectionConnection, CollectionEdge } from '../graphql/types'
+import { Product, CollectionEdge } from '../graphql/types'
 
-export const getArtist = (collections: CollectionConnection) => {
-  return collections.edges.find((collection: CollectionEdge) => {
+export const getArtist = (product: Product) => {
+  return product.collections.edges.find((collection: CollectionEdge) => {
     return collection.node.metafields.edges.find((field) => {
       return field.node.key == 'artist' && field.node.value == 'true'
     })
-  })
+  })?.node
 }

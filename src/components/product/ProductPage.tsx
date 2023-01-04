@@ -30,7 +30,7 @@ const ProductPage = ({ product }: { product: Product }) => {
     chooseVariant()
   })
 
-  const artist: Collection | undefined = getArtist(product.collections)?.node
+  const artist: Collection | undefined = getArtist(product)
   const material: Metafield | undefined = getMaterial(product)
   const compare = (variant: ProductVariantEdge) => {
     if (!product) return
