@@ -18,7 +18,7 @@ const Header = () => {
       <section className="flex flex-col justify-between sm:flex-row ml-[3rem] gap-[1rem] lg:gap-[2rem] xl:gap-[3rem] 2xl:gap-[5rem]">
         <div className="hidden sm:block">
           <Link href="/info">
-            <Button>{t('info')}</Button>
+            <Button className="bg-black">{t('info')}</Button>
           </Link>
         </div>
         <div className="flex flex-col items-end">

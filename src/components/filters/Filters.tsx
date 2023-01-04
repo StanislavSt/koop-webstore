@@ -72,7 +72,7 @@ const Filters = () => {
         </div>
         <div className="flex justify-between w-[90%] items-center mb-3 sm:m-0">
           {selectedFormat ? (
-            <Button onClick={() => clearFilters()} className="">
+            <Button onClick={() => clearFilters()} className="bg-black">
               {t('clear filters')}
             </Button>
           ) : (

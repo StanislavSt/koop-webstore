@@ -96,8 +96,8 @@ const ProductPage = ({ product }: { product: Product }) => {
     <Layout title="Product page">
       <div className="bg-white">
         <div className="py-5 px-4 mx-auto max-w-xs sm:py-10 sm:px-6 lg:max-w-7xl lg:px-15"></div>
-        <div className="grid grid-cols-1 gap-x-6 gap-y-10 px-12 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 xl:gap-x-8">
-          <div className="py-5">
+        <div className="grid grid-cols-1 gap-x-6 gap-y-10 px-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 xl:gap-x-8">
+          <div className="flex flex-col col-span-2 items-center py-5">
             {product &&
               product?.images.edges.map((imageEdge) => (
                 <img
@@ -109,11 +109,13 @@ const ProductPage = ({ product }: { product: Product }) => {
               ))}
           </div>
           <div className="pb-2">
-            <h1 className="pt-10 uppercase">{product?.title}</h1>
+            <h1 className="pt-10 uppercase text-[24px]">{product?.title}</h1>
             {artist && (
               <div>
                 <Link href={`/artist/${artist?.handle}`}>
-                  <Button>{artist?.title}</Button>
+                  <Button className="uppercase bg-black text-[24px] h-[30px]">
+                    {artist?.title}
+                  </Button>
                 </Link>
               </div>
             )}
@@ -122,13 +124,15 @@ const ProductPage = ({ product }: { product: Product }) => {
                 product.options.length > 1 &&
                 product.options.map((option) => (
                   <div key={option.id}>
-                    <span className="text-cyan-600">{option.name}</span>
+                    <span className="text-[#1E90FF] text-[16px]">
+                      {option.name}
+                    </span>
                     <ul className="flex">
                       {option.values.map((value) => (
                         <li key={value} className="pr-2">
                           <Button
                             key={value + 'but'}
-                            className="w-32 text-black bg-white border border-black focus:text-white focus:bg-black"
+                            className="text-center text-black bg-white border border-black focus:text-white focus:bg-black w-[132px] h-[20px]"
                             onClick={() => {
                               setSelected({
                                 ...selectedOptions,
@@ -144,10 +148,10 @@ const ProductPage = ({ product }: { product: Product }) => {
                   </div>
                 ))}
             </div>
-            <h1>{price}</h1>
+            <h1 className="text-[24px]">{price}</h1>
 
             <Button
-              className="w-32 bg-cyan-500"
+              className="w-32 h-20px bg-[#1E90FF] text-[16px] uppercase"
               onClick={() => {
                 if (!product || !selectedVariantId) return
 
@@ -170,13 +174,13 @@ const ProductPage = ({ product }: { product: Product }) => {
             >
               Add to Cart
             </Button>
-            <hr className="my-6 h-px bg-gray-200 border-0 dark:bg-gray-700" />
+            <hr className="h-px bg-black border-0 dark:bg-gray-700 my-[20px]" />
             {material && (
               <div>
                 <p>{material.value}</p>
               </div>
             )}
-            <hr className="my-6 h-px bg-gray-200 border-0 dark:bg-gray-700" />
+            <hr className="h-px bg-black border-0 dark:bg-gray-700 my-[20px]" />
           </div>
         </div>
       </div>

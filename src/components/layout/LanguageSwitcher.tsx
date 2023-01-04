@@ -8,11 +8,11 @@ const LanguageSwitcher = () => {
     <>
       {locale === 'bg' ? (
         <Link href={pathname} locale="en">
-          <Button className="text-right">English</Button>
+          <Button className="text-right bg-black">English</Button>
         </Link>
       ) : (
         <Link href={pathname} locale="bg">
-          <Button className="text-right">Български</Button>
+          <Button className="text-right bg-black">Български</Button>
         </Link>
       )}
     </>
