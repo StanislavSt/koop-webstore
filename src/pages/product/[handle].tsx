@@ -1,23 +1,23 @@
 import ProductPage from '../../components/product/ProductPage'
-import GetProducts from '../../graphql/queries/GetProducts'
 import GetProduct from '../../graphql/queries/GetProduct'
 import {
-  GetProductsQuery,
-  GetProductsQueryVariables,
   GetProductQuery,
   GetProductQueryVariables,
+  GetProductHandlesQuery,
+  GetProductHandlesQueryVariables,
 } from '../../graphql/types'
 import client from '../../graphql/apollo-client'
 import { GetStaticPaths } from 'next/types'
+import GetProductHandles from '../../graphql/queries/GetProductHandles'
 
 export default ProductPage
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const { data } = await client.query<
-    GetProductsQuery,
-    GetProductsQueryVariables
+    GetProductHandlesQuery,
+    GetProductHandlesQueryVariables
   >({
-    query: GetProducts,
+    query: GetProductHandles,
     variables: { first: 100 },
   })
   const paths = data.products.edges.map((edge) => ({
