@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 const GetProducts = gql`
   query GetProducts($first: Int!) {
-    products(first: $first) {
+    products(first: $first, query: "status:active") {
       edges {
         node {
           id

@@ -18,6 +18,7 @@ export type ProductWithCoverImage =
       url: string
     }
   }
+
 export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
   const { data } = await client.query<
     GetProductsQuery,
