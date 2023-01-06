@@ -7093,6 +7093,70 @@ export type GetProductsQuery = {
   }
 }
 
+export type GetProductsByTagQueryVariables = Exact<{
+  first: Scalars['Int']
+  query: Scalars['String']
+}>
+
+export type GetProductsByTagQuery = {
+  __typename?: 'QueryRoot'
+  products: {
+    __typename?: 'ProductConnection'
+    edges: Array<{
+      __typename?: 'ProductEdge'
+      cursor: string
+      node: {
+        __typename?: 'Product'
+        id: string
+        title: string
+        handle: string
+        tags: Array<string>
+        priceRange: {
+          __typename?: 'ProductPriceRange'
+          minVariantPrice: { __typename?: 'MoneyV2'; amount: any }
+        }
+        images: {
+          __typename?: 'ImageConnection'
+          edges: Array<{
+            __typename?: 'ImageEdge'
+            node: {
+              __typename?: 'Image'
+              height?: number | null
+              width?: number | null
+              altText?: string | null
+              url: any
+            }
+          }>
+        }
+        variants: {
+          __typename?: 'ProductVariantConnection'
+          edges: Array<{
+            __typename?: 'ProductVariantEdge'
+            node: { __typename?: 'ProductVariant'; id: string }
+          }>
+        }
+        collections: {
+          __typename?: 'CollectionConnection'
+          edges: Array<{
+            __typename?: 'CollectionEdge'
+            node: {
+              __typename?: 'Collection'
+              id: string
+              handle: string
+              title: string
+              metafields: Array<{
+                __typename?: 'Metafield'
+                key: string
+                value: string
+              } | null>
+            }
+          }>
+        }
+      }
+    }>
+  }
+}
+
 export const GetArtistDocument = gql`
   query GetArtist($artistHandle: String!) {
     collectionByHandle(handle: $artistHandle) {
@@ -7509,4 +7573,108 @@ export type GetProductsLazyQueryHookResult = ReturnType<
 export type GetProductsQueryResult = Apollo.QueryResult<
   GetProductsQuery,
   GetProductsQueryVariables
+>
+export const GetProductsByTagDocument = gql`
+  query GetProductsByTag($first: Int!, $query: String!) {
+    products(first: $first, query: $query) {
+      edges {
+        cursor
+        node {
+          id
+          title
+          handle
+          tags
+          priceRange {
+            minVariantPrice {
+              amount
+            }
+          }
+          images(first: 1) {
+            edges {
+              node {
+                height
+                width
+                altText
+                url
+              }
+            }
+          }
+          variants(first: 1) {
+            edges {
+              node {
+                id
+              }
+            }
+          }
+          collections(first: 5) {
+            edges {
+              node {
+                id
+                handle
+                title
+                metafields(
+                  identifiers: [{ namespace: "custom", key: "artist" }]
+                ) {
+                  key
+                  value
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useGetProductsByTagQuery__
+ *
+ * To run a query within a React component, call `useGetProductsByTagQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProductsByTagQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProductsByTagQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      query: // value for 'query'
+ *   },
+ * });
+ */
+export function useGetProductsByTagQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetProductsByTagQuery,
+    GetProductsByTagQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetProductsByTagQuery, GetProductsByTagQueryVariables>(
+    GetProductsByTagDocument,
+    options
+  )
+}
+export function useGetProductsByTagLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetProductsByTagQuery,
+    GetProductsByTagQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    GetProductsByTagQuery,
+    GetProductsByTagQueryVariables
+  >(GetProductsByTagDocument, options)
+}
+export type GetProductsByTagQueryHookResult = ReturnType<
+  typeof useGetProductsByTagQuery
+>
+export type GetProductsByTagLazyQueryHookResult = ReturnType<
+  typeof useGetProductsByTagLazyQuery
+>
+export type GetProductsByTagQueryResult = Apollo.QueryResult<
+  GetProductsByTagQuery,
+  GetProductsByTagQueryVariables
 >
