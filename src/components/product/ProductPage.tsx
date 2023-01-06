@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import {
   Collection,
-  // Metafield,
+  Metafield,
   Product,
   ProductVariant,
   ProductVariantEdge,
@@ -13,7 +13,8 @@ import { useEffect, useState } from 'react'
 import { Button } from '../common'
 import Link from 'next/link'
 import { getArtist } from '../../utils/getArtist'
-// import { getMaterial } from '../../utils/getMaterial'
+import { getMaterial } from '../../utils/getMaterial'
+import { Maybe } from 'graphql/jsutils/Maybe'
 
 const ProductPage = ({ product }: { product: Product }) => {
   const selectedInit: { [key: string]: string } = {}
@@ -33,7 +34,7 @@ const ProductPage = ({ product }: { product: Product }) => {
   })
 
   const artist: Collection | undefined = getArtist(product)
-  // const material: Metafield | undefined = getMaterial(product)
+  const material: Maybe<Metafield> | null = getMaterial(product)
 
   const compare = (variant: ProductVariantEdge) => {
     if (!product) return
@@ -178,14 +179,14 @@ const ProductPage = ({ product }: { product: Product }) => {
               Add to Cart
             </Button>
             <hr className="h-px bg-black border-0 dark:bg-gray-700 my-[20px]" />
-            {/* {material && (
+            {material && (
               <>
                 <div>
                   <p>{material.value}</p>
                 </div>
                 <hr className="h-px bg-black border-0 dark:bg-gray-700 my-[20px]" />
               </>
-            )} */}
+            )}
             {product && (
               <div
                 dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
