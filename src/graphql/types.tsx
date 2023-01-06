@@ -6951,7 +6951,6 @@ export type GetProductQuery = {
     title: string
     handle: string
     tags: Array<string>
-    availableForSale: boolean
     descriptionHtml: any
     priceRange: {
       __typename?: 'ProductPriceRange'
@@ -7012,6 +7011,21 @@ export type GetProductQuery = {
       }>
     }
   } | null
+}
+
+export type GetProductHandlesQueryVariables = Exact<{
+  first: Scalars['Int']
+}>
+
+export type GetProductHandlesQuery = {
+  __typename?: 'QueryRoot'
+  products: {
+    __typename?: 'ProductConnection'
+    edges: Array<{
+      __typename?: 'ProductEdge'
+      node: { __typename?: 'Product'; handle: string }
+    }>
+  }
 }
 
 export type GetProductsQueryVariables = Exact<{
@@ -7225,7 +7239,10 @@ export const GetProductDocument = gql`
       title
       handle
       tags
+<<<<<<< HEAD
       availableForSale
+=======
+>>>>>>> 763de825d4dc33f0655cb4eb203f6e7c1b451d51
       descriptionHtml
       priceRange {
         minVariantPrice {
@@ -7331,19 +7348,71 @@ export type GetProductQueryResult = Apollo.QueryResult<
   GetProductQuery,
   GetProductQueryVariables
 >
-export const GetProductsDocument = gql`
-  query GetProducts($first: Int, $after: String) {
-    products(first: $first, after: $after) {
+export const GetProductHandlesDocument = gql`
+  query GetProductHandles($first: Int!) {
+    products(first: $first, query: "status:active") {
       edges {
-        cursor
         node {
-          id
-          title
           handle
-          tags
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useGetProductHandlesQuery__
+ *
+ * To run a query within a React component, call `useGetProductHandlesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProductHandlesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProductHandlesQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *   },
+ * });
+ */
+export function useGetProductHandlesQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetProductHandlesQuery,
+    GetProductHandlesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    GetProductHandlesQuery,
+    GetProductHandlesQueryVariables
+  >(GetProductHandlesDocument, options)
+}
+export function useGetProductHandlesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetProductHandlesQuery,
+    GetProductHandlesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    GetProductHandlesQuery,
+    GetProductHandlesQueryVariables
+  >(GetProductHandlesDocument, options)
+}
+export type GetProductHandlesQueryHookResult = ReturnType<
+  typeof useGetProductHandlesQuery
+>
+export type GetProductHandlesLazyQueryHookResult = ReturnType<
+  typeof useGetProductHandlesLazyQuery
+>
+export type GetProductHandlesQueryResult = Apollo.QueryResult<
+  GetProductHandlesQuery,
+  GetProductHandlesQueryVariables
+>
+export const GetProductsDocument = gql`
           priceRange {
             minVariantPrice {
-              amount
             }
           }
           images(first: 1) {
