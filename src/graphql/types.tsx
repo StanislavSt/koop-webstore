@@ -6951,6 +6951,7 @@ export type GetProductQuery = {
     title: string
     handle: string
     tags: Array<string>
+    availableForSale: boolean
     descriptionHtml: any
     priceRange: {
       __typename?: 'ProductPriceRange'
@@ -7239,10 +7240,7 @@ export const GetProductDocument = gql`
       title
       handle
       tags
-<<<<<<< HEAD
       availableForSale
-=======
->>>>>>> 763de825d4dc33f0655cb4eb203f6e7c1b451d51
       descriptionHtml
       priceRange {
         minVariantPrice {
@@ -7411,8 +7409,18 @@ export type GetProductHandlesQueryResult = Apollo.QueryResult<
   GetProductHandlesQueryVariables
 >
 export const GetProductsDocument = gql`
+  query GetProducts($first: Int, $after: String) {
+    products(first: $first, after: $after) {
+      edges {
+        cursor
+        node {
+          id
+          title
+          handle
+          tags
           priceRange {
             minVariantPrice {
+              amount
             }
           }
           images(first: 1) {
