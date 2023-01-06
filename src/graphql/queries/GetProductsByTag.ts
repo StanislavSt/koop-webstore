@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 const GetProductsByTag = gql`
-  query GetProductsByTag($first: Int!, $query: String!) {
-    products(first: $first, query: $query) {
+  query GetProductsByTag($first: Int!) {
+    products(first: $first, query: "tag: prints AND tag:[digital]") {
       edges {
         cursor
         node {

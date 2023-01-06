@@ -3,36 +3,17 @@ import Image from 'next/image'
 import { useTranslation } from 'next-i18next'
 
 import { getArtistName } from '../../utils/getArtist'
-import { ProductWithCoverImage } from '../../pages'
+import { calculateImageHeight } from '../../utils/calculateImageHeight'
+import { ProductWithCursor } from '../../pages'
 
-export const ProductCard = ({
-  product,
-}: {
-  product: ProductWithCoverImage
-}) => {
+export const ProductCard = ({ product }: { product: ProductWithCursor }) => {
   const { t } = useTranslation()
-
-  const getHeight = (
-    originalWidth: number,
-    originalHeight: number,
-    currentWidth: number
-  ) => {
-    const ratio = originalHeight / originalWidth
-    return currentWidth * ratio
-  }
 
   return (
     <Link href={`product/${product.handle}`}>
       <a className="group">
         <div className="flex justify-between items-center">
-          <h3 className="text-lg text-gray-700 max-w-[75%]">
-            {/* {locale === 'bg'
-              ? product.bg[0]
-                ? product.bg[0].value
-                : product.title
-              : product.title} */}
-            {product.title}
-          </h3>
+          <h3 className="text-lg text-gray-700 max-w-[75%]">{product.title}</h3>
           <p className="mt-1 text-lg font-medium text-gray-900 uppercase">
             {t('bgn')} {product.priceRange.minVariantPrice.amount}
           </p>
@@ -42,9 +23,9 @@ export const ProductCard = ({
           src={product.images.edges[0].node.url}
           alt={product.images.edges[0].node.altText ?? ''}
           width={500}
-          height={getHeight(
-            product.coverImage.size.width,
-            product.coverImage.size.height,
+          height={calculateImageHeight(
+            product.images.edges[0].node.width ?? 0,
+            product.images.edges[0].node.height ?? 0,
             500
           )}
           objectFit="contain"

@@ -1,5 +1,4 @@
 import { Product, CollectionEdge } from '../graphql/types'
-import { ProductWithCoverImage } from '../pages'
 
 export const getArtist = (product: Product) => {
   if (!product) return
@@ -10,7 +9,7 @@ export const getArtist = (product: Product) => {
   })?.node
 }
 
-export const getArtistName = (product: ProductWithCoverImage) => {
+export const getArtistName = (product: Product) => {
   if (!product) return
   return product.collections.edges.find((collection) => {
     return collection.node.metafields?.find(

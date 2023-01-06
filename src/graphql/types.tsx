@@ -7095,7 +7095,6 @@ export type GetProductsQuery = {
 
 export type GetProductsByTagQueryVariables = Exact<{
   first: Scalars['Int']
-  query: Scalars['String']
 }>
 
 export type GetProductsByTagQuery = {
@@ -7575,8 +7574,8 @@ export type GetProductsQueryResult = Apollo.QueryResult<
   GetProductsQueryVariables
 >
 export const GetProductsByTagDocument = gql`
-  query GetProductsByTag($first: Int!, $query: String!) {
-    products(first: $first, query: $query) {
+  query GetProductsByTag($first: Int!) {
+    products(first: $first, query: "tag: prints AND tag:[digital]") {
       edges {
         cursor
         node {
@@ -7640,7 +7639,6 @@ export const GetProductsByTagDocument = gql`
  * const { data, loading, error } = useGetProductsByTagQuery({
  *   variables: {
  *      first: // value for 'first'
- *      query: // value for 'query'
  *   },
  * });
  */
