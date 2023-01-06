@@ -7,15 +7,9 @@ const GetCollections = gql`
         node {
           title
           handle
-          metafields(first: 3) {
-            edges {
-              node {
-                key
-                id
-                value
-                type
-              }
-            }
+          metafields(identifiers: [{ namespace: "custom", key: "artist" }]) {
+            key
+            value
           }
         }
       }

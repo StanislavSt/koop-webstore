@@ -7,7 +7,7 @@ import {
   GetProductQuery,
   GetProductQueryVariables,
 } from '../../graphql/types'
-import client from '../../graphql/apollo-client'
+import client from '../../graphql/apollo-client-storefront'
 import { GetStaticPaths } from 'next/types'
 
 export default ProductPage
@@ -45,7 +45,7 @@ export const getStaticProps = async ({
 
   return {
     props: {
-      product: data.productByHandle,
+      product: data.product,
     },
     revalidate: 10,
   }

@@ -2,22 +2,17 @@ import { gql } from '@apollo/client'
 
 const GetProduct = gql`
   query GetProduct($productHandle: String!) {
-    productByHandle(handle: $productHandle) {
+    product(handle: $productHandle) {
       id
       title
       handle
       tags
-      description
+      availableForSale
       descriptionHtml
-      priceRangeV2 {
+      priceRange {
         minVariantPrice {
           amount
         }
-      }
-      bg: translations(locale: "bg") {
-        key
-        locale
-        value
       }
       images(first: 5) {
         edges {
@@ -32,13 +27,9 @@ const GetProduct = gql`
         values
         id
       }
-      metafields(first: 5) {
-        edges {
-          node {
-            key
-            value
-          }
-        }
+      metafields(identifiers: [{ namespace: "custom", key: "material" }]) {
+        key
+        value
       }
       collections(first: 5) {
         edges {
@@ -46,14 +37,9 @@ const GetProduct = gql`
             id
             handle
             title
-
-            metafields(first: 5) {
-              edges {
-                node {
-                  key
-                  value
-                }
-              }
+            metafields(identifiers: [{ namespace: "custom", key: "artist" }]) {
+              key
+              value
             }
           }
         }
@@ -65,12 +51,13 @@ const GetProduct = gql`
               name
               value
             }
+            price {
+              amount
+            }
             id
-            price
             title
             availableForSale
-            inventoryQuantity
-            displayName
+            quantityAvailable
           }
         }
       }

@@ -16,6 +16,11 @@ const nextConfig = {
     domains: ['cdn.shopify.com'],
   },
   i18n,
+  webpack: (config) => {
+    config.resolve.fallback = { fs: false }
+
+    return config
+  },
 }
 
 module.exports = nextConfig

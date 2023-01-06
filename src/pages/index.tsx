@@ -2,7 +2,7 @@ import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import probe, { ProbeResult } from 'probe-image-size'
 
-import client from '../graphql/apollo-client'
+import client from '../graphql/apollo-client-storefront'
 import GetProducts from '../graphql/queries/GetProducts'
 import { GetProductsQuery, GetProductsQueryVariables } from '../graphql/types'
 import IndexPage from '../components/index/IndexPage'
@@ -17,6 +17,7 @@ export type ProductWithCoverImage =
       altText: string | null | undefined
       url: string
     }
+    cursor: string
   }
 
 export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
@@ -25,7 +26,7 @@ export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
     GetProductsQueryVariables
   >({
     query: GetProducts,
-    variables: { first: 15 },
+    variables: { first: 10 },
   })
 
   const products = await Promise.all(
@@ -35,7 +36,7 @@ export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
         size: {},
       }
       imageWithSize.size = await probe(edge.node.images.edges[0].node.url)
-      return { ...edge.node, coverImage: imageWithSize }
+      return { ...edge.node, coverImage: imageWithSize, cursor: edge.cursor }
     })
   )
 

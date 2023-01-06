@@ -6,7 +6,7 @@ import {
   GetArtistQuery,
   GetArtistQueryVariables,
 } from '../../graphql/types'
-import client from '../../graphql/apollo-client'
+import client from '../../graphql/apollo-client-storefront'
 import { GetStaticPaths } from 'next/types'
 import GetCollections from '../../graphql/queries/GetCollections'
 

@@ -1,27 +1,25 @@
 import { gql } from '@apollo/client'
 
 const GetProducts = gql`
-  query GetProducts($first: Int!) {
-    products(first: $first, query: "status:active") {
+  query GetProducts($first: Int, $after: String) {
+    products(first: $first, after: $after) {
       edges {
+        cursor
         node {
           id
           title
           handle
           tags
-          priceRangeV2 {
+          priceRange {
             minVariantPrice {
               amount
             }
           }
-          bg: translations(locale: "bg") {
-            key
-            locale
-            value
-          }
           images(first: 1) {
             edges {
               node {
+                height
+                width
                 altText
                 url
               }
@@ -40,13 +38,11 @@ const GetProducts = gql`
                 id
                 handle
                 title
-                metafields(first: 5) {
-                  edges {
-                    node {
-                      key
-                      value
-                    }
-                  }
+                metafields(
+                  identifiers: [{ namespace: "custom", key: "artist" }]
+                ) {
+                  key
+                  value
                 }
               }
             }

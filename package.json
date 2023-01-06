@@ -16,6 +16,7 @@
     "@apollo/client": "^3.6.2",
     "graphql": "^16.4.0",
     "i18next": "^22.0.6",
+    "image-size": "^1.0.2",
     "next": "12.1.6",
     "next-i18next": "^13.0.0",
     "probe-image-size": "^7.2.3",

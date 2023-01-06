@@ -2,7 +2,7 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { appWithTranslation } from 'next-i18next'
 import { ApolloProvider } from '@apollo/client'
-import client from '../graphql/apollo-client'
+import client from '../graphql/apollo-client-storefront'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
