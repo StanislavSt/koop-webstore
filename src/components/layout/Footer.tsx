@@ -9,8 +9,13 @@ const Footer = () => {
   return (
     <footer className="flex flex-col justify-between px-3 pt-4 pb-8 w-full border-t sm:flex-row gap-[1rem] border-t-black">
       <section className="flex items-end gap-[40px]">
+        <Link href="https://www.ko-op.bg/">
+          <span className="uppercase text-[#1E90FF] leading-5 hidden md:block hover:opacity-75 cursor-pointer">
+            {t('This is a project from ko-op')}{' '}
+          </span>
+        </Link>
         <Link href="/info">
-          <Button>{t('info')}</Button>
+          <Button className="bg-black">{t('info')}</Button>
         </Link>
       </section>
       <section className="flex items-end">
