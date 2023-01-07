@@ -1,4 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
+import { useEffect, useState } from 'react'
+import Image from 'next/image'
+import { useReactiveVar } from '@apollo/client'
+import Link from 'next/link'
+import { Maybe } from 'graphql/jsutils/Maybe'
+
 import {
   Collection,
   Metafield,
@@ -8,13 +13,9 @@ import {
 } from '../../graphql/types'
 import Layout from '../layout/Layout'
 import { CartItem, cartItemsVar } from '../../graphql/cache'
-import { useReactiveVar } from '@apollo/client'
-import { useEffect, useState } from 'react'
 import { Button } from '../common'
-import Link from 'next/link'
 import { getArtist } from '../../utils/getArtist'
 import { getMaterial } from '../../utils/getMaterial'
-import { Maybe } from 'graphql/jsutils/Maybe'
 
 const ProductPage = ({ product }: { product: Product }) => {
   const selectedInit: { [key: string]: string } = {}
@@ -101,14 +102,16 @@ const ProductPage = ({ product }: { product: Product }) => {
       <div className="bg-white">
         <div className="py-5 px-4 mx-auto max-w-xs sm:py-10 sm:px-6 lg:max-w-7xl lg:px-15"></div>
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 px-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 xl:gap-x-8">
-          <div className="flex flex-col col-span-2 items-center py-5">
+          <div className="flex flex-col col-span-2 gap-3 items-center py-5">
             {product &&
               product?.images.edges.map((imageEdge) => (
-                <img
+                <Image
                   key={imageEdge.node?.id}
                   className="py-5 px-5"
                   src={imageEdge.node?.url}
                   alt={imageEdge.node?.altText || ''}
+                  height={imageEdge.node.height ?? 0}
+                  width={imageEdge.node.width ?? 0}
                 />
               ))}
           </div>

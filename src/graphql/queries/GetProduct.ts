@@ -17,6 +17,8 @@ const GetProduct = gql`
       images(first: 5) {
         edges {
           node {
+            height
+            width
             altText
             url
           }

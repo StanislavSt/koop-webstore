@@ -6961,7 +6961,13 @@ export type GetProductQuery = {
       __typename?: 'ImageConnection'
       edges: Array<{
         __typename?: 'ImageEdge'
-        node: { __typename?: 'Image'; altText?: string | null; url: any }
+        node: {
+          __typename?: 'Image'
+          height?: number | null
+          width?: number | null
+          altText?: string | null
+          url: any
+        }
       }>
     }
     options: Array<{
@@ -7313,6 +7319,8 @@ export const GetProductDocument = gql`
       images(first: 5) {
         edges {
           node {
+            height
+            width
             altText
             url
           }
