@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react'
 import GetProducts from '../../graphql/queries/GetProducts'
 import Layout from '../layout/Layout'
 import { ProductCard } from './ProductCard'
-import client from '../../graphql/apollo-client-storefront'
 import { ProductEdge } from '../../graphql/types'
 import { createProductGrid } from '../../utils/createProductGrid'
 import { ProductWithCursor } from '../../pages'
+import { useQuery } from '@apollo/client'
+import { Spinner } from '../common/Spinner'
 
 const IndexPage = ({
   products: initialProducts,
@@ -16,13 +17,13 @@ const IndexPage = ({
   const [products, setProducts] = useState(initialProducts)
   const [cursor, setCursor] = useState(initialProducts.slice(-1)[0]?.cursor)
 
+  const { data, loading } = useQuery(GetProducts, {
+    variables: { first: 15, after: cursor },
+  })
+
   const loadMore = async () => {
     if (!cursor) return
 
-    const { data } = await client.query({
-      query: GetProducts,
-      variables: { first: 15, after: cursor },
-    })
     const productsWithCursor = data.products.edges.map((edge: ProductEdge) => ({
       ...edge.node,
       cursor: edge.cursor,
@@ -37,8 +38,8 @@ const IndexPage = ({
 
   useEffect(() => {
     const productGrid = createProductGrid(products)
-    setItems(productGrid)
-  }, [products])
+    !loading && setItems(productGrid)
+  }, [products, loading])
 
   return (
     <Layout title="Home Page">
@@ -87,16 +88,22 @@ const IndexPage = ({
                 </div>
               ))}
           </div>
-          {cursor && (
-            <div
-              className="w-full text-center cursor-pointer text-[50px]"
-              onClick={() => {
-                loadMore()
-              }}
-            >
-              +
-            </div>
-          )}
+
+          <div className="flex justify-center w-full cursor-pointer text-[50px]">
+            {loading ? (
+              <Spinner />
+            ) : (
+              cursor && (
+                <span
+                  onClick={() => {
+                    loadMore()
+                  }}
+                >
+                  +
+                </span>
+              )
+            )}
+          </div>
         </div>
       </div>
     </Layout>
