@@ -8,9 +8,22 @@ import {
   GetProductsQuery,
   GetProductsQueryVariables,
 } from '../../graphql/types'
-import { createProductGrid } from '../../utils/createProductGrid'
+import {
+  createProductGrid,
+  ProductWithAnimation,
+} from '../../utils/createProductGrid'
 import { ProductWithCursor } from '../../pages'
 import { Spinner } from '../common/Spinner'
+
+const ProductColumn = ({ column }: { column: ProductWithAnimation[] }) => (
+  <div className="flex flex-col">
+    {column.map((product) => (
+      <div key={product.id} className="pt-5">
+        <ProductCard product={product} />
+      </div>
+    ))}
+  </div>
+)
 
 const IndexPage = ({
   products: initialProducts,
@@ -75,38 +88,15 @@ const IndexPage = ({
         <div className="py-10 px-3">
           <h2 className="sr-only">Products</h2>
           <div className="hidden gap-10 md:flex">
-            <div className="flex flex-col">
-              {items &&
-                items.col1.map((product) => (
-                  <div key={product.id} className="pt-5">
-                    <ProductCard product={product} />
-                  </div>
-                ))}
-            </div>
-            <div className="flex flex-col">
-              {items &&
-                items.col2.map((product) => (
-                  <div key={product.id} className="pt-5">
-                    <ProductCard product={product} />
-                  </div>
-                ))}
-            </div>
-            <div className="flex flex-col">
-              {items &&
-                items.col3.map((product) => (
-                  <div key={product.id} className="pt-5">
-                    <ProductCard product={product} />
-                  </div>
-                ))}
-            </div>
-            <div className="flex flex-col">
-              {items &&
-                items.col4.map((product) => (
-                  <div key={product.id} className="pt-5">
-                    <ProductCard product={product} />
-                  </div>
-                ))}
-            </div>
+            {items && (
+              <>
+                {' '}
+                <ProductColumn column={items.col1} />
+                <ProductColumn column={items.col2} />
+                <ProductColumn column={items.col3} />
+                <ProductColumn column={items.col4} />
+              </>
+            )}
           </div>
           <div className="flex flex-col items-center md:hidden">
             {products &&
@@ -116,24 +106,24 @@ const IndexPage = ({
                 </div>
               ))}
           </div>
-
-          {cursor && (
-            <div className="flex justify-center items-center pt-10 w-full h-10 cursor-pointer text-[50px]">
-              {loading ? (
+          <div className="flex justify-center items-center mt-10 w-full h-[50px]">
+            {loading ? (
+              <div>
                 <Spinner />
-              ) : (
-                cursor && (
-                  <span
-                    onClick={() => {
-                      loadMore()
-                    }}
-                  >
-                    +
-                  </span>
-                )
-              )}
-            </div>
-          )}
+              </div>
+            ) : (
+              cursor && (
+                <span
+                  className="cursor-pointer text-[50px]"
+                  onClick={() => {
+                    loadMore()
+                  }}
+                >
+                  +
+                </span>
+              )
+            )}
+          </div>
         </div>
       </div>
     </Layout>
