@@ -28,6 +28,8 @@ export const ProductCard = ({ product }: { product: ProductWithCursor }) => {
             product.images.edges[0].node.height ?? 0,
             500
           )}
+          placeholder={product.blurDataUrl ? 'blur' : 'empty'}
+          blurDataURL={product.blurDataUrl}
           objectFit="contain"
         />
         {getArtistName(product) && (

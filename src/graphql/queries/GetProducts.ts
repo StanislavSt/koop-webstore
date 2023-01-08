@@ -21,6 +21,7 @@ const GetProducts = gql`
                 height
                 width
                 altText
+                placeholder: url(transform: { maxWidth: 100, maxHeight: 100 })
                 url
               }
             }

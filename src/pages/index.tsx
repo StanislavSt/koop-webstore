@@ -1,5 +1,6 @@
 import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { getPlaiceholder } from 'plaiceholder'
 
 import client from '../graphql/apollo-client-storefront'
 import GetProducts from '../graphql/queries/GetProducts'
@@ -14,6 +15,7 @@ export default IndexPage
 
 export interface ProductWithCursor extends Product {
   cursor: string
+  blurDataUrl: string
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
@@ -25,10 +27,18 @@ export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
     variables: { first: 15 },
   })
 
-  const products = data.products.edges.map((edge) => ({
-    ...edge.node,
-    cursor: edge.cursor,
-  }))
+  const products = await Promise.all(
+    data.products.edges.map(async (edge) => {
+      const blurDataURL = await (
+        await getPlaiceholder(edge.node.images.edges[0].node.placeholder)
+      ).base64
+      return {
+        ...edge.node,
+        cursor: edge.cursor,
+        blurDataUrl: blurDataURL,
+      }
+    })
+  )
 
   return {
     props: {

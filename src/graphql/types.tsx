@@ -7067,6 +7067,7 @@ export type GetProductsQuery = {
               width?: number | null
               altText?: string | null
               url: any
+              placeholder: any
             }
           }>
         }
@@ -7500,6 +7501,7 @@ export const GetProductsDocument = gql`
                 height
                 width
                 altText
+                placeholder: url(transform: { maxWidth: 100, maxHeight: 100 })
                 url
               }
             }
