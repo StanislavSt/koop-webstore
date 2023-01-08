@@ -18,6 +18,10 @@ const IndexPage = ({
   products: ProductWithCursor[]
 }) => {
   const [products, setProducts] = useState(initialProducts)
+  const [
+    productLengthOfLastLoadMoreBatch,
+    setProductLengthOfLastLoadMoreBatch,
+  ] = useState(products.length)
   const [cursor, setCursor] = useState(initialProducts.slice(-1)[0]?.cursor)
 
   const { data, loading } = useQuery<
@@ -47,6 +51,8 @@ const IndexPage = ({
         }
       })
     )
+
+    setProductLengthOfLastLoadMoreBatch(productsWithCursor.length)
     setProducts([...products, ...productsWithCursor])
 
     if (productsWithCursor.length < 15) setCursor('')
@@ -56,9 +62,12 @@ const IndexPage = ({
   const [items, setItems] = useState<ReturnType<typeof createProductGrid>>()
 
   useEffect(() => {
-    const productGrid = createProductGrid(products)
+    const productGrid = createProductGrid(
+      products,
+      productLengthOfLastLoadMoreBatch
+    )
     !loading && setItems(productGrid)
-  }, [products, loading])
+  }, [products, loading, productLengthOfLastLoadMoreBatch])
 
   return (
     <Layout title="Home Page">
@@ -108,21 +117,23 @@ const IndexPage = ({
               ))}
           </div>
 
-          <div className="flex justify-center w-full cursor-pointer text-[50px]">
-            {loading ? (
-              <Spinner />
-            ) : (
-              cursor && (
-                <span
-                  onClick={() => {
-                    loadMore()
-                  }}
-                >
-                  +
-                </span>
-              )
-            )}
-          </div>
+          {cursor && (
+            <div className="flex justify-center items-center pt-10 w-full h-10 cursor-pointer text-[50px]">
+              {loading ? (
+                <Spinner />
+              ) : (
+                cursor && (
+                  <span
+                    onClick={() => {
+                      loadMore()
+                    }}
+                  >
+                    +
+                  </span>
+                )
+              )}
+            </div>
+          )}
         </div>
       </div>
     </Layout>

@@ -1,19 +1,41 @@
 import { ProductWithCursor } from '../pages'
 import { calculateImageHeight } from './calculateImageHeight'
 
+export interface ProductWithAnimation extends ProductWithCursor {
+  animate?: boolean
+}
+
 interface Accumulator {
-  col1: ProductWithCursor[]
+  col1: ProductWithAnimation[]
   col1Height: number
-  col2: ProductWithCursor[]
+  col2: ProductWithAnimation[]
   col2Height: number
-  col3: ProductWithCursor[]
+  col3: ProductWithAnimation[]
   col3Height: number
-  col4: ProductWithCursor[]
+  col4: ProductWithAnimation[]
   col4Height: number
 }
 
-export const createProductGrid = (products: ProductWithCursor[]) =>
-  products.reduce(
+const addAnimationClass = (
+  products: ProductWithCursor[],
+  last: number
+): ProductWithAnimation[] => {
+  const productsToAnimate = products
+    .slice(-last)
+    .map((product) => ({ ...product, animate: true }))
+  return [...products.slice(0, products.length - last), ...productsToAnimate]
+}
+
+export const createProductGrid = (
+  products: ProductWithCursor[],
+  lastProductsToAnimate: number
+) => {
+  const productsWithAnimation =
+    products.length === lastProductsToAnimate
+      ? products
+      : addAnimationClass(products, lastProductsToAnimate)
+
+  return productsWithAnimation.reduce(
     (acc: Accumulator, curr: ProductWithCursor) => {
       if (
         acc.col1Height <= acc.col2Height &&
@@ -86,3 +108,4 @@ export const createProductGrid = (products: ProductWithCursor[]) =>
       col4Height: 0,
     }
   )
+}

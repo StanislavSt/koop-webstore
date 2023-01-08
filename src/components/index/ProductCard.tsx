@@ -1,17 +1,25 @@
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useTranslation } from 'next-i18next'
 
 import { getArtistName } from '../../utils/getArtist'
 import { calculateImageHeight } from '../../utils/calculateImageHeight'
-import { ProductWithCursor } from '../../pages'
+import { ProductWithAnimation } from '../../utils/createProductGrid'
 
-export const ProductCard = ({ product }: { product: ProductWithCursor }) => {
+export const ProductCard = ({ product }: { product: ProductWithAnimation }) => {
   const { t } = useTranslation()
+  const [animationClass, setAnimationClass] = useState('')
+
+  useEffect(() => {
+    if (product.animate) {
+      setAnimationClass('animate-in slide-in-from-bottom duration-300')
+    }
+  }, [product.animate])
 
   return (
     <Link href={`product/${product.handle}`}>
-      <a className="group">
+      <div className={`group ${animationClass}`}>
         <div className="flex justify-between items-center">
           <h3 className="text-lg text-gray-700 max-w-[75%]">{product.title}</h3>
           <p className="mt-1 text-lg font-medium text-gray-900 uppercase">
@@ -37,7 +45,7 @@ export const ProductCard = ({ product }: { product: ProductWithCursor }) => {
             {getArtistName(product)}
           </span>
         )}
-      </a>
+      </div>
     </Link>
   )
 }
