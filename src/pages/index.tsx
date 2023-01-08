@@ -4,19 +4,16 @@ import { getPlaiceholder } from 'plaiceholder'
 
 import client from '../graphql/apollo-client-storefront'
 import GetProducts from '../graphql/queries/GetProducts'
-import {
-  GetProductsQuery,
-  GetProductsQueryVariables,
-  Product,
-} from '../graphql/types'
+import { GetProductsQuery, GetProductsQueryVariables } from '../graphql/types'
 import IndexPage from '../components/index/IndexPage'
 
 export default IndexPage
 
-export interface ProductWithCursor extends Product {
-  cursor: string
-  blurDataUrl: string
-}
+export type ProductWithCursor =
+  GetProductsQuery['products']['edges'][0]['node'] & {
+    cursor: string
+    blurDataUrl: string
+  }
 
 export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
   const { data } = await client.query<

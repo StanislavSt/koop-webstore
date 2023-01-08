@@ -1,4 +1,5 @@
 import { Product, CollectionEdge } from '../graphql/types'
+import { ProductWithCursor } from '../pages'
 
 export const getArtist = (product: Product) => {
   if (!product) return
@@ -9,7 +10,7 @@ export const getArtist = (product: Product) => {
   })?.node
 }
 
-export const getArtistName = (product: Product) => {
+export const getArtistName = (product: ProductWithCursor) => {
   if (!product) return
   return product.collections.edges.find((collection) => {
     return collection.node.metafields?.find(

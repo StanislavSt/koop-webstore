@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
+import { useQuery } from '@apollo/client'
 
 import GetProducts from '../../graphql/queries/GetProducts'
 import Layout from '../layout/Layout'
 import { ProductCard } from './ProductCard'
-import { ProductEdge } from '../../graphql/types'
+import {
+  GetProductsQuery,
+  GetProductsQueryVariables,
+} from '../../graphql/types'
 import { createProductGrid } from '../../utils/createProductGrid'
 import { ProductWithCursor } from '../../pages'
-import { useQuery } from '@apollo/client'
 import { Spinner } from '../common/Spinner'
 
 const IndexPage = ({
@@ -17,17 +20,33 @@ const IndexPage = ({
   const [products, setProducts] = useState(initialProducts)
   const [cursor, setCursor] = useState(initialProducts.slice(-1)[0]?.cursor)
 
-  const { data, loading } = useQuery(GetProducts, {
+  const { data, loading } = useQuery<
+    GetProductsQuery,
+    GetProductsQueryVariables
+  >(GetProducts, {
     variables: { first: 15, after: cursor },
   })
 
   const loadMore = async () => {
     if (!cursor) return
+    if (!data) return
 
-    const productsWithCursor = data.products.edges.map((edge: ProductEdge) => ({
-      ...edge.node,
-      cursor: edge.cursor,
-    }))
+    const productsWithCursor = await Promise.all(
+      data.products.edges.map(async (edge) => {
+        const blurDataURL = await fetch('/api/getBase64', {
+          method: 'POST',
+          body: JSON.stringify({
+            url: edge.node.images.edges[0].node.placeholder,
+          }),
+        })
+
+        return {
+          ...edge.node,
+          cursor: edge.cursor,
+          blurDataUrl: await blurDataURL.json(),
+        }
+      })
+    )
     setProducts([...products, ...productsWithCursor])
 
     if (productsWithCursor.length < 15) setCursor('')
