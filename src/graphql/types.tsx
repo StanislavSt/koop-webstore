@@ -7035,6 +7035,28 @@ export type GetProductHandlesQuery = {
   }
 }
 
+export type GetProductRecommendationsQueryVariables = Exact<{
+  productId: Scalars['ID']
+}>
+
+export type GetProductRecommendationsQuery = {
+  __typename?: 'QueryRoot'
+  productRecommendations?: Array<{
+    __typename?: 'Product'
+    id: string
+    title: string
+    handle: string
+    featuredImage?: {
+      __typename?: 'Image'
+      id?: string | null
+      width?: number | null
+      height?: number | null
+      altText?: string | null
+      url: any
+    } | null
+  }> | null
+}
+
 export type GetProductsQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>
   after?: InputMaybe<Scalars['String']>
@@ -7479,6 +7501,73 @@ export type GetProductHandlesLazyQueryHookResult = ReturnType<
 export type GetProductHandlesQueryResult = Apollo.QueryResult<
   GetProductHandlesQuery,
   GetProductHandlesQueryVariables
+>
+export const GetProductRecommendationsDocument = gql`
+  query GetProductRecommendations($productId: ID!) {
+    productRecommendations(productId: $productId) {
+      id
+      title
+      handle
+      featuredImage {
+        id
+        width
+        height
+        altText
+        url
+      }
+    }
+  }
+`
+
+/**
+ * __useGetProductRecommendationsQuery__
+ *
+ * To run a query within a React component, call `useGetProductRecommendationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProductRecommendationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProductRecommendationsQuery({
+ *   variables: {
+ *      productId: // value for 'productId'
+ *   },
+ * });
+ */
+export function useGetProductRecommendationsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetProductRecommendationsQuery,
+    GetProductRecommendationsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    GetProductRecommendationsQuery,
+    GetProductRecommendationsQueryVariables
+  >(GetProductRecommendationsDocument, options)
+}
+export function useGetProductRecommendationsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetProductRecommendationsQuery,
+    GetProductRecommendationsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    GetProductRecommendationsQuery,
+    GetProductRecommendationsQueryVariables
+  >(GetProductRecommendationsDocument, options)
+}
+export type GetProductRecommendationsQueryHookResult = ReturnType<
+  typeof useGetProductRecommendationsQuery
+>
+export type GetProductRecommendationsLazyQueryHookResult = ReturnType<
+  typeof useGetProductRecommendationsLazyQuery
+>
+export type GetProductRecommendationsQueryResult = Apollo.QueryResult<
+  GetProductRecommendationsQuery,
+  GetProductRecommendationsQueryVariables
 >
 export const GetProductsDocument = gql`
   query GetProducts($first: Int, $after: String) {

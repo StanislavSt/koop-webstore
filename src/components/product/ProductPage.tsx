@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { useReactiveVar } from '@apollo/client'
+import { useQuery, useReactiveVar } from '@apollo/client'
 import Link from 'next/link'
 import { Maybe } from 'graphql/jsutils/Maybe'
-
 import {
   Collection,
+  GetProductRecommendationsQuery,
+  GetProductRecommendationsQueryVariables,
   Metafield,
   Product,
   ProductVariant,
@@ -16,6 +17,8 @@ import { CartItem, cartItemsVar } from '../../graphql/cache'
 import { Button } from '../common'
 import { getArtist } from '../../utils/getArtist'
 import { getMaterial } from '../../utils/getMaterial'
+import GetProductRecommendations from '../../graphql/queries/GetProductRecommendations'
+import RecommendedProducts from '../recommendedProducts/RecommendedProducts'
 
 const ProductPage = ({ product }: { product: Product }) => {
   const selectedInit: { [key: string]: string } = {}
@@ -37,6 +40,21 @@ const ProductPage = ({ product }: { product: Product }) => {
   const artist: Collection | undefined = getArtist(product)
   const material: Maybe<Metafield> | null = getMaterial(product)
 
+  /**
+   * Getting recommended products for this item using Storefront API
+   */
+  const recommendedProducts = useQuery<
+    GetProductRecommendationsQuery,
+    GetProductRecommendationsQueryVariables
+  >(GetProductRecommendations, {
+    variables: { productId: product?.id },
+  })
+
+  /**
+   *
+   * @param variant
+   * @returns the product variant, which matches the options selected by the user
+   */
   const compare = (variant: ProductVariantEdge) => {
     if (!product) return
     const matching: { [key: string]: boolean } = {}
@@ -97,6 +115,26 @@ const ProductPage = ({ product }: { product: Product }) => {
     )
   }
 
+  const addToCart = () => {
+    if (!product || !selectedVariantId) return
+
+    const cartItemExists = CartItemsVar.find(
+      (cartItem) => cartItem.variantId === selectedVariantId
+    )
+    cartItemExists
+      ? updateCartItemQuantity(cartItemExists)
+      : cartItemsVar([
+          ...CartItemsVar,
+          {
+            variantId: selectedVariantId,
+            quantity: 1,
+            price: selectedVariant?.price.amount,
+            title: product?.title,
+            selectedOptions: selectedOptions,
+          },
+        ])
+  }
+
   return (
     <Layout title="Product page">
       <div className="bg-white lg:px-[12px]">
@@ -142,25 +180,7 @@ const ProductPage = ({ product }: { product: Product }) => {
 
             <Button
               className="w-32 h-20px bg-[#1E90FF] text-[16px] uppercase"
-              onClick={() => {
-                if (!product || !selectedVariantId) return
-
-                const cartItemExists = CartItemsVar.find(
-                  (cartItem) => cartItem.variantId === selectedVariantId
-                )
-                cartItemExists
-                  ? updateCartItemQuantity(cartItemExists)
-                  : cartItemsVar([
-                      ...CartItemsVar,
-                      {
-                        variantId: selectedVariantId,
-                        quantity: 1,
-                        price: selectedVariant?.price.amount,
-                        title: product?.title,
-                        selectedOptions: selectedOptions,
-                      },
-                    ])
-              }}
+              onClick={addToCart}
             >
               Add to Cart
             </Button>
@@ -180,6 +200,7 @@ const ProductPage = ({ product }: { product: Product }) => {
                 />
               ))}
           </div>
+
           <div className="pb-2">
             <div className="hidden lg:block">
               <h1 className="pt-5 uppercase text-[24px]">{product?.title}</h1>
@@ -225,25 +246,7 @@ const ProductPage = ({ product }: { product: Product }) => {
 
               <Button
                 className="w-32 h-20px bg-[#1E90FF] text-[16px] uppercase"
-                onClick={() => {
-                  if (!product || !selectedVariantId) return
-
-                  const cartItemExists = CartItemsVar.find(
-                    (cartItem) => cartItem.variantId === selectedVariantId
-                  )
-                  cartItemExists
-                    ? updateCartItemQuantity(cartItemExists)
-                    : cartItemsVar([
-                        ...CartItemsVar,
-                        {
-                          variantId: selectedVariantId,
-                          quantity: 1,
-                          price: selectedVariant?.price.amount,
-                          title: product?.title,
-                          selectedOptions: selectedOptions,
-                        },
-                      ])
-                }}
+                onClick={addToCart}
               >
                 Add to Cart
               </Button>
@@ -263,7 +266,12 @@ const ProductPage = ({ product }: { product: Product }) => {
                 dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
               />
             )}
-            <hr className="h-px bg-black border-0 dark:bg-gray-700 my-[20px]" />
+            <hr className="h-px bg-black border-0 dark:bg-gray-700 mt-[20px]" />
+            {recommendedProducts && (
+              <RecommendedProducts
+                products={recommendedProducts}
+              ></RecommendedProducts>
+            )}
           </div>
         </div>
       </div>
