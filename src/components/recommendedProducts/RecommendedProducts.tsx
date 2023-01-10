@@ -15,22 +15,26 @@ const RecommendedProducts = ({
   return (
     <>
       <p className="font-bold tracking-wide text-[30px] leading-[27px]">...</p>
-      {products &&
-        products.data?.productRecommendations?.map((product) => {
-          return (
-            <>
-              <Link href={`/product/${product.handle}`}>
-                <Image
-                  width="221"
-                  height="278"
-                  alt={product.featuredImage?.altText || product.title}
-                  src={product.featuredImage?.url}
-                  className="rounded cursor-pointer"
-                ></Image>
-              </Link>
-            </>
-          )
-        })}
+      <div className="flex gap-5">
+        {products &&
+          products.data?.productRecommendations?.map((product) => {
+            return (
+              <>
+                <Link href={`/product/${product.handle}`}>
+                  <div className="relative h-[220px] w-[45%] lg:h-[278px] lg:w-[221px]">
+                    <Image
+                      layout="fill"
+                      objectFit="cover"
+                      alt={product.featuredImage?.altText || product.title}
+                      src={product.featuredImage?.url}
+                      className="rounded cursor-pointer"
+                    ></Image>
+                  </div>
+                </Link>
+              </>
+            )
+          })}
+      </div>
     </>
   )
 }
