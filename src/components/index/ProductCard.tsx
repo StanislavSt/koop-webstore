@@ -12,9 +12,9 @@ type ImageState = ProductWithAnimation['images']['edges'][0]['node'] & {
   blurDataUrl?: string
 }
 const intervals: number[] = []
-const imagesWithPlaceHolders: ImageState[] = []
 
 export const ProductCard = ({ product }: { product: ProductWithAnimation }) => {
+  const imagesWithPlaceHolders: ImageState[] = []
   const { t } = useTranslation()
 
   const [image, setImage] = useState<ImageState>(product.images.edges[0].node)
