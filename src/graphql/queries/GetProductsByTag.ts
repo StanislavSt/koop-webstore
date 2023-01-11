@@ -15,7 +15,7 @@ const GetProductsByTag = gql`
               amount
             }
           }
-          images(first: 1) {
+          images(first: 10) {
             edges {
               node {
                 height
