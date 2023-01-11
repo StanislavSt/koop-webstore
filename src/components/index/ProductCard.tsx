@@ -11,14 +11,15 @@ import getPlaceholders from '../../utils/getPlaceholders'
 type ImageState = ProductWithAnimation['images']['edges'][0]['node'] & {
   blurDataUrl?: string
 }
-const intervals: NodeJS.Timer[] = []
+const intervals: number[] = []
 const imagesWithPlaceHolders: ImageState[] = []
 
 export const ProductCard = ({ product }: { product: ProductWithAnimation }) => {
   const { t } = useTranslation()
 
   const [image, setImage] = useState<ImageState>(product.images.edges[0].node)
-  const interval = useRef<NodeJS.Timer>()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const interval = useRef<any>()
 
   const images = product.images.edges.map((edge) => edge.node)
 
@@ -27,7 +28,7 @@ export const ProductCard = ({ product }: { product: ProductWithAnimation }) => {
   const handleOnMouseEnter = async () => {
     if (images.length === 1) return
 
-    interval.current && clearInterval(interval.current)
+    clearInterval(interval.current)
     if (imagesWithPlaceHolders.length === 0)
       imagesWithPlaceHolders.push(...(await getPlaceholders(images)))
 
@@ -36,12 +37,12 @@ export const ProductCard = ({ product }: { product: ProductWithAnimation }) => {
       counter++
       if (counter > imagesWithPlaceHolders.length - 1) counter = 0
     }, 200)
-    interval.current && intervals.push(interval.current)
+    intervals.push(interval.current)
   }
 
   const handleOnMouseLeave = async () => {
     setImage(images[0])
-    interval.current && clearInterval(interval.current)
+    clearInterval(interval.current)
     intervals.forEach((interval) => clearInterval(interval))
   }
 
