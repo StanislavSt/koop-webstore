@@ -9,6 +9,8 @@ import IndexPage from '../components/index/IndexPage'
 
 export default IndexPage
 
+export const numberOfProductsToQuery = 15
+
 export type ProductWithCursor =
   GetProductsQuery['products']['edges'][0]['node'] & {
     cursor: string
@@ -21,7 +23,7 @@ export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
     GetProductsQueryVariables
   >({
     query: GetProducts,
-    variables: { first: 15 },
+    variables: { first: numberOfProductsToQuery },
   })
 
   const products = await Promise.all(

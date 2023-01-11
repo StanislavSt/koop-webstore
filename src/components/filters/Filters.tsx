@@ -1,9 +1,13 @@
-import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '../common/Button'
 import { Cart } from '../cart/Cart'
+import { Filters, filtersVar } from '../../graphql/cache'
+import { useReactiveVar } from '@apollo/client'
 
-const filterValues = [
+const filterValues: {
+  format: Filters['format']
+  technique: Filters['technique'][]
+}[] = [
   {
     format: 'publications',
     technique: [
@@ -21,26 +25,16 @@ const filterValues = [
   },
   {
     format: 'prints',
-    technique: ['screen print', 'illustration', 'digital', 'riso'],
+    technique: ['screen print', 'illustration', 'digital', 'rizo'],
   },
 ]
 
 const Filters = () => {
   const { t } = useTranslation()
-
-  const [selectedFormat, setSelectedFormat] = useState('')
-  const [selectedTechnique, setSelectedTechnique] = useState('')
-
-  useEffect(() => {
-    setSelectedTechnique('')
-  }, [selectedFormat])
-
-  const isTechniqueSelected = (technique: string) =>
-    selectedTechnique === technique
+  const filters = useReactiveVar(filtersVar)
 
   const clearFilters = () => {
-    setSelectedFormat('')
-    setSelectedTechnique('')
+    filtersVar({ format: '', technique: '' })
   }
 
   return (
@@ -61,9 +55,12 @@ const Filters = () => {
               <li
                 key={filter.format}
                 className={`cursor-pointer hover:text-[#1E90FF] ${
-                  filter.format === selectedFormat && 'text-[#1E90FF]'
+                  filters.format === filter.format && 'text-[#1E90FF]'
                 }`}
-                onClick={() => setSelectedFormat(filter.format)}
+                onClick={() => {
+                  if (filters.format === filter.format) return
+                  filtersVar({ format: filter.format, technique: '' })
+                }}
               >
                 {t(filter.format)}
               </li>
@@ -71,7 +68,7 @@ const Filters = () => {
           </ul>
         </div>
         <div className="flex justify-between w-[90%] items-center mb-3 sm:m-0">
-          {selectedFormat ? (
+          {filters.format ? (
             <Button onClick={() => clearFilters()} className="bg-black">
               {t('clear filters')}
             </Button>
@@ -84,7 +81,7 @@ const Filters = () => {
         </div>
       </div>
       <div className="lg:min-w-0 min-w-[10rem] md:min-w-[15rem]">
-        {selectedFormat && (
+        {filters.format && (
           <>
             <h3
               id="format"
@@ -97,14 +94,17 @@ const Filters = () => {
               className="inline-flex flex-col items-start uppercase text-[35px] leading-[32px] sm:text-[22px] sm:leading-[19px] md:text-[28px] md:leading-[25px] lg:text-[35px] lg:leading-[32.2px]"
             >
               {filterValues
-                .find((filter) => filter.format === selectedFormat)
+                .find((filter) => filter.format === filters.format)
                 ?.technique.map((technique) => (
                   <li
                     key={technique}
                     className={`cursor-pointer hover:text-[#1E90FF] ${
-                      isTechniqueSelected(technique) && 'text-[#1E90FF]'
+                      filters.technique === technique && 'text-[#1E90FF]'
                     }`}
-                    onClick={() => setSelectedTechnique(technique)}
+                    onClick={() => {
+                      if (filters.technique === technique) return
+                      filtersVar({ ...filters, technique: technique })
+                    }}
                   >
                     {t(technique)}
                   </li>

@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 const GetProductsByTag = gql`
-  query GetProductsByTag($first: Int!) {
-    products(first: $first, query: "tag: prints AND tag:[digital]") {
+  query GetProductsByTag($first: Int!, $after: String, $query: String) {
+    products(first: $first, after: $after, query: $query) {
       edges {
         cursor
         node {
@@ -21,6 +21,7 @@ const GetProductsByTag = gql`
                 height
                 width
                 altText
+                placeholder: url(transform: { maxWidth: 100, maxHeight: 100 })
                 url
               }
             }

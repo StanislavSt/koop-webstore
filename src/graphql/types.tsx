@@ -7124,6 +7124,8 @@ export type GetProductsQuery = {
 
 export type GetProductsByTagQueryVariables = Exact<{
   first: Scalars['Int']
+  after?: InputMaybe<Scalars['String']>
+  query?: InputMaybe<Scalars['String']>
 }>
 
 export type GetProductsByTagQuery = {
@@ -7153,6 +7155,7 @@ export type GetProductsByTagQuery = {
               width?: number | null
               altText?: string | null
               url: any
+              placeholder: any
             }
           }>
         }
@@ -7673,8 +7676,8 @@ export type GetProductsQueryResult = Apollo.QueryResult<
   GetProductsQueryVariables
 >
 export const GetProductsByTagDocument = gql`
-  query GetProductsByTag($first: Int!) {
-    products(first: $first, query: "tag: prints AND tag:[digital]") {
+  query GetProductsByTag($first: Int!, $after: String, $query: String) {
+    products(first: $first, after: $after, query: $query) {
       edges {
         cursor
         node {
@@ -7693,6 +7696,7 @@ export const GetProductsByTagDocument = gql`
                 height
                 width
                 altText
+                placeholder: url(transform: { maxWidth: 100, maxHeight: 100 })
                 url
               }
             }
@@ -7738,6 +7742,8 @@ export const GetProductsByTagDocument = gql`
  * const { data, loading, error } = useGetProductsByTagQuery({
  *   variables: {
  *      first: // value for 'first'
+ *      after: // value for 'after'
+ *      query: // value for 'query'
  *   },
  * });
  */

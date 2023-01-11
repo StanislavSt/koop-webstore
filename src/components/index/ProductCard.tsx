@@ -13,7 +13,9 @@ export const ProductCard = ({ product }: { product: ProductWithAnimation }) => {
     <Link href={`product/${product.handle}`}>
       <div
         className={`group ${
-          product.animate && 'animate-in slide-in-from-bottom duration-500'
+          product.animate
+            ? 'animate-in slide-in-from-bottom duration-500'
+            : 'animate-in fade-in duration-500'
         }`}
       >
         <div className="flex justify-between items-center">
