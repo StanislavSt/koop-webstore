@@ -6,7 +6,6 @@ import { getArtistName } from '../../utils/getArtist'
 import { calculateImageHeight } from '../../utils/calculateImageHeight'
 import { ProductWithAnimation } from '../../utils/createProductGrid'
 import { useRef, useState } from 'react'
-import getPlaceholders from '../../utils/getPlaceholders'
 
 type ImageState = ProductWithAnimation['images']['edges'][0]['node'] & {
   blurDataUrl?: string
@@ -14,7 +13,6 @@ type ImageState = ProductWithAnimation['images']['edges'][0]['node'] & {
 const intervals: number[] = []
 
 export const ProductCard = ({ product }: { product: ProductWithAnimation }) => {
-  const imagesWithPlaceHolders: ImageState[] = []
   const { t } = useTranslation()
 
   const [image, setImage] = useState<ImageState>(product.images.edges[0].node)
@@ -29,13 +27,11 @@ export const ProductCard = ({ product }: { product: ProductWithAnimation }) => {
     if (images.length === 1) return
 
     clearInterval(interval.current)
-    if (imagesWithPlaceHolders.length === 0)
-      imagesWithPlaceHolders.push(...(await getPlaceholders(images)))
 
     interval.current = setInterval(function () {
-      setImage(imagesWithPlaceHolders[counter])
+      setImage(images[counter])
       counter++
-      if (counter > imagesWithPlaceHolders.length - 1) counter = 0
+      if (counter > images.length - 1) counter = 0
     }, 200)
     intervals.push(interval.current)
   }
@@ -73,8 +69,8 @@ export const ProductCard = ({ product }: { product: ProductWithAnimation }) => {
             image.height ?? 0,
             500
           )}
-          placeholder={image.blurDataUrl ? 'blur' : 'empty'}
-          blurDataURL={image.blurDataUrl}
+          placeholder={product.blurDataUrl ? 'blur' : 'empty'}
+          blurDataURL={product.blurDataUrl}
           objectFit="contain"
         />
         {getArtistName(product) && (
