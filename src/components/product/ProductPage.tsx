@@ -19,6 +19,7 @@ import { getArtist } from '../../utils/getArtist'
 import { getMaterial } from '../../utils/getMaterial'
 import GetProductRecommendations from '../../graphql/queries/GetProductRecommendations'
 import RecommendedProducts from '../recommendedProducts/RecommendedProducts'
+import ProductOptions from '../productOptions/ProductOptions'
 
 const ProductPage = ({ product }: { product: Product }) => {
   const selectedInit: { [key: string]: string } = {}
@@ -33,6 +34,7 @@ const ProductPage = ({ product }: { product: Product }) => {
     product.variants.edges[0].node.price.amount
   )
 
+  // TODO get rid of useEffect
   useEffect(() => {
     chooseVariant()
   })
@@ -150,32 +152,10 @@ const ProductPage = ({ product }: { product: Product }) => {
                 </Link>
               </div>
             )}
-            <div className="flex flex-col pt-6">
-              {product &&
-                product.options.length > 1 &&
-                product.options.map((option) => (
-                  <div key={option.id}>
-                    <ul className="flex flex-wrap">
-                      {option.values.map((value) => (
-                        <li key={value} className="pr-2">
-                          <Button
-                            key={value + 'but'}
-                            className="text-center text-black bg-white border border-black focus:text-white focus:bg-black w-[132px] h-[20px]"
-                            onClick={() => {
-                              setSelected({
-                                ...selectedOptions,
-                                [option.name]: value,
-                              })
-                            }}
-                          >
-                            {value}
-                          </Button>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-            </div>
+            <ProductOptions
+              product={product}
+              setSelectedOptions={setSelected}
+            />
             <h1 className="text-[24px]">{price}</h1>
 
             <Button
@@ -213,35 +193,10 @@ const ProductPage = ({ product }: { product: Product }) => {
                   </Link>
                 </div>
               )}
-              <div className="flex flex-col pt-6">
-                {product &&
-                  product.options.length > 1 &&
-                  product.options.map((option) => (
-                    <div key={option.id}>
-                      <span className="text-[#1E90FF] text-[16px]">
-                        {option.name}
-                      </span>
-                      <ul className="flex">
-                        {option.values.map((value) => (
-                          <li key={value} className="pr-2">
-                            <Button
-                              key={value + 'but'}
-                              className="text-center text-black bg-white border border-black focus:text-white focus:bg-black w-[132px] h-[20px]"
-                              onClick={() => {
-                                setSelected({
-                                  ...selectedOptions,
-                                  [option.name]: value,
-                                })
-                              }}
-                            >
-                              {value}
-                            </Button>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-              </div>
+              <ProductOptions
+                product={product}
+                setSelectedOptions={setSelected}
+              />
               <h1 className="text-[24px]">{price}</h1>
 
               <Button
