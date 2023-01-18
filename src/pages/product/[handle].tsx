@@ -18,7 +18,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     GetProductHandlesQueryVariables
   >({
     query: GetProductHandles,
-    variables: { first: 100 },
+    variables: { first: 200 },
   })
   const paths = data.products.edges.map((edge) => ({
     params: { handle: edge.node.handle },
@@ -26,7 +26,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false,
+    fallback: 'blocking',
   }
 }
 
