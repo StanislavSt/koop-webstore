@@ -24,7 +24,6 @@ export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
   >({
     query: GetProducts,
     variables: { first: numberOfProductsToQuery },
-    fetchPolicy: 'no-cache',
   })
 
   const products = await Promise.all(
@@ -44,7 +43,7 @@ export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
       products: products,
-      revalidate: 10,
     },
+    revalidate: 10,
   }
 }
