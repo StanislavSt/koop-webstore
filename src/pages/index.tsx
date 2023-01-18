@@ -1,4 +1,4 @@
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { getPlaiceholder } from 'plaiceholder'
 
@@ -17,9 +17,7 @@ export type ProductWithCursor =
     blurDataUrl: string
   }
 
-export const getServerSideProps: GetServerSideProps = async ({
-  locale = 'en',
-}) => {
+export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
   const { data } = await client.query<
     GetProductsQuery,
     GetProductsQueryVariables
