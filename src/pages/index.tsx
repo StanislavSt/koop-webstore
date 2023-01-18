@@ -26,6 +26,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   >({
     query: GetProducts,
     variables: { first: numberOfProductsToQuery },
+    fetchPolicy: 'no-cache',
   })
 
   const products = await Promise.all(
