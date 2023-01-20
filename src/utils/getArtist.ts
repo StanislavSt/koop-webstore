@@ -1,20 +1,15 @@
-import { Product, CollectionEdge } from '../graphql/types'
+import { Product } from '../graphql/types'
 import { ProductWithCursor } from '../pages'
 
-export const getArtist = (product: Product) => {
+export const getArtists = (product: ProductWithCursor | Product) => {
   if (!product) return
-  return product.collections.edges.find((collection: CollectionEdge) => {
-    return collection.node.metafields?.find(
-      (metaField) => metaField?.key === 'artist' && metaField?.value === 'true'
-    )
-  })?.node
-}
 
-export const getArtistName = (product: ProductWithCursor) => {
-  if (!product) return
-  return product.collections.edges.find((collection) => {
-    return collection.node.metafields?.find(
-      (metaField) => metaField?.key === 'artist' && metaField?.value === 'true'
+  return product.collections.edges
+    .filter((collection) =>
+      collection.node.metafields?.find(
+        (metaField) =>
+          metaField?.key === 'artist' && metaField?.value === 'true'
+      )
     )
-  })?.node.title
+    .map((collection) => collection.node)
 }

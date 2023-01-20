@@ -21,6 +21,7 @@ const FilteredProductsGrid = () => {
 
   const [products, setProducts] = useState<ProductWithCursor[]>([])
   const [cursor, setCursor] = useState('')
+  const [showLoader, setShowLoader] = useState(false)
 
   const queryTag = formatProductsQueryByFilters(filters)
 
@@ -28,27 +29,28 @@ const FilteredProductsGrid = () => {
     setCursor('')
   }, [filters])
 
-  const { loading } = useQuery<
-    GetProductsByTagQuery,
-    GetProductsByTagQueryVariables
-  >(GetProductsByTag, {
-    variables: {
-      first: numberOfProductsToQuery,
-      query: queryTag,
-    },
-    onCompleted: async (data) => {
-      const mappedProducts = await mapProducts(data)
-      setProducts(mappedProducts)
-      mappedProducts.length >= numberOfProductsToQuery &&
-        setCursor(mappedProducts.slice(-1)[0]?.cursor)
-    },
-  })
+  useQuery<GetProductsByTagQuery, GetProductsByTagQueryVariables>(
+    GetProductsByTag,
+    {
+      variables: {
+        first: numberOfProductsToQuery,
+        query: queryTag,
+      },
+      onCompleted: async (data) => {
+        const mappedProducts = await mapProducts(data.products)
+        setProducts(mappedProducts)
+        mappedProducts.length >= numberOfProductsToQuery &&
+          setCursor(mappedProducts.slice(-1)[0]?.cursor)
+      },
+    }
+  )
 
   const items = createProductGrid(products, products.length)
 
   const loadMore = async () => {
     if (!cursor) return
 
+    setShowLoader(true)
     const { data } = await client.query<
       GetProductsByTagQuery,
       GetProductsByTagQueryVariables
@@ -61,7 +63,9 @@ const FilteredProductsGrid = () => {
       },
     })
 
-    const productsWithCursor = await mapProducts(data)
+    const productsWithCursor = await mapProducts(data.products)
+    setShowLoader(false)
+
     setProducts([...products, ...productsWithCursor])
 
     productsWithCursor.length < numberOfProductsToQuery
@@ -94,7 +98,7 @@ const FilteredProductsGrid = () => {
           ))}
       </div>
       <div className="flex justify-center items-center mt-10 w-full h-[50px]">
-        {loading ? (
+        {showLoader ? (
           <div>
             <Spinner />
           </div>

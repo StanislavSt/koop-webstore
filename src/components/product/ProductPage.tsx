@@ -4,7 +4,6 @@ import { useQuery, useReactiveVar } from '@apollo/client'
 import Link from 'next/link'
 import { Maybe } from 'graphql/jsutils/Maybe'
 import {
-  Collection,
   GetProductRecommendationsQuery,
   GetProductRecommendationsQueryVariables,
   Metafield,
@@ -15,7 +14,7 @@ import {
 import Layout from '../layout/Layout'
 import { CartItem, cartItemsVar } from '../../graphql/cache'
 import { Button } from '../common'
-import { getArtist } from '../../utils/getArtist'
+import { getArtists } from '../../utils/getArtist'
 import { getMaterial } from '../../utils/getMaterial'
 import GetProductRecommendations from '../../graphql/queries/GetProductRecommendations'
 import RecommendedProducts from '../recommendedProducts/RecommendedProducts'
@@ -37,7 +36,7 @@ const ProductPage = ({ product }: { product: Product }) => {
     chooseVariant()
   })
 
-  const artist: Collection | undefined = getArtist(product)
+  const artists = getArtists(product)
   const material: Maybe<Metafield> | null = getMaterial(product)
 
   /**
@@ -136,20 +135,21 @@ const ProductPage = ({ product }: { product: Product }) => {
   }
 
   return (
-    <Layout title="Product page">
+    <Layout title={`${product.title} | TheKopyShop`}>
       <div className="bg-white lg:px-[12px]">
         <div className="gap-y-10 md:grid md:grid-cols-1 md:gap-x-6 lg:grid-cols-3 lg:px-0 xl:grid-cols-3 xl:gap-x-8 px-[9px]">
           <div className="flex flex-col lg:hidden">
             <h1 className="uppercase text-[24px]">{product?.title}</h1>
-            {artist && (
-              <div>
-                <Link href={`/artist/${artist?.handle}`}>
-                  <Button className="uppercase bg-black text-[24px] h-[30px]">
-                    {artist?.title}
-                  </Button>
-                </Link>
-              </div>
-            )}
+            {artists &&
+              artists.map((artist) => (
+                <div key={artist.id}>
+                  <Link href={`/artist/${artist.handle}`}>
+                    <Button className="uppercase bg-black text-[24px] h-[30px]">
+                      {artist.title}
+                    </Button>
+                  </Link>
+                </div>
+              ))}
             <div className="flex flex-col pt-6">
               {product &&
                 product.options.length > 1 &&
@@ -204,15 +204,16 @@ const ProductPage = ({ product }: { product: Product }) => {
           <div className="pb-2">
             <div className="hidden lg:block">
               <h1 className="pt-5 uppercase text-[24px]">{product?.title}</h1>
-              {artist && (
-                <div>
-                  <Link href={`/artist/${artist?.handle}`}>
-                    <Button className="uppercase bg-black text-[24px] h-[30px]">
-                      {artist?.title}
-                    </Button>
-                  </Link>
-                </div>
-              )}
+              {artists &&
+                artists.map((artist) => (
+                  <div key={artist.id}>
+                    <Link href={`/artist/${artist.handle}`}>
+                      <Button className="uppercase bg-black text-[24px] h-[30px]">
+                        {artist.title}
+                      </Button>
+                    </Link>
+                  </div>
+                ))}
               <div className="flex flex-col pt-6">
                 {product &&
                   product.options.length > 1 &&

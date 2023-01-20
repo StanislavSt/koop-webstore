@@ -1,48 +1,55 @@
-import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
-
-import GetProducts from '../../graphql/queries/GetProducts'
-import { ProductCard } from './ProductCard'
-import {
-  GetProductsQuery,
-  GetProductsQueryVariables,
-} from '../../graphql/types'
-import { createProductGrid } from '../../utils/createProductGrid'
+import { useState } from 'react'
+import GetArtist from '../../graphql/queries/GetArtist'
+import { GetArtistQuery, GetArtistQueryVariables } from '../../graphql/types'
 import { numberOfProductsToQuery, ProductWithCursor } from '../../pages'
-import { Spinner } from '../common/Spinner'
-import { ProductColumn } from './ProductColumn'
+import { createProductGrid } from '../../utils/createProductGrid'
 import mapProducts from '../../utils/mapProducts'
+import { Spinner } from '../common/Spinner'
+import { ProductCard } from '../index/ProductCard'
+import { ProductColumn } from '../index/ProductColumn'
 
-const UnfilteredProductsGrid = ({
+const ArtistProducts = ({
   products: initialProducts,
+  artistHandle,
 }: {
   products: ProductWithCursor[]
+  artistHandle: string
 }) => {
   const [products, setProducts] = useState(initialProducts)
+  const [cursor, setCursor] = useState(
+    initialProducts.length < numberOfProductsToQuery
+      ? ''
+      : initialProducts.slice(-1)[0]?.cursor
+  )
   const [
     productLengthOfLastLoadMoreBatch,
     setProductLengthOfLastLoadMoreBatch,
   ] = useState(initialProducts.length)
-  const [cursor, setCursor] = useState(initialProducts.slice(-1)[0]?.cursor)
-  const [showLoader, setShowLoader] = useState(false)
 
-  const { data, loading } = useQuery<
-    GetProductsQuery,
-    GetProductsQueryVariables
-  >(GetProducts, {
-    variables: { first: numberOfProductsToQuery, after: cursor },
-  })
+  const { data, loading } = useQuery<GetArtistQuery, GetArtistQueryVariables>(
+    GetArtist,
+    {
+      variables: {
+        artistHandle,
+        numberOfProductsToQuery,
+        after: cursor,
+      },
+    }
+  )
 
   const loadMore = async () => {
     if (!cursor) return
     if (!data) return
 
-    setShowLoader(true)
-    const productsWithCursor = await mapProducts(data.products)
-    setShowLoader(false)
+    const productsWithCursor = data.collectionByHandle?.products
+      ? await mapProducts(data.collectionByHandle?.products)
+      : []
 
-    setProductLengthOfLastLoadMoreBatch(productsWithCursor.length)
-    setProducts([...products, ...productsWithCursor])
+    if (productsWithCursor.length > 0) {
+      setProductLengthOfLastLoadMoreBatch(productsWithCursor.length)
+      setProducts([...products, ...productsWithCursor])
+    }
 
     if (productsWithCursor.length < numberOfProductsToQuery) setCursor('')
     else setCursor(productsWithCursor?.slice(-1)[0]?.cursor)
@@ -66,7 +73,7 @@ const UnfilteredProductsGrid = ({
         )}
       </div>
       {/* Mobile View */}
-      <div className="flex flex-col items-center md:hidden">
+      <div className="flex flex-col items-center p-3 md:hidden">
         {products &&
           products.map((product) => (
             <div key={product.id} className="pt-5">
@@ -75,7 +82,7 @@ const UnfilteredProductsGrid = ({
           ))}
       </div>
       <div className="flex justify-center items-center mt-10 w-full h-[50px]">
-        {loading || showLoader ? (
+        {loading ? (
           <div>
             <Spinner />
           </div>
@@ -96,4 +103,4 @@ const UnfilteredProductsGrid = ({
   )
 }
 
-export default UnfilteredProductsGrid
+export default ArtistProducts

@@ -9,6 +9,8 @@ import {
 import client from '../../graphql/apollo-client-storefront'
 import { GetStaticPaths } from 'next/types'
 import GetCollections from '../../graphql/queries/GetCollections'
+import { numberOfProductsToQuery } from '..'
+import { getPlaiceholder } from 'plaiceholder'
 
 export default ArtistPage
 
@@ -38,12 +40,31 @@ export const getStaticProps = async ({
 }) => {
   const { data } = await client.query<GetArtistQuery, GetArtistQueryVariables>({
     query: GetArtist,
-    variables: { artistHandle: params.handle },
+    variables: {
+      artistHandle: params.handle,
+      numberOfProductsToQuery,
+    },
   })
+
+  const productsWithCursor =
+    data.collectionByHandle &&
+    (await Promise.all(
+      data.collectionByHandle.products.edges.map(async (edge) => {
+        const blurDataURL = await (
+          await getPlaiceholder(edge.node.images.edges[0].node.placeholder)
+        ).base64
+        return {
+          ...edge.node,
+          cursor: edge.cursor,
+          blurDataUrl: blurDataURL,
+        }
+      })
+    ))
 
   return {
     props: {
       artist: data.collectionByHandle,
+      products: productsWithCursor,
     },
     revalidate: 10,
   }
