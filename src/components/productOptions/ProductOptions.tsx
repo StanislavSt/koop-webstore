@@ -10,7 +10,7 @@ export default function ProductOptions({
   setSelectedOptions: Dispatch<SetStateAction<{ [key: string]: string }>>
 }) {
   const selectedInit: { [key: string]: string } = {}
-  const [selectedOptions] = useState(selectedInit)
+  const [selectedOptions, setSelected] = useState(selectedInit)
   return (
     <div className="flex flex-col pt-6">
       {product &&
@@ -24,9 +24,18 @@ export default function ProductOptions({
                   <li key={value} className="pr-2">
                     <Button
                       key={option.id + value}
-                      className="text-center text-black bg-white border border-black focus:text-white focus:bg-black w-[132px] h-[20px]"
+                      className={
+                        'text-center border border-black w-[132px] h-[20px]' +
+                        (Object.values(selectedOptions).includes(value)
+                          ? ' text-white bg-black'
+                          : ' text-black bg-white')
+                      }
                       onClick={() => {
                         setSelectedOptions({
+                          ...selectedOptions,
+                          [option.name]: value,
+                        })
+                        setSelected({
                           ...selectedOptions,
                           [option.name]: value,
                         })
