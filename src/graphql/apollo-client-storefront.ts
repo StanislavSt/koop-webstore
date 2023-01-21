@@ -19,6 +19,11 @@ const storefrontClient = new ApolloClient({
   ssrMode: typeof window === 'undefined',
   link: authLink.concat(httpLink),
   cache: CustomInMemoryCache,
+  defaultOptions: {
+    query: {
+      fetchPolicy: 'no-cache',
+    },
+  },
 })
 
 export default storefrontClient

@@ -6885,6 +6885,8 @@ export enum WeightUnit {
 
 export type GetArtistQueryVariables = Exact<{
   artistHandle: Scalars['String']
+  numberOfProductsToQuery: Scalars['Int']
+  after?: InputMaybe<Scalars['String']>
 }>
 
 export type GetArtistQuery = {
@@ -6893,22 +6895,67 @@ export type GetArtistQuery = {
     __typename?: 'Collection'
     title: string
     handle: string
+    descriptionHtml: any
+    image?: {
+      __typename?: 'Image'
+      url: any
+      width?: number | null
+      height?: number | null
+      altText?: string | null
+    } | null
     products: {
       __typename?: 'ProductConnection'
-      nodes: Array<{
-        __typename?: 'Product'
-        title: string
-        description: string
-        priceRange: {
-          __typename?: 'ProductPriceRange'
-          minVariantPrice: { __typename?: 'MoneyV2'; amount: any }
-        }
-        images: {
-          __typename?: 'ImageConnection'
-          edges: Array<{
-            __typename?: 'ImageEdge'
-            node: { __typename?: 'Image'; altText?: string | null; url: any }
-          }>
+      edges: Array<{
+        __typename?: 'ProductEdge'
+        cursor: string
+        node: {
+          __typename?: 'Product'
+          id: string
+          title: string
+          handle: string
+          tags: Array<string>
+          priceRange: {
+            __typename?: 'ProductPriceRange'
+            minVariantPrice: { __typename?: 'MoneyV2'; amount: any }
+          }
+          images: {
+            __typename?: 'ImageConnection'
+            edges: Array<{
+              __typename?: 'ImageEdge'
+              node: {
+                __typename?: 'Image'
+                height?: number | null
+                width?: number | null
+                altText?: string | null
+                url: any
+                placeholder: any
+              }
+            }>
+          }
+          variants: {
+            __typename?: 'ProductVariantConnection'
+            edges: Array<{
+              __typename?: 'ProductVariantEdge'
+              node: { __typename?: 'ProductVariant'; id: string }
+            }>
+          }
+          collections: {
+            __typename?: 'CollectionConnection'
+            edges: Array<{
+              __typename?: 'CollectionEdge'
+              node: {
+                __typename?: 'Collection'
+                id: string
+                handle: string
+                title: string
+                metafields: Array<{
+                  __typename?: 'Metafield'
+                  key: string
+                  value: string
+                } | null>
+              }
+            }>
+          }
         }
       }>
     }
@@ -7189,27 +7236,68 @@ export type GetProductsByTagQuery = {
 }
 
 export const GetArtistDocument = gql`
-  query GetArtist($artistHandle: String!) {
+  query GetArtist(
+    $artistHandle: String!
+    $numberOfProductsToQuery: Int!
+    $after: String
+  ) {
     collectionByHandle(handle: $artistHandle) {
       title
       handle
-      products(first: 5) {
-        nodes {
-          title
-          priceRange {
-            minVariantPrice {
-              amount
+      descriptionHtml
+      image {
+        url
+        width
+        height
+        altText
+      }
+      products(first: $numberOfProductsToQuery, after: $after) {
+        edges {
+          cursor
+          node {
+            id
+            title
+            handle
+            tags
+            priceRange {
+              minVariantPrice {
+                amount
+              }
             }
-          }
-          images(first: 1) {
-            edges {
-              node {
-                altText
-                url
+            images(first: 10) {
+              edges {
+                node {
+                  height
+                  width
+                  altText
+                  placeholder: url(transform: { maxWidth: 100, maxHeight: 100 })
+                  url
+                }
+              }
+            }
+            variants(first: 1) {
+              edges {
+                node {
+                  id
+                }
+              }
+            }
+            collections(first: 5) {
+              edges {
+                node {
+                  id
+                  handle
+                  title
+                  metafields(
+                    identifiers: [{ namespace: "custom", key: "artist" }]
+                  ) {
+                    key
+                    value
+                  }
+                }
               }
             }
           }
-          description
         }
       }
     }
@@ -7229,6 +7317,8 @@ export const GetArtistDocument = gql`
  * const { data, loading, error } = useGetArtistQuery({
  *   variables: {
  *      artistHandle: // value for 'artistHandle'
+ *      numberOfProductsToQuery: // value for 'numberOfProductsToQuery'
+ *      after: // value for 'after'
  *   },
  * });
  */
@@ -7690,7 +7780,7 @@ export const GetProductsByTagDocument = gql`
               amount
             }
           }
-          images(first: 1) {
+          images(first: 10) {
             edges {
               node {
                 height

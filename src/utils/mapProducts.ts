@@ -1,8 +1,22 @@
-import { GetProductsByTagQuery, GetProductsQuery } from '../graphql/types'
+import {
+  GetArtistQuery,
+  GetProductsByTagQuery,
+  GetProductsQuery,
+} from '../graphql/types'
 
-const mapProducts = async (data: GetProductsByTagQuery | GetProductsQuery) => {
+type ArtistProducts = Pick<
+  NonNullable<GetArtistQuery['collectionByHandle']>,
+  'products'
+>['products']
+
+const mapProducts = async (
+  products:
+    | GetProductsByTagQuery['products']
+    | GetProductsQuery['products']
+    | ArtistProducts
+) => {
   const productsWithCursor = await Promise.all(
-    data.products.edges.map(async (edge) => {
+    products.edges.map(async (edge) => {
       const blurDataURL = await fetch('/api/getBase64', {
         method: 'POST',
         body: JSON.stringify({
