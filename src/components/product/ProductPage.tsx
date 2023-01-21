@@ -152,10 +152,12 @@ const ProductPage = ({ product }: { product: Product }) => {
                   </Link>
                 </div>
               ))}
-            <ProductOptions
-              product={product}
-              setSelectedOptions={setSelected}
-            />
+            {product && (
+              <ProductOptions
+                product={product}
+                setSelectedOptions={setSelected}
+              />
+            )}
             <h1 className="text-[24px]">{price}</h1>
 
             <Button
@@ -194,10 +196,12 @@ const ProductPage = ({ product }: { product: Product }) => {
                     </Link>
                   </div>
                 ))}
-              <ProductOptions
-                product={product}
-                setSelectedOptions={setSelected}
-              />
+              {product && (
+                <ProductOptions
+                  product={product}
+                  setSelectedOptions={setSelected}
+                />
+              )}
               <h1 className="text-[24px]">{price}</h1>
 
               <Button
