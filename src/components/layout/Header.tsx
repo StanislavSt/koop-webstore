@@ -23,7 +23,7 @@ const IndexPageHeader = () => {
             objectFit="contain"
           />
         </div>
-        <Link href="/info">
+        <Link href="/info/how-to-order">
           <Button className="block bg-black sm:hidden">{t('info')}</Button>
         </Link>
         <FiltersContainer />
@@ -39,7 +39,7 @@ const IndexPageHeader = () => {
           />
         </div>
         <div className="hidden sm:block">
-          <Link href="/info">
+          <Link href="/info/how-to-order">
             <Button className="bg-black">{t('info')}</Button>
           </Link>
         </div>
@@ -57,10 +57,10 @@ const CollectionPageHeader = () => {
   const router = useRouter()
 
   return (
-    <header className="flex justify-between px-2 mt-3 sm:px-4">
+    <header className="flex justify-between mt-3">
       <Button
         className="bg-[#1E90FF] text-white hidden sm:block"
-        onClick={router.back}
+        onClick={() => router.push('/')}
       >
         {t('back')}
       </Button>
@@ -83,24 +83,11 @@ const CollectionPageHeader = () => {
   )
 }
 
-const InfoPageHeader = () => {
-  // const { t } = useTranslation()
-
-  return <> this is info header</>
-}
 const Header = () => {
   const { pathname } = useRouter()
 
   return (
-    <>
-      {pathname === '/' ? (
-        <IndexPageHeader />
-      ) : pathname === '/info' ? (
-        <InfoPageHeader />
-      ) : (
-        <CollectionPageHeader />
-      )}
-    </>
+    <>{pathname === '/' ? <IndexPageHeader /> : <CollectionPageHeader />}</>
   )
 }
 
