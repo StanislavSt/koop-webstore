@@ -32,23 +32,23 @@ const FilteredProductsGrid = () => {
     setCursor('')
   }, [filters])
 
-  useQuery<GetProductsByTagQuery, GetProductsByTagQueryVariables>(
-    GetProductsByTag,
-    {
-      variables: {
-        first: numberOfProductsToQuery,
-        query: queryTag,
-        language: locale === 'bg' ? LanguageCode.Bg : LanguageCode.En,
-      },
-      fetchPolicy: 'cache-and-network',
-      onCompleted: async (data) => {
-        const mappedProducts = await mapProducts(data.products)
-        setProducts(mappedProducts)
-        mappedProducts.length >= numberOfProductsToQuery &&
-          setCursor(mappedProducts.slice(-1)[0]?.cursor)
-      },
-    }
-  )
+  const { loading } = useQuery<
+    GetProductsByTagQuery,
+    GetProductsByTagQueryVariables
+  >(GetProductsByTag, {
+    variables: {
+      first: numberOfProductsToQuery,
+      query: queryTag,
+      language: locale === 'bg' ? LanguageCode.Bg : LanguageCode.En,
+    },
+    fetchPolicy: 'cache-and-network',
+    onCompleted: async (data) => {
+      const mappedProducts = await mapProducts(data.products)
+      setProducts(mappedProducts)
+      mappedProducts.length >= numberOfProductsToQuery &&
+        setCursor(mappedProducts.slice(-1)[0]?.cursor)
+    },
+  })
 
   const items = createProductGrid(products, products.length)
 
@@ -104,7 +104,7 @@ const FilteredProductsGrid = () => {
           ))}
       </div>
       <div className="flex justify-center items-center mt-10 w-full h-[50px]">
-        {showLoader ? (
+        {showLoader || loading ? (
           <div>
             <Spinner />
           </div>
