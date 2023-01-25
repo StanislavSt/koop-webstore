@@ -9,7 +9,7 @@ const IndexPage = ({ products }: { products: ProductWithCursor[] }) => {
   const filters = useReactiveVar(filtersVar)
 
   return (
-    <Layout title="Home | TheKopyShop">
+    <Layout title="Home">
       <div className="bg-white min-h-[70vh]">
         <div className="py-10 px-3">
           <h2 className="sr-only">Products</h2>

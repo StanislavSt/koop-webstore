@@ -14,7 +14,7 @@ const ArtistPage = ({
   if (!artist) return
 
   return (
-    <Layout title={`${artist.title} | TheKopyShop`}>
+    <Layout title={artist.title}>
       <ArtistBio artist={artist} />
       <ArtistProducts products={products} artistHandle={artist.handle} />
     </Layout>
