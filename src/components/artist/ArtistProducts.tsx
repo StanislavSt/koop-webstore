@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import GetArtist from '../../graphql/queries/GetArtist'
 import { GetArtistQuery, GetArtistQueryVariables } from '../../graphql/types'
 import { numberOfProductsToQuery, ProductWithCursor } from '../../pages'
@@ -27,6 +27,20 @@ const ArtistProducts = ({
     setProductLengthOfLastLoadMoreBatch,
   ] = useState(initialProducts.length)
 
+  // We want to reset the states, if the language has changed
+  useEffect(() => {
+    const resetStates = () => {
+      setProducts(initialProducts)
+      setProductLengthOfLastLoadMoreBatch(initialProducts.length)
+      setCursor(
+        initialProducts.length < numberOfProductsToQuery
+          ? ''
+          : initialProducts.slice(-1)[0]?.cursor
+      )
+    }
+    resetStates()
+  }, [initialProducts])
+
   const { data, loading } = useQuery<GetArtistQuery, GetArtistQueryVariables>(
     GetArtist,
     {
@@ -35,6 +49,7 @@ const ArtistProducts = ({
         numberOfProductsToQuery,
         after: cursor,
       },
+      fetchPolicy: 'cache-and-network',
     }
   )
 
