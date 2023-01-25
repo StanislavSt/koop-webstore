@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { CollectionEdge } from '../../graphql/types'
 import { Button } from '../common'
 

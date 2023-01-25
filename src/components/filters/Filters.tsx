@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { Button } from '../common/Button'
 import { Cart } from '../cart/Cart'
 import { Filters, filtersVar } from '../../graphql/cache'
