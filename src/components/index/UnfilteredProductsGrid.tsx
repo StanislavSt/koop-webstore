@@ -1,24 +1,28 @@
-import React, { useState } from 'react'
-import { useQuery } from '@apollo/client'
+import React, { useEffect, useState } from 'react'
+import client from '../../graphql/apollo-client-storefront'
 
 import GetProducts from '../../graphql/queries/GetProducts'
 import { ProductCard } from './ProductCard'
 import {
   GetProductsQuery,
   GetProductsQueryVariables,
+  LanguageCode,
 } from '../../graphql/types'
 import { createProductGrid } from '../../utils/createProductGrid'
 import { numberOfProductsToQuery, ProductWithCursor } from '../../pages'
 import { Spinner } from '../common/Spinner'
 import { ProductColumn } from './ProductColumn'
 import mapProducts from '../../utils/mapProducts'
+import { useRouter } from 'next/router'
 
 const UnfilteredProductsGrid = ({
   products: initialProducts,
 }: {
   products: ProductWithCursor[]
 }) => {
+  const { locale } = useRouter()
   const [products, setProducts] = useState(initialProducts)
+
   const [
     productLengthOfLastLoadMoreBatch,
     setProductLengthOfLastLoadMoreBatch,
@@ -26,18 +30,31 @@ const UnfilteredProductsGrid = ({
   const [cursor, setCursor] = useState(initialProducts.slice(-1)[0]?.cursor)
   const [showLoader, setShowLoader] = useState(false)
 
-  const { data, loading } = useQuery<
-    GetProductsQuery,
-    GetProductsQueryVariables
-  >(GetProducts, {
-    variables: { first: numberOfProductsToQuery, after: cursor },
-  })
+  // We want to reset the states, if the language has changed
+  useEffect(() => {
+    const resetStates = () => {
+      setProducts(initialProducts)
+      setProductLengthOfLastLoadMoreBatch(initialProducts.length)
+      setCursor(initialProducts.slice(-1)[0]?.cursor)
+    }
+    resetStates()
+  }, [initialProducts])
 
   const loadMore = async () => {
     if (!cursor) return
-    if (!data) return
 
     setShowLoader(true)
+    const { data } = await client.query<
+      GetProductsQuery,
+      GetProductsQueryVariables
+    >({
+      query: GetProducts,
+      variables: {
+        first: numberOfProductsToQuery,
+        after: cursor,
+        language: locale === 'bg' ? LanguageCode.Bg : LanguageCode.En,
+      },
+    })
     const productsWithCursor = await mapProducts(data.products)
     setShowLoader(false)
 
@@ -75,7 +92,7 @@ const UnfilteredProductsGrid = ({
           ))}
       </div>
       <div className="flex justify-center items-center mt-10 w-full h-[50px]">
-        {loading || showLoader ? (
+        {showLoader ? (
           <div>
             <Spinner />
           </div>

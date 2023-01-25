@@ -5,12 +5,14 @@ import {
   GetCollectionsQueryVariables,
   GetArtistQuery,
   GetArtistQueryVariables,
+  LanguageCode,
 } from '../../graphql/types'
 import client from '../../graphql/apollo-client-storefront'
 import { GetStaticPaths } from 'next/types'
 import GetCollections from '../../graphql/queries/GetCollections'
 import { numberOfProductsToQuery } from '..'
 import { getPlaiceholder } from 'plaiceholder'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export default ArtistPage
 
@@ -35,14 +37,17 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps = async ({
   params,
+  locale = 'en',
 }: {
   params: { handle: string }
+  locale: 'en' | 'bg'
 }) => {
   const { data } = await client.query<GetArtistQuery, GetArtistQueryVariables>({
     query: GetArtist,
     variables: {
       artistHandle: params.handle,
       numberOfProductsToQuery,
+      language: locale === 'bg' ? LanguageCode.Bg : LanguageCode.En,
     },
   })
 
@@ -63,6 +68,7 @@ export const getStaticProps = async ({
 
   return {
     props: {
+      ...(await serverSideTranslations(locale, ['common'])),
       artist: data.collectionByHandle,
       products: productsWithCursor,
     },

@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useTranslation } from 'next-i18next'
@@ -5,7 +6,6 @@ import { useTranslation } from 'next-i18next'
 import { getArtists } from '../../utils/getArtist'
 import { calculateImageHeight } from '../../utils/calculateImageHeight'
 import { ProductWithAnimation } from '../../utils/createProductGrid'
-import { useRef, useState } from 'react'
 
 type ImageState = ProductWithAnimation['images']['edges'][0]['node'] & {
   blurDataUrl?: string

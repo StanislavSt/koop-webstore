@@ -5,7 +5,8 @@ const GetArtist = gql`
     $artistHandle: String!
     $numberOfProductsToQuery: Int!
     $after: String
-  ) {
+    $language: LanguageCode
+  ) @inContext(language: $language) {
     collectionByHandle(handle: $artistHandle) {
       title
       handle

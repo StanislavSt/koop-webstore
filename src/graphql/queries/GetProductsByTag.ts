@@ -1,7 +1,12 @@
 import { gql } from '@apollo/client'
 
 const GetProductsByTag = gql`
-  query GetProductsByTag($first: Int!, $after: String, $query: String) {
+  query GetProductsByTag(
+    $first: Int!
+    $after: String
+    $query: String
+    $language: LanguageCode
+  ) @inContext(language: $language) {
     products(first: $first, after: $after, query: $query) {
       edges {
         cursor

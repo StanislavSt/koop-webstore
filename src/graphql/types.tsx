@@ -6887,6 +6887,7 @@ export type GetArtistQueryVariables = Exact<{
   artistHandle: Scalars['String']
   numberOfProductsToQuery: Scalars['Int']
   after?: InputMaybe<Scalars['String']>
+  language?: InputMaybe<LanguageCode>
 }>
 
 export type GetArtistQuery = {
@@ -6962,6 +6963,31 @@ export type GetArtistQuery = {
   } | null
 }
 
+export type GetArtistsQueryVariables = Exact<{
+  first: Scalars['Int']
+  language?: InputMaybe<LanguageCode>
+}>
+
+export type GetArtistsQuery = {
+  __typename?: 'QueryRoot'
+  collections: {
+    __typename?: 'CollectionConnection'
+    edges: Array<{
+      __typename?: 'CollectionEdge'
+      node: {
+        __typename?: 'Collection'
+        handle: string
+        title: string
+        metafields: Array<{
+          __typename?: 'Metafield'
+          key: string
+          value: string
+        } | null>
+      }
+    }>
+  }
+}
+
 export type GetCollectionsQueryVariables = Exact<{
   first: Scalars['Int']
 }>
@@ -6986,8 +7012,19 @@ export type GetCollectionsQuery = {
   }
 }
 
+export type GetPageQueryVariables = Exact<{
+  handle: Scalars['String']
+  language?: InputMaybe<LanguageCode>
+}>
+
+export type GetPageQuery = {
+  __typename?: 'QueryRoot'
+  page?: { __typename?: 'Page'; body: any } | null
+}
+
 export type GetProductQueryVariables = Exact<{
   productHandle: Scalars['String']
+  language?: InputMaybe<LanguageCode>
 }>
 
 export type GetProductQuery = {
@@ -7107,6 +7144,7 @@ export type GetProductRecommendationsQuery = {
 export type GetProductsQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>
   after?: InputMaybe<Scalars['String']>
+  language?: InputMaybe<LanguageCode>
 }>
 
 export type GetProductsQuery = {
@@ -7173,6 +7211,7 @@ export type GetProductsByTagQueryVariables = Exact<{
   first: Scalars['Int']
   after?: InputMaybe<Scalars['String']>
   query?: InputMaybe<Scalars['String']>
+  language?: InputMaybe<LanguageCode>
 }>
 
 export type GetProductsByTagQuery = {
@@ -7240,7 +7279,8 @@ export const GetArtistDocument = gql`
     $artistHandle: String!
     $numberOfProductsToQuery: Int!
     $after: String
-  ) {
+    $language: LanguageCode
+  ) @inContext(language: $language) {
     collectionByHandle(handle: $artistHandle) {
       title
       handle
@@ -7319,6 +7359,7 @@ export const GetArtistDocument = gql`
  *      artistHandle: // value for 'artistHandle'
  *      numberOfProductsToQuery: // value for 'numberOfProductsToQuery'
  *      after: // value for 'after'
+ *      language: // value for 'language'
  *   },
  * });
  */
@@ -7350,6 +7391,73 @@ export type GetArtistLazyQueryHookResult = ReturnType<
 export type GetArtistQueryResult = Apollo.QueryResult<
   GetArtistQuery,
   GetArtistQueryVariables
+>
+export const GetArtistsDocument = gql`
+  query GetArtists($first: Int!, $language: LanguageCode)
+  @inContext(language: $language) {
+    collections(first: $first) {
+      edges {
+        node {
+          handle
+          title
+          metafields(identifiers: [{ namespace: "custom", key: "artist" }]) {
+            key
+            value
+          }
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useGetArtistsQuery__
+ *
+ * To run a query within a React component, call `useGetArtistsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetArtistsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetArtistsQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      language: // value for 'language'
+ *   },
+ * });
+ */
+export function useGetArtistsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetArtistsQuery,
+    GetArtistsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetArtistsQuery, GetArtistsQueryVariables>(
+    GetArtistsDocument,
+    options
+  )
+}
+export function useGetArtistsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetArtistsQuery,
+    GetArtistsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetArtistsQuery, GetArtistsQueryVariables>(
+    GetArtistsDocument,
+    options
+  )
+}
+export type GetArtistsQueryHookResult = ReturnType<typeof useGetArtistsQuery>
+export type GetArtistsLazyQueryHookResult = ReturnType<
+  typeof useGetArtistsLazyQuery
+>
+export type GetArtistsQueryResult = Apollo.QueryResult<
+  GetArtistsQuery,
+  GetArtistsQueryVariables
 >
 export const GetCollectionsDocument = gql`
   query GetCollections($first: Int!) {
@@ -7418,8 +7526,59 @@ export type GetCollectionsQueryResult = Apollo.QueryResult<
   GetCollectionsQuery,
   GetCollectionsQueryVariables
 >
+export const GetPageDocument = gql`
+  query GetPage($handle: String!, $language: LanguageCode)
+  @inContext(language: $language) {
+    page(handle: $handle) {
+      body
+    }
+  }
+`
+
+/**
+ * __useGetPageQuery__
+ *
+ * To run a query within a React component, call `useGetPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPageQuery({
+ *   variables: {
+ *      handle: // value for 'handle'
+ *      language: // value for 'language'
+ *   },
+ * });
+ */
+export function useGetPageQuery(
+  baseOptions: Apollo.QueryHookOptions<GetPageQuery, GetPageQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetPageQuery, GetPageQueryVariables>(
+    GetPageDocument,
+    options
+  )
+}
+export function useGetPageLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetPageQuery, GetPageQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetPageQuery, GetPageQueryVariables>(
+    GetPageDocument,
+    options
+  )
+}
+export type GetPageQueryHookResult = ReturnType<typeof useGetPageQuery>
+export type GetPageLazyQueryHookResult = ReturnType<typeof useGetPageLazyQuery>
+export type GetPageQueryResult = Apollo.QueryResult<
+  GetPageQuery,
+  GetPageQueryVariables
+>
 export const GetProductDocument = gql`
-  query GetProduct($productHandle: String!) {
+  query GetProduct($productHandle: String!, $language: LanguageCode)
+  @inContext(language: $language) {
     product(handle: $productHandle) {
       id
       title
@@ -7498,6 +7657,7 @@ export const GetProductDocument = gql`
  * const { data, loading, error } = useGetProductQuery({
  *   variables: {
  *      productHandle: // value for 'productHandle'
+ *      language: // value for 'language'
  *   },
  * });
  */
@@ -7663,7 +7823,8 @@ export type GetProductRecommendationsQueryResult = Apollo.QueryResult<
   GetProductRecommendationsQueryVariables
 >
 export const GetProductsDocument = gql`
-  query GetProducts($first: Int, $after: String) {
+  query GetProducts($first: Int, $after: String, $language: LanguageCode)
+  @inContext(language: $language) {
     products(first: $first, after: $after) {
       edges {
         cursor
@@ -7730,6 +7891,7 @@ export const GetProductsDocument = gql`
  *   variables: {
  *      first: // value for 'first'
  *      after: // value for 'after'
+ *      language: // value for 'language'
  *   },
  * });
  */
@@ -7766,7 +7928,12 @@ export type GetProductsQueryResult = Apollo.QueryResult<
   GetProductsQueryVariables
 >
 export const GetProductsByTagDocument = gql`
-  query GetProductsByTag($first: Int!, $after: String, $query: String) {
+  query GetProductsByTag(
+    $first: Int!
+    $after: String
+    $query: String
+    $language: LanguageCode
+  ) @inContext(language: $language) {
     products(first: $first, after: $after, query: $query) {
       edges {
         cursor
@@ -7834,6 +8001,7 @@ export const GetProductsByTagDocument = gql`
  *      first: // value for 'first'
  *      after: // value for 'after'
  *      query: // value for 'query'
+ *      language: // value for 'language'
  *   },
  * });
  */

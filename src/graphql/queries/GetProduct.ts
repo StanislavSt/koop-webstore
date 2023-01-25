@@ -1,7 +1,8 @@
 import { gql } from '@apollo/client'
 
 const GetProduct = gql`
-  query GetProduct($productHandle: String!) {
+  query GetProduct($productHandle: String!, $language: LanguageCode)
+  @inContext(language: $language) {
     product(handle: $productHandle) {
       id
       title

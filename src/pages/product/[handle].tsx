@@ -5,10 +5,12 @@ import {
   GetProductQueryVariables,
   GetProductHandlesQuery,
   GetProductHandlesQueryVariables,
+  LanguageCode,
 } from '../../graphql/types'
 import client from '../../graphql/apollo-client-storefront'
 import { GetStaticPaths } from 'next/types'
 import GetProductHandles from '../../graphql/queries/GetProductHandles'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export default ProductPage
 
@@ -32,19 +34,25 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps = async ({
   params,
+  locale = 'en',
 }: {
   params: { handle: string }
+  locale: 'en' | 'bg'
 }) => {
   const { data } = await client.query<
     GetProductQuery,
     GetProductQueryVariables
   >({
     query: GetProduct,
-    variables: { productHandle: params.handle },
+    variables: {
+      productHandle: params.handle,
+      language: locale === 'bg' ? LanguageCode.Bg : LanguageCode.En,
+    },
   })
 
   return {
     props: {
+      ...(await serverSideTranslations(locale, ['common'])),
       product: data.product,
     },
     revalidate: 10,

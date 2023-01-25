@@ -1,4 +1,5 @@
 import { useQuery, useReactiveVar } from '@apollo/client'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 import client from '../../graphql/apollo-client-storefront'
@@ -7,6 +8,7 @@ import GetProductsByTag from '../../graphql/queries/GetProductsByTag'
 import {
   GetProductsByTagQuery,
   GetProductsByTagQueryVariables,
+  LanguageCode,
 } from '../../graphql/types'
 import { numberOfProductsToQuery, ProductWithCursor } from '../../pages'
 import { createProductGrid } from '../../utils/createProductGrid'
@@ -19,6 +21,7 @@ import { ProductColumn } from './ProductColumn'
 const FilteredProductsGrid = () => {
   const filters = useReactiveVar(filtersVar)
 
+  const { locale } = useRouter()
   const [products, setProducts] = useState<ProductWithCursor[]>([])
   const [cursor, setCursor] = useState('')
   const [showLoader, setShowLoader] = useState(false)
@@ -35,7 +38,9 @@ const FilteredProductsGrid = () => {
       variables: {
         first: numberOfProductsToQuery,
         query: queryTag,
+        language: locale === 'bg' ? LanguageCode.Bg : LanguageCode.En,
       },
+      fetchPolicy: 'cache-and-network',
       onCompleted: async (data) => {
         const mappedProducts = await mapProducts(data.products)
         setProducts(mappedProducts)
@@ -60,6 +65,7 @@ const FilteredProductsGrid = () => {
         first: numberOfProductsToQuery,
         query: queryTag,
         after: cursor,
+        language: locale === 'bg' ? LanguageCode.Bg : LanguageCode.En,
       },
     })
 

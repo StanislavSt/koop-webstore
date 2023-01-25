@@ -4,12 +4,16 @@ import { getPlaiceholder } from 'plaiceholder'
 
 import client from '../graphql/apollo-client-storefront'
 import GetProducts from '../graphql/queries/GetProducts'
-import { GetProductsQuery, GetProductsQueryVariables } from '../graphql/types'
+import {
+  GetProductsQuery,
+  GetProductsQueryVariables,
+  LanguageCode,
+} from '../graphql/types'
 import IndexPage from '../components/index/IndexPage'
 
 export default IndexPage
 
-export const numberOfProductsToQuery = 15
+export const numberOfProductsToQuery = 20
 
 export type ProductWithCursor =
   GetProductsQuery['products']['edges'][0]['node'] & {
@@ -23,7 +27,10 @@ export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
     GetProductsQueryVariables
   >({
     query: GetProducts,
-    variables: { first: numberOfProductsToQuery },
+    variables: {
+      first: numberOfProductsToQuery,
+      language: locale === 'bg' ? LanguageCode.Bg : LanguageCode.En,
+    },
   })
 
   const products = await Promise.all(
@@ -43,6 +50,7 @@ export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
       products: products,
+      data: data,
     },
     revalidate: 10,
   }
