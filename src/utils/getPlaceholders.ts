@@ -1,7 +1,7 @@
 import { ProductWithCursor } from '../pages'
 
 const getPlaceholders = async (
-  images: ProductWithCursor['images']['edges'][0]['node'][]
+  images: ProductWithCursor['images']['edges'][number]['node'][]
 ) =>
   await Promise.all(
     images.map(async (image) => {

@@ -37,10 +37,11 @@ const AnnouncementBanner = ({
                 <span className="leading-4 bg-white p-[6px] rounded-[4px]">
                   {startDate &&
                     endDate &&
-                    `${new Date(startDate).getDate()} - ${new Date(endDate)
-                      .toLocaleString('en-GB')
-                      .split(',')[0]
-                      .replaceAll('/', '.')}`}
+                    `${new Date(startDate).getDate()} - ${new Date(
+                      endDate
+                    ).getDate()}.${new Date(endDate).getMonth() + 1}.${new Date(
+                      endDate
+                    ).getFullYear()}`}
                 </span>
               </div>
               <div className=" text-white text-[40px] leading-[35px] md:text-[60px] md:leading-[60px] md:text-left 2xl:text-[100px] 2xl:leading-[90px] uppercase xl:w-[65%] ">
@@ -51,10 +52,11 @@ const AnnouncementBanner = ({
                   <span className="leading-4 bg-white p-[6px] rounded-[4px]">
                     {startDate &&
                       endDate &&
-                      `${new Date(startDate).getDate()} - ${new Date(endDate)
-                        .toLocaleString('en-GB')
-                        .split(',')[0]
-                        .replaceAll('/', '.')}`}
+                      `${new Date(startDate).getDate()} - ${new Date(
+                        endDate
+                      ).getDate()}.${
+                        new Date(endDate).getMonth() + 1
+                      }.${new Date(endDate).getFullYear()}`}
                   </span>
                 </div>
                 {endDate && (
