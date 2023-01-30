@@ -228,9 +228,7 @@ const ProductPage = ({ product }: { product: Product }) => {
             )}
             <hr className="h-px bg-black border-0 dark:bg-gray-700 mt-[20px]" />
             {recommendedProducts && (
-              <RecommendedProducts
-                products={recommendedProducts}
-              ></RecommendedProducts>
+              <RecommendedProducts products={recommendedProducts} />
             )}
           </div>
         </div>
