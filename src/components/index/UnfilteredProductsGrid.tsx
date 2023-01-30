@@ -55,7 +55,9 @@ const UnfilteredProductsGrid = ({
         language: locale === 'bg' ? LanguageCode.Bg : LanguageCode.En,
       },
     })
-    const productsWithCursor = await mapProducts(data.products)
+
+    if (!data.collection?.products) return
+    const productsWithCursor = await mapProducts(data.collection.products)
     setShowLoader(false)
 
     setProductLengthOfLastLoadMoreBatch(productsWithCursor.length)

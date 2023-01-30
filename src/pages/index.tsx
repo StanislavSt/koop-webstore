@@ -5,23 +5,38 @@ import { getPlaiceholder } from 'plaiceholder'
 import client from '../graphql/apollo-client-storefront'
 import GetProducts from '../graphql/queries/GetProducts'
 import {
+  GetAnnouncementQuery,
+  GetAnnouncementQueryVariables,
   GetProductsQuery,
   GetProductsQueryVariables,
   LanguageCode,
 } from '../graphql/types'
 import IndexPage from '../components/index/IndexPage'
+import GetAnnouncement from '../graphql/queries/GetAnnouncement'
 
 export default IndexPage
 
 export const numberOfProductsToQuery = 20
 
-export type ProductWithCursor =
-  GetProductsQuery['products']['edges'][0]['node'] & {
-    cursor: string
-    blurDataUrl: string
-  }
+export type ProductWithCursor = NonNullable<
+  GetProductsQuery['collection']
+>['products']['edges'][0]['node'] & {
+  cursor: string
+  blurDataUrl: string
+}
 
 export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
+  const announcement = await client.query<
+    GetAnnouncementQuery,
+    GetAnnouncementQueryVariables
+  >({
+    query: GetAnnouncement,
+    variables: {
+      collectionId: 'gid://shopify/Collection/276785594504',
+      language: locale === 'bg' ? LanguageCode.Bg : LanguageCode.En,
+    },
+  })
+
   const { data } = await client.query<
     GetProductsQuery,
     GetProductsQueryVariables
@@ -33,24 +48,26 @@ export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
     },
   })
 
-  const products = await Promise.all(
-    data.products.edges.map(async (edge) => {
-      const blurDataURL = await (
-        await getPlaiceholder(edge.node.images.edges[0].node.placeholder)
-      ).base64
-      return {
-        ...edge.node,
-        cursor: edge.cursor,
-        blurDataUrl: blurDataURL,
-      }
-    })
-  )
+  const products =
+    data.collection &&
+    (await Promise.all(
+      data.collection.products.edges.map(async (edge) => {
+        const blurDataURL = await (
+          await getPlaiceholder(edge.node.images.edges[0].node.placeholder)
+        ).base64
+        return {
+          ...edge.node,
+          cursor: edge.cursor,
+          blurDataUrl: blurDataURL,
+        }
+      })
+    ))
 
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
-      products: products,
-      data: data,
+      products,
+      announcement: announcement.data.collection,
     },
     revalidate: 10,
   }

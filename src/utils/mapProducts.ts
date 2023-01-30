@@ -12,7 +12,7 @@ type ArtistProducts = Pick<
 const mapProducts = async (
   products:
     | GetProductsByTagQuery['products']
-    | GetProductsQuery['products']
+    | NonNullable<GetProductsQuery['collection']>['products']
     | ArtistProducts
 ) => {
   const productsWithCursor = await Promise.all(
