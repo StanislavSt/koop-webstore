@@ -6883,6 +6883,89 @@ export enum WeightUnit {
   Pounds = 'POUNDS',
 }
 
+export type GetAnnouncementQueryVariables = Exact<{
+  collectionId: Scalars['ID']
+  language?: InputMaybe<LanguageCode>
+}>
+
+export type GetAnnouncementQuery = {
+  __typename?: 'QueryRoot'
+  collection?: {
+    __typename?: 'Collection'
+    title: string
+    descriptionHtml: any
+    image?: {
+      __typename?: 'Image'
+      id?: string | null
+      src: any
+      height?: number | null
+      width?: number | null
+      altText?: string | null
+    } | null
+    metafields: Array<{
+      __typename?: 'Metafield'
+      key: string
+      value: string
+    } | null>
+    products: {
+      __typename?: 'ProductConnection'
+      edges: Array<{
+        __typename?: 'ProductEdge'
+        cursor: string
+        node: {
+          __typename?: 'Product'
+          id: string
+          title: string
+          handle: string
+          tags: Array<string>
+          priceRange: {
+            __typename?: 'ProductPriceRange'
+            minVariantPrice: { __typename?: 'MoneyV2'; amount: any }
+          }
+          images: {
+            __typename?: 'ImageConnection'
+            edges: Array<{
+              __typename?: 'ImageEdge'
+              node: {
+                __typename?: 'Image'
+                height?: number | null
+                width?: number | null
+                altText?: string | null
+                url: any
+                placeholder: any
+              }
+            }>
+          }
+          variants: {
+            __typename?: 'ProductVariantConnection'
+            edges: Array<{
+              __typename?: 'ProductVariantEdge'
+              node: { __typename?: 'ProductVariant'; id: string }
+            }>
+          }
+          collections: {
+            __typename?: 'CollectionConnection'
+            edges: Array<{
+              __typename?: 'CollectionEdge'
+              node: {
+                __typename?: 'Collection'
+                id: string
+                handle: string
+                title: string
+                metafields: Array<{
+                  __typename?: 'Metafield'
+                  key: string
+                  value: string
+                } | null>
+              }
+            }>
+          }
+        }
+      }>
+    }
+  } | null
+}
+
 export type GetArtistQueryVariables = Exact<{
   artistHandle: Scalars['String']
   numberOfProductsToQuery: Scalars['Int']
@@ -7149,62 +7232,65 @@ export type GetProductsQueryVariables = Exact<{
 
 export type GetProductsQuery = {
   __typename?: 'QueryRoot'
-  products: {
-    __typename?: 'ProductConnection'
-    edges: Array<{
-      __typename?: 'ProductEdge'
-      cursor: string
-      node: {
-        __typename?: 'Product'
-        id: string
-        title: string
-        handle: string
-        tags: Array<string>
-        priceRange: {
-          __typename?: 'ProductPriceRange'
-          minVariantPrice: { __typename?: 'MoneyV2'; amount: any }
+  collection?: {
+    __typename?: 'Collection'
+    products: {
+      __typename?: 'ProductConnection'
+      edges: Array<{
+        __typename?: 'ProductEdge'
+        cursor: string
+        node: {
+          __typename?: 'Product'
+          id: string
+          title: string
+          handle: string
+          tags: Array<string>
+          priceRange: {
+            __typename?: 'ProductPriceRange'
+            minVariantPrice: { __typename?: 'MoneyV2'; amount: any }
+          }
+          images: {
+            __typename?: 'ImageConnection'
+            edges: Array<{
+              __typename?: 'ImageEdge'
+              node: {
+                __typename?: 'Image'
+                height?: number | null
+                width?: number | null
+                altText?: string | null
+                url: any
+                placeholder: any
+              }
+            }>
+          }
+          variants: {
+            __typename?: 'ProductVariantConnection'
+            edges: Array<{
+              __typename?: 'ProductVariantEdge'
+              node: { __typename?: 'ProductVariant'; id: string }
+            }>
+          }
+          collections: {
+            __typename?: 'CollectionConnection'
+            edges: Array<{
+              __typename?: 'CollectionEdge'
+              node: {
+                __typename?: 'Collection'
+                id: string
+                handle: string
+                title: string
+                metafields: Array<{
+                  __typename?: 'Metafield'
+                  key: string
+                  value: string
+                } | null>
+              }
+            }>
+          }
         }
-        images: {
-          __typename?: 'ImageConnection'
-          edges: Array<{
-            __typename?: 'ImageEdge'
-            node: {
-              __typename?: 'Image'
-              height?: number | null
-              width?: number | null
-              altText?: string | null
-              url: any
-              placeholder: any
-            }
-          }>
-        }
-        variants: {
-          __typename?: 'ProductVariantConnection'
-          edges: Array<{
-            __typename?: 'ProductVariantEdge'
-            node: { __typename?: 'ProductVariant'; id: string }
-          }>
-        }
-        collections: {
-          __typename?: 'CollectionConnection'
-          edges: Array<{
-            __typename?: 'CollectionEdge'
-            node: {
-              __typename?: 'Collection'
-              id: string
-              handle: string
-              title: string
-              metafields: Array<{
-                __typename?: 'Metafield'
-                key: string
-                value: string
-              } | null>
-            }
-          }>
-        }
-      }
-    }>
-  }
+      }>
+    }
+  } | null
 }
 
 export type GetProductsByTagQueryVariables = Exact<{
@@ -7274,6 +7360,132 @@ export type GetProductsByTagQuery = {
   }
 }
 
+export const GetAnnouncementDocument = gql`
+  query GetAnnouncement($collectionId: ID!, $language: LanguageCode)
+  @inContext(language: $language) {
+    collection(id: $collectionId) {
+      title
+      image {
+        id
+        src
+        height
+        width
+        altText
+      }
+      descriptionHtml
+      metafields(
+        identifiers: [
+          { namespace: "custom", key: "announcement_end_date" }
+          { namespace: "custom", key: "announcement_start_date" }
+        ]
+      ) {
+        key
+        value
+      }
+      products(first: 50) {
+        edges {
+          cursor
+          node {
+            id
+            title
+            handle
+            tags
+            priceRange {
+              minVariantPrice {
+                amount
+              }
+            }
+            images(first: 10) {
+              edges {
+                node {
+                  height
+                  width
+                  altText
+                  placeholder: url(transform: { maxWidth: 100, maxHeight: 100 })
+                  url
+                }
+              }
+            }
+            variants(first: 1) {
+              edges {
+                node {
+                  id
+                }
+              }
+            }
+            collections(first: 5) {
+              edges {
+                node {
+                  id
+                  handle
+                  title
+                  metafields(
+                    identifiers: [{ namespace: "custom", key: "artist" }]
+                  ) {
+                    key
+                    value
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useGetAnnouncementQuery__
+ *
+ * To run a query within a React component, call `useGetAnnouncementQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAnnouncementQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAnnouncementQuery({
+ *   variables: {
+ *      collectionId: // value for 'collectionId'
+ *      language: // value for 'language'
+ *   },
+ * });
+ */
+export function useGetAnnouncementQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetAnnouncementQuery,
+    GetAnnouncementQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetAnnouncementQuery, GetAnnouncementQueryVariables>(
+    GetAnnouncementDocument,
+    options
+  )
+}
+export function useGetAnnouncementLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetAnnouncementQuery,
+    GetAnnouncementQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    GetAnnouncementQuery,
+    GetAnnouncementQueryVariables
+  >(GetAnnouncementDocument, options)
+}
+export type GetAnnouncementQueryHookResult = ReturnType<
+  typeof useGetAnnouncementQuery
+>
+export type GetAnnouncementLazyQueryHookResult = ReturnType<
+  typeof useGetAnnouncementLazyQuery
+>
+export type GetAnnouncementQueryResult = Apollo.QueryResult<
+  GetAnnouncementQuery,
+  GetAnnouncementQueryVariables
+>
 export const GetArtistDocument = gql`
   query GetArtist(
     $artistHandle: String!
@@ -7825,48 +8037,50 @@ export type GetProductRecommendationsQueryResult = Apollo.QueryResult<
 export const GetProductsDocument = gql`
   query GetProducts($first: Int, $after: String, $language: LanguageCode)
   @inContext(language: $language) {
-    products(first: $first, after: $after) {
-      edges {
-        cursor
-        node {
-          id
-          title
-          handle
-          tags
-          priceRange {
-            minVariantPrice {
-              amount
-            }
-          }
-          images(first: 10) {
-            edges {
-              node {
-                height
-                width
-                altText
-                placeholder: url(transform: { maxWidth: 100, maxHeight: 100 })
-                url
+    collection(handle: "home-page-products") {
+      products(first: $first, after: $after) {
+        edges {
+          cursor
+          node {
+            id
+            title
+            handle
+            tags
+            priceRange {
+              minVariantPrice {
+                amount
               }
             }
-          }
-          variants(first: 1) {
-            edges {
-              node {
-                id
+            images(first: 10) {
+              edges {
+                node {
+                  height
+                  width
+                  altText
+                  placeholder: url(transform: { maxWidth: 100, maxHeight: 100 })
+                  url
+                }
               }
             }
-          }
-          collections(first: 5) {
-            edges {
-              node {
-                id
-                handle
-                title
-                metafields(
-                  identifiers: [{ namespace: "custom", key: "artist" }]
-                ) {
-                  key
-                  value
+            variants(first: 1) {
+              edges {
+                node {
+                  id
+                }
+              }
+            }
+            collections(first: 5) {
+              edges {
+                node {
+                  id
+                  handle
+                  title
+                  metafields(
+                    identifiers: [{ namespace: "custom", key: "artist" }]
+                  ) {
+                    key
+                    value
+                  }
                 }
               }
             }

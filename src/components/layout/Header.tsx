@@ -30,7 +30,7 @@ const IndexPageHeader = () => {
       </div>
 
       <section className="flex flex-col justify-between sm:flex-row ml-[1rem] gap-[1rem] lg:gap-[1rem] xl:gap-[3rem] 2xl:gap-[5rem]">
-        <div className="hidden relative sm:block w-[90px] h-[120px] lg:w-[170px] lg:h-[220px]">
+        <div className="hidden relative lg:block w-[90px] h-[120px] lg:w-[170px] lg:h-[220px]">
           <Image
             src="/logos/KopyShop_BIG.svg"
             alt="logo"

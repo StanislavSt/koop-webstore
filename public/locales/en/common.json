@@ -33,13 +33,14 @@
   "publications": "publications",
   "screen print": "screen print",
   "illustration": "illustration",
-  "art" : "art",
-  "architecture" : "architecture",
-  "archive" : "archive",
-  "design" : "design",
-  "photography" : "photography",
-  "photobook" : "photobook",
-  "theory & writing" : "theory & writing",
-  "zine" : "zine",
-  "You have no items in your shopping bag.": "You have no items in your shopping bag."
+  "art": "art",
+  "architecture": "architecture",
+  "archive": "archive",
+  "design": "design",
+  "photography": "photography",
+  "photobook": "photobook",
+  "theory & writing": "theory & writing",
+  "zine": "zine",
+  "You have no items in your shopping bag.": "You have no items in your shopping bag.",
+  "Days": "Days"
 }
