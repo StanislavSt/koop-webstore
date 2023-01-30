@@ -928,6 +928,13 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@leenguyen/react-flip-clock-countdown@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@leenguyen/react-flip-clock-countdown/-/react-flip-clock-countdown-1.4.0.tgz#b2ae582e172c31f4910c4053c45b48ab6694ba6a"
+  integrity sha512-+4xry1UEUvWS8armT7vaK5cEqIYEYdHproaSBz2nKehGnFEmuhKQ0Ju7XBVoTI+ZEDGqdaINd/XW1TgSRWO2vg==
+  dependencies:
+    clsx "^1.1.1"
+
 "@n1ru4l/graphql-live-query@^0.9.0":
   version "0.9.0"
   resolved "https://registry.npmjs.org/@n1ru4l/graphql-live-query/-/graphql-live-query-0.9.0.tgz"
@@ -1859,6 +1866,11 @@ clone@^1.0.2:
   version "1.0.4"
   resolved "https://registry.npmjs.org/clone/-/clone-1.0.4.tgz"
   integrity sha1-2jCcwmPfFZlMaIypAheco8fNfH4=
+
+clsx@^1.1.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.2.1.tgz#0ddc4a20a549b59c93a4116bb26f5294ca17dc12"
+  integrity sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==
 
 code-point-at@^1.0.0:
   version "1.1.0"
