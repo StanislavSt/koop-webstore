@@ -60,7 +60,10 @@ export const ProductCard = ({ product }: { product: ProductWithAnimation }) => {
       </div>
       <Link href={`/product/${product.handle}`}>
         <Image
-          className="overflow-hidden w-full rounded-lg cursor-pointer aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8"
+          className={`${
+            images.length === 1 &&
+            'hover:scale-110 transition-transform duration-200'
+          } overflow-hidden w-full rounded-lg cursor-pointer aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8`}
           src={image.url}
           alt={image.altText ?? ''}
           width={500}

@@ -34,10 +34,10 @@ const RecommendedProducts = ({
           {shuffledRecommendedProducts &&
             shuffledRecommendedProducts.slice(0, 2).map((product) => (
               <Link key={product.id} href={`/product/${product.handle}`}>
-                <div className="relative h-[220px] w-[45%] lg:h-[278px] lg:w-[221px]">
+                <div className="relative h-[260px] w-[55%] lg:h-[278px] lg:w-[221px]">
                   <Image
                     layout="fill"
-                    objectFit="cover"
+                    objectFit="contain"
                     alt={product.featuredImage?.altText || product.title}
                     src={product.featuredImage?.url}
                     className="rounded cursor-pointer"

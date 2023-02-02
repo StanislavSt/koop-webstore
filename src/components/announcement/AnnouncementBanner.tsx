@@ -26,7 +26,7 @@ const AnnouncementBanner = ({
         <Link href="/announcement">
           <div className="relative w-full rounded-2xl cursor-pointer h-[40vh] min-h-[300px] group md:h-[20vh]">
             <Image
-              className="transition-all duration-500 group-hover:scale-105"
+              className="rounded-2xl"
               src={announcement.image.src}
               alt={announcement.image.altText ?? ''}
               objectFit="cover"
