@@ -57,8 +57,13 @@ const UnfilteredProductsGrid = ({
     })
 
     if (!data.collection?.products) return
+
     const productsWithCursor = await mapProducts(data.collection.products)
     setShowLoader(false)
+    if (productsWithCursor.length === 0) {
+      setCursor('')
+      return
+    }
 
     setProductLengthOfLastLoadMoreBatch(productsWithCursor.length)
     setProducts([...products, ...productsWithCursor])

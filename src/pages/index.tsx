@@ -16,7 +16,7 @@ import GetAnnouncement from '../graphql/queries/GetAnnouncement'
 
 export default IndexPage
 
-export const numberOfProductsToQuery = 20
+export const numberOfProductsToQuery = 15
 
 export type ProductWithCursor = NonNullable<
   GetProductsQuery['collection']
