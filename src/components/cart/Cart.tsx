@@ -92,26 +92,26 @@ export const Cart = () => {
   return (
     <>
       <button onClick={() => setIsOpen(true)}>
-        <h3 className="text-[#1E90FF] text-[20px]">
-          {t('cart')}: {getCartLength()}
-        </h3>
+        <div className="text-[#1E90FF] text-[20px]">
+          {t('cart')} ({getCartLength()})
+        </div>
       </button>
       <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
         <div className="p-5 w-full">
           <div className="flex justify-between items-center">
+            <div className="text-[#1E90FF] text-[20px]">
+              {t('cart')} ({getCartLength()})
+            </div>
             <Button
-              className="bg-[#1E90FF] text-white"
+              className="bg-[#1E90FF] text-white flex items-center"
               onClick={() => setIsOpen(false)}
             >
               {t('close')}
             </Button>
-            <h3 className="text-[#1E90FF] text-[20px]">
-              {t('cart')}: {getCartLength()}
-            </h3>
           </div>
           {getCartLength() > 0 ? (
-            <>
-              <div className="flex flex-col mt-[10rem]">
+            <div className="flex flex-col justify-between min-h-[85vh]">
+              <div className="flex flex-col mt-[1rem]">
                 {data?.cartItems.map((cartItem: CartItem, index: number) => {
                   return (
                     <div
@@ -119,55 +119,60 @@ export const Cart = () => {
                       className="flex justify-between my-2 text-[22px]"
                     >
                       <div>
-                        <h2>{cartItem.title}</h2>
+                        <div className="w-[80%] leading-[23px]">
+                          {cartItem.title}
+                        </div>
                         <div className="flex flex-col">
                           {Object.values(cartItem.selectedOptions).map((x) => {
                             return (
-                              <h3 key={x} className="leading-6">
+                              <div key={x} className="leading-6">
                                 {x}
-                              </h3>
+                              </div>
                             )
                           })}
                         </div>
                       </div>
                       <div className="flex flex-col items-end">
-                        <h2>
-                          {cartItem.quantity} x {cartItem.price} {t('bgn')}
-                        </h2>
-                        <h2
+                        <div>
+                          {cartItem.quantity} x{' '}
+                          {Number(cartItem.price).toFixed(2)} {t('bgn')}
+                        </div>
+                        <div
                           className="text-[#939393] text-[16px] cursor-pointer hover:opacity-60"
                           onClick={() => removeCartItem(cartItem)}
                         >
                           {t('remove')}
-                        </h2>
+                        </div>
                       </div>
                     </div>
                   )
                 })}
               </div>
-              <div className="flex justify-between p-1 mt-5 border-t border-t-black text-[22px]">
-                <h2 className="capitalize">{t('total')}</h2>
-                <h2>
-                  {getCartValue()} {t('bgn')}
-                </h2>
-              </div>
-              {data && data.cartItems.length > 0 && (
-                <div className="flex justify-center mt-10">
-                  <Button
-                    className="bg-[#1E90FF] text-white text-center"
-                    onClick={() => {
-                      createCheckout()
-                    }}
-                  >
-                    {t('checkout')}
-                  </Button>
+              <div>
+                <div className="flex justify-between p-1 mt-5 border-t border-t-black text-[22px]">
+                  <div className="capitalize text-[30px]">{t('total')}</div>
+                  <div className="text-[30px]">
+                    {Number(getCartValue()).toFixed(2)} {t('bgn')}
+                  </div>
                 </div>
-              )}
-            </>
+                {data && data.cartItems.length > 0 && (
+                  <div className="flex justify-center mt-10">
+                    <Button
+                      className="flex justify-center items-center p-7 w-full text-center text-white bg-black"
+                      onClick={() => {
+                        createCheckout()
+                      }}
+                    >
+                      <span className="text-[24px]">{t('complete order')}</span>
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
           ) : (
-            <h3 className="flex justify-center mt-20 text-[20px]">
+            <span className="flex justify-center mt-20 text-[20px]">
               {t('You have no items in your shopping bag.')}
-            </h3>
+            </span>
           )}
         </div>
       </Drawer>

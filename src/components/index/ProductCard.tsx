@@ -51,9 +51,11 @@ export const ProductCard = ({ product }: { product: ProductWithAnimation }) => {
           : 'animate-in fade-in duration-500'
       }`}
     >
-      <div className="flex justify-between items-center">
-        <h3 className="text-lg text-gray-700 max-w-[75%]">{product.title}</h3>
-        <p className="mt-1 text-lg font-medium text-gray-900 uppercase">
+      <div className="flex flex-row justify-between items-end md:flex-col md:items-start xl:flex-row xl:items-end">
+        <span className="text-lg xl:max-w-[55%] leading-[18px] mb-1">
+          {product.title}
+        </span>
+        <p className="mt-1 mb-1 text-lg font-medium uppercase leading-[18px]">
           {t('bgn')}{' '}
           {Number(product.priceRange.minVariantPrice.amount).toFixed(2)}
         </p>
@@ -83,7 +85,7 @@ export const ProductCard = ({ product }: { product: ProductWithAnimation }) => {
         <div className="flex flex-col gap-1">
           {artists.map((artist) => (
             <Link key={artist.id} href={`/artist/${artist.handle}`}>
-              <span className="text-white uppercase bg-black cursor-pointer hover:opacity-70 max-w-fit rounded-[4px] leading-[23px] p-[0.35rem]">
+              <span className="text-white uppercase bg-black cursor-pointer hover:opacity-70 max-w-fit rounded-[4px] leading-[15px] p-[0.35rem] pt-[0.45rem]">
                 {artist.title}
               </span>
             </Link>
