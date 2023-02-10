@@ -12,7 +12,13 @@ type ImageState = ProductWithAnimation['images']['edges'][0]['node'] & {
 }
 const intervals: number[] = []
 
-export const ProductCard = ({ product }: { product: ProductWithAnimation }) => {
+export const ProductCard = ({
+  product,
+  isRecommendedProduct,
+}: {
+  product: ProductWithAnimation
+  isRecommendedProduct?: boolean
+}) => {
   const { t } = useTranslation()
 
   const [image, setImage] = useState<ImageState>(product.images.edges[0].node)
@@ -52,10 +58,18 @@ export const ProductCard = ({ product }: { product: ProductWithAnimation }) => {
       }`}
     >
       <div className="flex flex-row justify-between items-end md:flex-col md:items-start xl:flex-row xl:items-end">
-        <span className="text-lg xl:max-w-[55%] leading-[18px] mb-1">
+        <span
+          className={`${
+            isRecommendedProduct ? 'text-md' : 'text-lg'
+          } xl:max-w-[55%] leading-[18px] mb-1`}
+        >
           {product.title}
         </span>
-        <p className="mt-1 mb-1 text-lg font-medium uppercase leading-[18px]">
+        <p
+          className={`${
+            isRecommendedProduct ? 'text-md' : 'text-lg'
+          } mt-1 mb-1 font-medium uppercase leading-[18px]`}
+        >
           {t('bgn')}{' '}
           {Number(product.priceRange.minVariantPrice.amount).toFixed(2)}
         </p>
@@ -85,7 +99,11 @@ export const ProductCard = ({ product }: { product: ProductWithAnimation }) => {
         <div className="flex flex-col gap-1">
           {artists.map((artist) => (
             <Link key={artist.id} href={`/artist/${artist.handle}`}>
-              <span className="text-white uppercase bg-black cursor-pointer hover:opacity-70 max-w-fit rounded-[4px] leading-[15px] p-[0.35rem] pt-[0.45rem]">
+              <span
+                className={` ${
+                  isRecommendedProduct ? 'text-md' : 'text-lg'
+                } text-white uppercase bg-black cursor-pointer hover:opacity-70 max-w-fit rounded-[4px] leading-[15px] p-[0.35rem] pt-[0.45rem]`}
+              >
                 {artist.title}
               </span>
             </Link>

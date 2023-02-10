@@ -10,6 +10,7 @@ const GetProduct = gql`
       tags
       availableForSale
       descriptionHtml
+      productType
       priceRange {
         minVariantPrice {
           amount

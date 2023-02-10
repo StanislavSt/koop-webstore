@@ -20,6 +20,9 @@ const AnnouncementBanner = ({
     (metafield) => metafield?.key === 'announcement_end_date'
   )?.value
 
+  if (!endDate || !startDate) return <></>
+  if (new Date(endDate).getTime() < new Date().getTime()) return <></>
+
   return (
     <>
       {announcement?.image && (

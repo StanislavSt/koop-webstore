@@ -12,7 +12,6 @@ import {
 } from '../../graphql/types'
 import { numberOfProductsToQuery, ProductWithCursor } from '../../pages'
 import { createProductGrid } from '../../utils/createProductGrid'
-import { formatProductsQueryByFilters } from '../../utils/formatProductsQueryByFilters'
 import mapProducts from '../../utils/mapProducts'
 import { Spinner } from '../common/Spinner'
 import { ProductCard } from './ProductCard'
@@ -26,8 +25,6 @@ const FilteredProductsGrid = () => {
   const [cursor, setCursor] = useState('')
   const [showLoader, setShowLoader] = useState(false)
 
-  const queryTag = formatProductsQueryByFilters(filters)
-
   useEffect(() => {
     setCursor('')
   }, [filters])
@@ -38,12 +35,13 @@ const FilteredProductsGrid = () => {
   >(GetProductsByTag, {
     variables: {
       first: numberOfProductsToQuery,
-      query: queryTag,
+      productType: filters.format,
+      tag: filters.technique || undefined,
       language: locale === 'bg' ? LanguageCode.Bg : LanguageCode.En,
     },
     fetchPolicy: 'cache-and-network',
     onCompleted: async (data) => {
-      const mappedProducts = await mapProducts(data.products)
+      const mappedProducts = await mapProducts(data.collection?.products)
       setProducts(mappedProducts)
       mappedProducts.length >= numberOfProductsToQuery &&
         setCursor(mappedProducts.slice(-1)[0]?.cursor)
@@ -63,13 +61,14 @@ const FilteredProductsGrid = () => {
       query: GetProductsByTag,
       variables: {
         first: numberOfProductsToQuery,
-        query: queryTag,
         after: cursor,
+        productType: filters.format,
+        tag: filters.technique || undefined,
         language: locale === 'bg' ? LanguageCode.Bg : LanguageCode.En,
       },
     })
 
-    const productsWithCursor = await mapProducts(data.products)
+    const productsWithCursor = await mapProducts(data.collection?.products)
     setShowLoader(false)
 
     setProducts([...products, ...productsWithCursor])

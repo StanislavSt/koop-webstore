@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { QueryResult } from '@apollo/client'
 
-import { Exact, GetProductRecommendationsQuery } from '../../graphql/types'
+import {
+  GetProductRecommendationsQuery,
+  GetProductsByTagQueryResult,
+} from '../../graphql/types'
 import { shuffle } from '../../utils/shuffleArray'
+import { ProductCard } from '../index/ProductCard'
 
 type RecommendedProduct = NonNullable<
   GetProductRecommendationsQuery['productRecommendations']
@@ -13,18 +14,18 @@ type RecommendedProduct = NonNullable<
 const RecommendedProducts = ({
   products,
 }: {
-  products: QueryResult<
-    GetProductRecommendationsQuery,
-    Exact<{ productId: string }>
-  >
+  products: GetProductsByTagQueryResult['data']
 }) => {
-  const recommendedProducts = products.data?.productRecommendations
+  const recommendedProducts = products?.collection?.products.edges.map(
+    (edge) => edge.node
+  )
 
   const shuffledRecommendedProducts = useMemo(() => {
     if (!recommendedProducts) return
 
     return shuffle<RecommendedProduct>(recommendedProducts)
-  }, [recommendedProducts])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>
@@ -33,17 +34,12 @@ const RecommendedProducts = ({
         <>
           {shuffledRecommendedProducts &&
             shuffledRecommendedProducts.slice(0, 2).map((product) => (
-              <Link key={product.id} href={`/product/${product.handle}`}>
-                <div className="relative h-[260px] w-[55%] lg:h-[278px] lg:w-[221px]">
-                  <Image
-                    layout="fill"
-                    objectFit="contain"
-                    alt={product.featuredImage?.altText || product.title}
-                    src={product.featuredImage?.url}
-                    className="rounded cursor-pointer"
-                  ></Image>
-                </div>
-              </Link>
+              <ProductCard
+                key={product.id}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                product={product as any}
+                isRecommendedProduct={true}
+              />
             ))}
         </>
       </div>

@@ -4,8 +4,8 @@ import { useQuery, useReactiveVar } from '@apollo/client'
 import Link from 'next/link'
 import { Maybe } from 'graphql/jsutils/Maybe'
 import {
-  GetProductRecommendationsQuery,
-  GetProductRecommendationsQueryVariables,
+  GetProductsByTagQuery,
+  GetProductsByTagQueryVariables,
   Metafield,
   Product,
   ProductVariant,
@@ -16,9 +16,9 @@ import { CartItem, cartItemsVar } from '../../graphql/cache'
 import { Button } from '../common'
 import { getArtists } from '../../utils/getArtist'
 import { getMaterial } from '../../utils/getMaterial'
-import GetProductRecommendations from '../../graphql/queries/GetProductRecommendations'
 import RecommendedProducts from '../recommendedProducts/RecommendedProducts'
 import ProductOptions from '../productOptions/ProductOptions'
+import GetProductsByTag from '../../graphql/queries/GetProductsByTag'
 
 const ProductPage = ({ product }: { product: Product }) => {
   const selectedInit: { [key: string]: string } = {}
@@ -45,10 +45,13 @@ const ProductPage = ({ product }: { product: Product }) => {
    * Getting recommended products for this item using Storefront API
    */
   const recommendedProducts = useQuery<
-    GetProductRecommendationsQuery,
-    GetProductRecommendationsQueryVariables
-  >(GetProductRecommendations, {
-    variables: { productId: product?.id },
+    GetProductsByTagQuery,
+    GetProductsByTagQueryVariables
+  >(GetProductsByTag, {
+    variables: {
+      first: 25,
+      productType: product.productType,
+    },
   })
 
   /**
@@ -230,8 +233,8 @@ const ProductPage = ({ product }: { product: Product }) => {
               </div>
             )}
             <hr className="h-px bg-black border-0 dark:bg-gray-700 mt-[10px]" />
-            {recommendedProducts && (
-              <RecommendedProducts products={recommendedProducts} />
+            {recommendedProducts.data && (
+              <RecommendedProducts products={recommendedProducts.data} />
             )}
           </div>
         </div>

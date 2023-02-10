@@ -4,51 +4,58 @@ const GetProductsByTag = gql`
   query GetProductsByTag(
     $first: Int!
     $after: String
-    $query: String
+    $productType: String!
+    $tag: String
     $language: LanguageCode
   ) @inContext(language: $language) {
-    products(first: $first, after: $after, query: $query) {
-      edges {
-        cursor
-        node {
-          id
-          title
-          handle
-          tags
-          priceRange {
-            minVariantPrice {
-              amount
-            }
-          }
-          images(first: 10) {
-            edges {
-              node {
-                height
-                width
-                altText
-                placeholder: url(transform: { maxWidth: 100, maxHeight: 100 })
-                url
+    collection(handle: "home-page-products") {
+      products(
+        first: $first
+        after: $after
+        filters: [{ productType: $productType }, { tag: $tag }]
+      ) {
+        edges {
+          cursor
+          node {
+            id
+            title
+            handle
+            tags
+            priceRange {
+              minVariantPrice {
+                amount
               }
             }
-          }
-          variants(first: 1) {
-            edges {
-              node {
-                id
+            images(first: 10) {
+              edges {
+                node {
+                  height
+                  width
+                  altText
+                  placeholder: url(transform: { maxWidth: 100, maxHeight: 100 })
+                  url
+                }
               }
             }
-          }
-          collections(first: 5) {
-            edges {
-              node {
-                id
-                handle
-                title
-                metafields(
-                  identifiers: [{ namespace: "custom", key: "artist" }]
-                ) {
-                  key
-                  value
+            variants(first: 1) {
+              edges {
+                node {
+                  id
+                }
+              }
+            }
+            collections(first: 5) {
+              edges {
+                node {
+                  id
+                  handle
+                  title
+                  metafields(
+                    identifiers: [{ namespace: "custom", key: "artist" }]
+                  ) {
+                    key
+                    value
+                  }
                 }
               }
             }

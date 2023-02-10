@@ -7120,6 +7120,7 @@ export type GetProductQuery = {
     tags: Array<string>
     availableForSale: boolean
     descriptionHtml: any
+    productType: string
     priceRange: {
       __typename?: 'ProductPriceRange'
       minVariantPrice: { __typename?: 'MoneyV2'; amount: any }
@@ -7296,68 +7297,72 @@ export type GetProductsQuery = {
 export type GetProductsByTagQueryVariables = Exact<{
   first: Scalars['Int']
   after?: InputMaybe<Scalars['String']>
-  query?: InputMaybe<Scalars['String']>
+  productType: Scalars['String']
+  tag?: InputMaybe<Scalars['String']>
   language?: InputMaybe<LanguageCode>
 }>
 
 export type GetProductsByTagQuery = {
   __typename?: 'QueryRoot'
-  products: {
-    __typename?: 'ProductConnection'
-    edges: Array<{
-      __typename?: 'ProductEdge'
-      cursor: string
-      node: {
-        __typename?: 'Product'
-        id: string
-        title: string
-        handle: string
-        tags: Array<string>
-        priceRange: {
-          __typename?: 'ProductPriceRange'
-          minVariantPrice: { __typename?: 'MoneyV2'; amount: any }
+  collection?: {
+    __typename?: 'Collection'
+    products: {
+      __typename?: 'ProductConnection'
+      edges: Array<{
+        __typename?: 'ProductEdge'
+        cursor: string
+        node: {
+          __typename?: 'Product'
+          id: string
+          title: string
+          handle: string
+          tags: Array<string>
+          priceRange: {
+            __typename?: 'ProductPriceRange'
+            minVariantPrice: { __typename?: 'MoneyV2'; amount: any }
+          }
+          images: {
+            __typename?: 'ImageConnection'
+            edges: Array<{
+              __typename?: 'ImageEdge'
+              node: {
+                __typename?: 'Image'
+                height?: number | null
+                width?: number | null
+                altText?: string | null
+                url: any
+                placeholder: any
+              }
+            }>
+          }
+          variants: {
+            __typename?: 'ProductVariantConnection'
+            edges: Array<{
+              __typename?: 'ProductVariantEdge'
+              node: { __typename?: 'ProductVariant'; id: string }
+            }>
+          }
+          collections: {
+            __typename?: 'CollectionConnection'
+            edges: Array<{
+              __typename?: 'CollectionEdge'
+              node: {
+                __typename?: 'Collection'
+                id: string
+                handle: string
+                title: string
+                metafields: Array<{
+                  __typename?: 'Metafield'
+                  key: string
+                  value: string
+                } | null>
+              }
+            }>
+          }
         }
-        images: {
-          __typename?: 'ImageConnection'
-          edges: Array<{
-            __typename?: 'ImageEdge'
-            node: {
-              __typename?: 'Image'
-              height?: number | null
-              width?: number | null
-              altText?: string | null
-              url: any
-              placeholder: any
-            }
-          }>
-        }
-        variants: {
-          __typename?: 'ProductVariantConnection'
-          edges: Array<{
-            __typename?: 'ProductVariantEdge'
-            node: { __typename?: 'ProductVariant'; id: string }
-          }>
-        }
-        collections: {
-          __typename?: 'CollectionConnection'
-          edges: Array<{
-            __typename?: 'CollectionEdge'
-            node: {
-              __typename?: 'Collection'
-              id: string
-              handle: string
-              title: string
-              metafields: Array<{
-                __typename?: 'Metafield'
-                key: string
-                value: string
-              } | null>
-            }
-          }>
-        }
-      }
-    }>
-  }
+      }>
+    }
+  } | null
 }
 
 export const GetAnnouncementDocument = gql`
@@ -7798,6 +7803,7 @@ export const GetProductDocument = gql`
       tags
       availableForSale
       descriptionHtml
+      productType
       priceRange {
         minVariantPrice {
           amount
@@ -8145,51 +8151,58 @@ export const GetProductsByTagDocument = gql`
   query GetProductsByTag(
     $first: Int!
     $after: String
-    $query: String
+    $productType: String!
+    $tag: String
     $language: LanguageCode
   ) @inContext(language: $language) {
-    products(first: $first, after: $after, query: $query) {
-      edges {
-        cursor
-        node {
-          id
-          title
-          handle
-          tags
-          priceRange {
-            minVariantPrice {
-              amount
-            }
-          }
-          images(first: 10) {
-            edges {
-              node {
-                height
-                width
-                altText
-                placeholder: url(transform: { maxWidth: 100, maxHeight: 100 })
-                url
+    collection(handle: "home-page-products") {
+      products(
+        first: $first
+        after: $after
+        filters: [{ productType: $productType }, { tag: $tag }]
+      ) {
+        edges {
+          cursor
+          node {
+            id
+            title
+            handle
+            tags
+            priceRange {
+              minVariantPrice {
+                amount
               }
             }
-          }
-          variants(first: 1) {
-            edges {
-              node {
-                id
+            images(first: 10) {
+              edges {
+                node {
+                  height
+                  width
+                  altText
+                  placeholder: url(transform: { maxWidth: 100, maxHeight: 100 })
+                  url
+                }
               }
             }
-          }
-          collections(first: 5) {
-            edges {
-              node {
-                id
-                handle
-                title
-                metafields(
-                  identifiers: [{ namespace: "custom", key: "artist" }]
-                ) {
-                  key
-                  value
+            variants(first: 1) {
+              edges {
+                node {
+                  id
+                }
+              }
+            }
+            collections(first: 5) {
+              edges {
+                node {
+                  id
+                  handle
+                  title
+                  metafields(
+                    identifiers: [{ namespace: "custom", key: "artist" }]
+                  ) {
+                    key
+                    value
+                  }
                 }
               }
             }
@@ -8214,7 +8227,8 @@ export const GetProductsByTagDocument = gql`
  *   variables: {
  *      first: // value for 'first'
  *      after: // value for 'after'
- *      query: // value for 'query'
+ *      productType: // value for 'productType'
+ *      tag: // value for 'tag'
  *      language: // value for 'language'
  *   },
  * });
