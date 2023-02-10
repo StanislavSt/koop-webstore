@@ -41,6 +41,7 @@ const FilteredProductsGrid = () => {
     },
     fetchPolicy: 'cache-and-network',
     onCompleted: async (data) => {
+      if (!data.collection) return
       const mappedProducts = await mapProducts(data.collection?.products)
       setProducts(mappedProducts)
       mappedProducts.length >= numberOfProductsToQuery &&
@@ -68,6 +69,7 @@ const FilteredProductsGrid = () => {
       },
     })
 
+    if (!data.collection) return
     const productsWithCursor = await mapProducts(data.collection?.products)
     setShowLoader(false)
 

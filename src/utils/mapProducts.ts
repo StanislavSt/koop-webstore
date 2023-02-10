@@ -11,7 +11,7 @@ type ArtistProducts = Pick<
 
 const mapProducts = async (
   products:
-    | GetProductsByTagQuery['products']
+    | NonNullable<GetProductsByTagQuery['collection']>['products']
     | NonNullable<GetProductsQuery['collection']>['products']
     | ArtistProducts
 ) => {
