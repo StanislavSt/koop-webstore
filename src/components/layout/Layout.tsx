@@ -8,7 +8,7 @@ type Props = React.PropsWithChildren<{
 
 const Layout = ({ title = 'KO-OP', children }: Props) => {
   return (
-    <div className="p-2 my-0 mx-auto max-w-screen-2xl sm:p-3">
+    <div className="my-0 mx-auto max-w-screen-2xl p-2 sm:p-3">
       <Head>
         <title>{`${title} | TheKopyShop`}</title>
         <meta name="description" content="KO-OP webshop" />

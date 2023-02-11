@@ -29,7 +29,7 @@ const RecommendedProducts = ({
 
   return (
     <>
-      <p className="font-bold tracking-wide text-[30px] leading-[27px]">...</p>
+      <p className="text-[30px] font-bold leading-[27px] tracking-wide">...</p>
       <div className="flex gap-5">
         <>
           {shuffledRecommendedProducts &&

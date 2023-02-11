@@ -38,12 +38,12 @@ const Filters = () => {
   }
 
   return (
-    <section className="flex flex-col m-5 w-full h-full sm:flex-row sm:m-0 sm:w-auto sm:h-auto gap-[2rem] min-h-[13rem] md:gap-[3rem] lg:gap-[5rem] xl:gap-[6rem] 2xl:gap-[7rem]">
-      <div className="flex flex-col-reverse justify-between items-start sm:flex-col">
+    <section className="m-5 flex h-full min-h-[13rem] w-full flex-col gap-[2rem] sm:m-0 sm:h-auto sm:w-auto sm:flex-row md:gap-[3rem] lg:gap-[5rem] xl:gap-[6rem] 2xl:gap-[7rem]">
+      <div className="flex flex-col-reverse items-start justify-between sm:flex-col">
         <div>
           <ul
             aria-labelledby="format"
-            className="inline-flex flex-col text-[48px] sm:text-[32px] md:text-[36px] lg:text-[48px] lg:leading-[35.52px] leading-[72%] uppercase md:leading-[26px] items-start"
+            className="inline-flex flex-col items-start text-[48px] uppercase leading-[72%] sm:text-[32px] md:text-[36px] md:leading-[26px] lg:text-[48px] lg:leading-[35.52px]"
           >
             {filterValues.map((filter) => (
               <li
@@ -61,7 +61,7 @@ const Filters = () => {
             ))}
           </ul>
         </div>
-        <div className="flex justify-between w-[90%] items-center mb-3 sm:m-0">
+        <div className="mb-3 flex w-[90%] items-center justify-between sm:m-0">
           {filters.format ? (
             <Button onClick={() => clearFilters()} className="bg-black">
               {t('clear filters')}
@@ -74,12 +74,12 @@ const Filters = () => {
           </a>
         </div>
       </div>
-      <div className="lg:min-w-0 min-w-[10rem] md:min-w-[15rem]">
+      <div className="min-w-[10rem] md:min-w-[15rem] lg:min-w-0">
         {filters.format && (
           <>
             <ul
               aria-labelledby="format"
-              className="inline-flex flex-col items-start uppercase text-[35px] leading-[32px] sm:text-[22px] sm:leading-[19px] md:text-[28px] md:leading-[25px] lg:text-[35px] lg:leading-[32.2px]"
+              className="inline-flex flex-col items-start text-[35px] uppercase leading-[32px] sm:text-[22px] sm:leading-[19px] md:text-[28px] md:leading-[25px] lg:text-[35px] lg:leading-[32.2px]"
             >
               {filterValues
                 .find((filter) => filter.format === filters.format)

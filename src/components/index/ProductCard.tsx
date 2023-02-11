@@ -53,15 +53,15 @@ export const ProductCard = ({
     <div
       className={`${
         product.animate
-          ? 'animate-in slide-in-from-bottom duration-500'
-          : 'animate-in fade-in duration-500'
+          ? 'duration-500 animate-in slide-in-from-bottom'
+          : 'duration-500 animate-in fade-in'
       }`}
     >
-      <div className="flex flex-row justify-between items-end md:flex-col md:items-start xl:flex-row xl:items-end">
+      <div className="flex flex-row items-end justify-between md:flex-col md:items-start xl:flex-row xl:items-end">
         <span
           className={`${
             isRecommendedProduct ? 'text-md' : 'text-lg'
-          } xl:max-w-[55%] leading-[18px] mb-1`}
+          } mb-1 leading-[18px] xl:max-w-[55%]`}
         >
           {product.title}
         </span>
@@ -78,8 +78,8 @@ export const ProductCard = ({
         <Image
           className={`${
             images.length === 1 &&
-            'hover:scale-110 transition-transform duration-200'
-          } overflow-hidden w-full rounded-lg cursor-pointer aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8`}
+            'transition-transform duration-200 hover:scale-110'
+          } aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8 w-full cursor-pointer overflow-hidden rounded-lg`}
           src={image.url}
           alt={image.altText ?? ''}
           width={500}
@@ -102,7 +102,7 @@ export const ProductCard = ({
               <span
                 className={` ${
                   isRecommendedProduct ? 'text-md' : 'text-lg'
-                } text-white uppercase bg-black cursor-pointer hover:opacity-70 max-w-fit rounded-[4px] leading-[15px] p-[0.35rem] pt-[0.45rem]`}
+                } max-w-fit cursor-pointer rounded-[4px] bg-black p-[0.35rem] pt-[0.45rem] uppercase leading-[15px] text-white hover:opacity-70`}
               >
                 {artist.title}
               </span>

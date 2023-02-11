@@ -12,9 +12,9 @@ const IndexPageHeader = () => {
   const { t } = useTranslation()
 
   return (
-    <header className="flex justify-between px-5 mt-3">
+    <header className="mt-3 flex justify-between px-5">
       <div className="flex flex-col gap-2 sm:block">
-        <div className="relative sm:hidden w-[120px] h-[150px]">
+        <div className="relative h-[150px] w-[120px] sm:hidden">
           {/* Mobile version */}
           <Image
             src="/logos/KopyShop_BIG.svg"
@@ -29,8 +29,8 @@ const IndexPageHeader = () => {
         <FiltersContainer />
       </div>
 
-      <section className="flex flex-col justify-between sm:flex-row ml-[1rem] gap-[1rem] lg:gap-[1rem] xl:gap-[3rem] 2xl:gap-[5rem]">
-        <div className="hidden relative lg:block w-[90px] h-[120px] lg:w-[170px] lg:h-[220px]">
+      <section className="ml-[1rem] flex flex-col justify-between gap-[1rem] sm:flex-row lg:gap-[1rem] xl:gap-[3rem] 2xl:gap-[5rem]">
+        <div className="relative hidden h-[120px] w-[90px] lg:block lg:h-[220px] lg:w-[170px]">
           <Image
             src="/logos/KopyShop_BIG.svg"
             alt="logo"
@@ -57,15 +57,15 @@ const CollectionPageHeader = () => {
   const router = useRouter()
 
   return (
-    <header className="flex justify-between mt-3">
+    <header className="mt-3 flex justify-between">
       <Button
-        className="bg-[#1E90FF] text-white hidden sm:block"
+        className="hidden bg-[#1E90FF] text-white sm:block"
         onClick={() => router.push('/')}
       >
         {t('back')}
       </Button>
       <div
-        className="relative cursor-pointer w-[170px] h-[30px]"
+        className="relative h-[30px] w-[170px] cursor-pointer"
         onClick={() => router.push('/')}
       >
         <Image

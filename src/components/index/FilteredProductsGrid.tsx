@@ -83,7 +83,7 @@ const FilteredProductsGrid = () => {
   return (
     <>
       {/* Desktop view */}
-      <div className="hidden gap-10 w-full md:flex">
+      <div className="hidden w-full gap-10 md:flex">
         {items ? (
           <>
             <ProductColumn column={items.col1} />
@@ -104,7 +104,7 @@ const FilteredProductsGrid = () => {
             </div>
           ))}
       </div>
-      <div className="flex justify-center items-center mt-10 w-full h-[50px]">
+      <div className="mt-10 flex h-[50px] w-full items-center justify-center">
         {showLoader || loading ? (
           <div>
             <Spinner />

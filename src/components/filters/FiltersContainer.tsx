@@ -17,13 +17,13 @@ const FiltersContainer = () => {
       {/* Mobile View */}
       <Button
         onClick={() => setIsMobileFiltersOpen(true)}
-        className="bg-[#1E90FF] text-white block sm:hidden"
+        className="block bg-[#1E90FF] text-white sm:hidden"
       >
         {t('filters')}
       </Button>
 
       <div
-        className={`block transition-all sm:hidden fixed top-0 -ml-3  w-[100vw] bg-white z-10 ${
+        className={`fixed top-0 z-10 -ml-3 block w-[100vw]  bg-white transition-all sm:hidden ${
           isMobileFiltersOpen ? 'h-[100vh]' : 'h-0'
         }`}
       >

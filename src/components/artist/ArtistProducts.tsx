@@ -96,7 +96,7 @@ const ArtistProducts = ({
             </div>
           ))}
       </div>
-      <div className="flex justify-center items-center mt-10 w-full h-[50px]">
+      <div className="mt-10 flex h-[50px] w-full items-center justify-center">
         {loading ? (
           <div>
             <Spinner />

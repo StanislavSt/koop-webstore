@@ -17,7 +17,7 @@ export default function ProductOptions({
         product.options[0].name !== 'Title' &&
         product.options.map((option) => (
           <div key={option.id}>
-            <span className="text-[#1E90FF] text-[16px]">{option.name}</span>
+            <span className="text-[16px] text-[#1E90FF]">{option.name}</span>
             <ul className="flex">
               {option.values &&
                 option.values.map((value) => (
@@ -25,10 +25,10 @@ export default function ProductOptions({
                     <Button
                       key={option.id + value}
                       className={
-                        'text-center border border-black w-[132px] h-[20px]' +
+                        'h-[20px] w-[132px] border border-black text-center' +
                         (Object.values(selectedOptions).includes(value)
-                          ? ' text-white bg-black'
-                          : ' text-black bg-white')
+                          ? ' bg-black text-white'
+                          : ' bg-white text-black')
                       }
                       onClick={() => {
                         setSelectedOptions({

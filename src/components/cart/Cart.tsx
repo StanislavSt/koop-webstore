@@ -92,31 +92,31 @@ export const Cart = () => {
   return (
     <>
       <button onClick={() => setIsOpen(true)}>
-        <div className="text-[#1E90FF] text-[20px]">
+        <div className="text-[20px] text-[#1E90FF]">
           {t('cart')} ({getCartLength()})
         </div>
       </button>
       <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
-        <div className="p-5 w-full">
-          <div className="flex justify-between items-center">
-            <div className="text-[#1E90FF] text-[20px]">
+        <div className="w-full p-5">
+          <div className="flex items-center justify-between">
+            <div className="text-[20px] text-[#1E90FF]">
               {t('cart')} ({getCartLength()})
             </div>
             <Button
-              className="bg-[#1E90FF] text-white flex items-center"
+              className="flex items-center bg-[#1E90FF] text-white"
               onClick={() => setIsOpen(false)}
             >
               {t('close')}
             </Button>
           </div>
           {getCartLength() > 0 ? (
-            <div className="flex flex-col justify-between min-h-[85vh]">
-              <div className="flex flex-col mt-[1rem]">
+            <div className="flex min-h-[85vh] flex-col justify-between">
+              <div className="mt-[1rem] flex flex-col">
                 {data?.cartItems.map((cartItem: CartItem, index: number) => {
                   return (
                     <div
                       key={index}
-                      className="flex justify-between my-2 text-[22px]"
+                      className="my-2 flex justify-between text-[22px]"
                     >
                       <div>
                         <div className="w-[80%] leading-[23px]">
@@ -138,7 +138,7 @@ export const Cart = () => {
                           {Number(cartItem.price).toFixed(2)} {t('bgn')}
                         </div>
                         <div
-                          className="text-[#939393] text-[16px] cursor-pointer hover:opacity-60"
+                          className="cursor-pointer text-[16px] text-[#939393] hover:opacity-60"
                           onClick={() => removeCartItem(cartItem)}
                         >
                           {t('remove')}
@@ -149,16 +149,16 @@ export const Cart = () => {
                 })}
               </div>
               <div>
-                <div className="flex justify-between p-1 mt-5 border-t border-t-black text-[22px]">
-                  <div className="capitalize text-[30px]">{t('total')}</div>
+                <div className="mt-5 flex justify-between border-t border-t-black p-1 text-[22px]">
+                  <div className="text-[30px] capitalize">{t('total')}</div>
                   <div className="text-[30px]">
                     {Number(getCartValue()).toFixed(2)} {t('bgn')}
                   </div>
                 </div>
                 {data && data.cartItems.length > 0 && (
-                  <div className="flex justify-center mt-10">
+                  <div className="mt-10 flex justify-center">
                     <Button
-                      className="flex justify-center items-center p-7 w-full text-center text-white bg-black"
+                      className="flex w-full items-center justify-center bg-black p-7 text-center text-white"
                       onClick={() => {
                         createCheckout()
                       }}
@@ -170,7 +170,7 @@ export const Cart = () => {
               </div>
             </div>
           ) : (
-            <span className="flex justify-center mt-20 text-[20px]">
+            <span className="mt-20 flex justify-center text-[20px]">
               {t('You have no items in your shopping bag.')}
             </span>
           )}

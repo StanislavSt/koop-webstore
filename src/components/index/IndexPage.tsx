@@ -18,7 +18,7 @@ const IndexPage = ({
 
   return (
     <Layout title="Home">
-      <div className="bg-white min-h-[70vh]">
+      <div className="min-h-[70vh] bg-white">
         <div className="py-10 px-3">
           <h2 className="sr-only">Products</h2>
           <AnnouncementBanner announcement={announcement} />

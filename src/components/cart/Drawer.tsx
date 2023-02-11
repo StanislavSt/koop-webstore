@@ -3,25 +3,25 @@ export function Drawer({ children, isOpen, setIsOpen }: any) {
   return (
     <main
       className={
-        'fixed overflow-hidden z-20 inset-0 transform ease-in-out ' +
+        'fixed inset-0 z-20 transform overflow-hidden ease-in-out ' +
         (isOpen
-          ? 'transition-opacity opacity-100 bg-black bg-opacity-25 duration-500 translate-x-0  '
-          : 'delay-[450ms] opacity-0 translate-x-full')
+          ? 'translate-x-0 bg-black bg-opacity-25 opacity-100 transition-opacity duration-500  '
+          : 'delay-[450ms] translate-x-full opacity-0')
       }
     >
       <section
         className={
-          'w-screen max-w-lg right-0 absolute bg-white h-full shadow-xl delay-400 duration-500 ease-in-out transition-all transform  ' +
+          'delay-400 absolute right-0 h-full w-screen max-w-lg transform bg-white shadow-xl transition-all duration-500 ease-in-out  ' +
           (isOpen ? ' translate-x-0 ' : ' translate-x-full')
         }
       >
-        <article className="flex overflow-y-scroll relative flex-col pb-10 space-y-6 w-screen max-w-lg h-full">
+        <article className="relative flex h-full w-screen max-w-lg flex-col space-y-6 overflow-y-scroll pb-10">
           <header className="text-lg font-bold"></header>
           {children}
         </article>
       </section>
       <section
-        className="w-screen h-full cursor-pointer"
+        className="h-full w-screen cursor-pointer"
         onClick={() => {
           setIsOpen(false)
         }}

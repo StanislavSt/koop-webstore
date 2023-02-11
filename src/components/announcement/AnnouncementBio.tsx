@@ -21,12 +21,12 @@ const AnnouncementBio = ({
   )?.value
 
   return (
-    <div className="flex flex-col gap-10 items-center p-4 w-full">
+    <div className="flex w-full flex-col items-center gap-10 p-4">
       {announcement?.image?.src && (
-        <div className="relative w-full h-full">
+        <div className="relative h-full w-full">
           <div className="hidden md:block">
             <Image
-              className="overflow-hidden w-full h-full rounded-lg cursor-pointer aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8"
+              className="aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8 h-full w-full cursor-pointer overflow-hidden rounded-lg"
               src={announcement?.image?.src}
               alt={announcement?.image?.altText ?? ''}
               width={1600}
@@ -40,7 +40,7 @@ const AnnouncementBio = ({
           </div>
           <div className="block md:hidden">
             <Image
-              className="overflow-hidden w-full h-full rounded-lg cursor-pointer aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8"
+              className="aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8 h-full w-full cursor-pointer overflow-hidden rounded-lg"
               src={announcement?.image?.src}
               alt={announcement?.image?.altText ?? ''}
               width={1600}
@@ -52,9 +52,9 @@ const AnnouncementBio = ({
               objectFit="cover"
             />
           </div>
-          <div className="flex absolute top-1 z-10 flex-col gap-8 justify-center items-center p-4 w-full h-full md:flex-row md:justify-between md:p-8">
+          <div className="absolute top-1 z-10 flex h-full w-full flex-col items-center justify-center gap-8 p-4 md:flex-row md:justify-between md:p-8">
             <div className="block self-start md:hidden">
-              <span className="leading-4 bg-white p-[6px] rounded-[4px]">
+              <span className="rounded-[4px] bg-white p-[6px] leading-4">
                 {startDate &&
                   endDate &&
                   `${new Date(startDate).getDate()} - ${new Date(
@@ -64,12 +64,12 @@ const AnnouncementBio = ({
                   ).getFullYear()}`}
               </span>
             </div>
-            <div className=" text-white text-[40px] leading-[35px] md:text-[60px] md:leading-[60px] md:text-left 2xl:text-[100px] 2xl:leading-[90px] uppercase xl:w-[65%] ">
+            <div className=" text-[40px] uppercase leading-[35px] text-white md:text-left md:text-[60px] md:leading-[60px] xl:w-[65%] 2xl:text-[100px] 2xl:leading-[90px] ">
               {announcement.title}
             </div>
-            <div className="flex flex-col justify-between items-end md:h-full">
+            <div className="flex flex-col items-end justify-between md:h-full">
               <div className="hidden md:block">
-                <span className="leading-4 bg-white p-[6px] rounded-[4px]">
+                <span className="rounded-[4px] bg-white p-[6px] leading-4">
                   {startDate &&
                     endDate &&
                     `${new Date(startDate).getDate()} - ${new Date(

@@ -27,7 +27,7 @@ const AnnouncementBanner = ({
     <>
       {announcement?.image && (
         <Link href="/announcement">
-          <div className="relative w-full rounded-2xl cursor-pointer h-[40vh] min-h-[300px] group md:h-[20vh]">
+          <div className="group relative h-[40vh] min-h-[300px] w-full cursor-pointer rounded-2xl md:h-[20vh]">
             <Image
               className="rounded-2xl"
               src={announcement.image.src}
@@ -35,9 +35,9 @@ const AnnouncementBanner = ({
               objectFit="cover"
               layout="fill"
             />
-            <div className="flex absolute z-10 flex-col gap-8 justify-center items-center p-4 w-full h-full md:flex-row md:justify-between md:p-8">
+            <div className="absolute z-10 flex h-full w-full flex-col items-center justify-center gap-8 p-4 md:flex-row md:justify-between md:p-8">
               <div className="block self-start md:hidden">
-                <span className="leading-4 bg-white p-[6px] rounded-[4px]">
+                <span className="rounded-[4px] bg-white p-[6px] leading-4">
                   {startDate &&
                     endDate &&
                     `${new Date(startDate).getDate()} - ${new Date(
@@ -47,12 +47,12 @@ const AnnouncementBanner = ({
                     ).getFullYear()}`}
                 </span>
               </div>
-              <div className=" text-white text-[40px] leading-[35px] md:text-[60px] md:leading-[60px] md:text-left 2xl:text-[100px] 2xl:leading-[90px] uppercase xl:w-[65%] ">
+              <div className=" text-[40px] uppercase leading-[35px] text-white md:text-left md:text-[60px] md:leading-[60px] xl:w-[65%] 2xl:text-[100px] 2xl:leading-[90px] ">
                 {announcement.title}
               </div>
-              <div className="flex flex-col justify-between items-end md:h-full">
+              <div className="flex flex-col items-end justify-between md:h-full">
                 <div className="hidden md:block">
-                  <span className="leading-4 bg-white p-[6px] rounded-[4px]">
+                  <span className="rounded-[4px] bg-white p-[6px] leading-4">
                     {startDate &&
                       endDate &&
                       `${new Date(startDate).getDate()} - ${new Date(
