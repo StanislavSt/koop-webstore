@@ -66,8 +66,8 @@ export const ProductCard = ({
           {product.title}
         </span>
         <p
-          className={`${
-            isRecommendedProduct ? 'text-md' : 'text-lg'
+          className={`${isRecommendedProduct ? 'text-md' : 'text-lg'} ${
+            product.availableForSale ? '' : 'line-through'
           } mt-1 mb-1 font-medium uppercase leading-[18px]`}
         >
           {t('bgn')}{' '}

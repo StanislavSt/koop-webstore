@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useQuery, useReactiveVar } from '@apollo/client'
 import Link from 'next/link'
-import { Maybe } from 'graphql/jsutils/Maybe'
+import { useTranslation } from 'next-i18next'
 import {
   GetProductsByTagQuery,
   GetProductsByTagQueryVariables,
-  Metafield,
   Product,
   ProductVariant,
   ProductVariantEdge,
@@ -15,7 +14,6 @@ import Layout from '../layout/Layout'
 import { CartItem, cartItemsVar } from '../../graphql/cache'
 import { Button } from '../common'
 import { getArtists } from '../../utils/getArtist'
-import { getMaterial } from '../../utils/getMaterial'
 import RecommendedProducts from '../recommendedProducts/RecommendedProducts'
 import ProductOptions from '../productOptions/ProductOptions'
 import GetProductsByTag from '../../graphql/queries/GetProductsByTag'
@@ -33,13 +31,14 @@ const ProductPage = ({ product }: { product: Product }) => {
     product.variants.edges[0].node.price.amount
   )
 
+  const { t } = useTranslation()
+
   // TODO get rid of useEffect
   useEffect(() => {
     chooseVariant()
   })
 
   const artists = getArtists(product)
-  const material: Maybe<Metafield> | null = getMaterial(product)
 
   /**
    * Getting recommended products for this item using Storefront API
@@ -142,14 +141,14 @@ const ProductPage = ({ product }: { product: Product }) => {
   return (
     <Layout title={`${product.title} | TheKopyShop`}>
       <div className="bg-white lg:px-[12px]">
-        <div className="gap-y-10 md:grid md:grid-cols-1 md:gap-x-6 lg:grid-cols-3 lg:px-0 xl:grid-cols-3 xl:gap-x-8 px-[9px]">
+        <div className="gap-y-10 px-[9px] md:grid md:grid-cols-1 md:gap-x-6 lg:grid-cols-3 lg:px-0 xl:grid-cols-3 xl:gap-x-8">
           <div className="flex flex-col lg:hidden">
-            <span className="uppercase text-[24px]">{product?.title}</span>
+            <span className="text-[24px] uppercase">{product?.title}</span>
             {artists &&
               artists.map((artist) => (
                 <div key={artist.id}>
                   <Link href={`/artist/${artist.handle}`}>
-                    <Button className="uppercase bg-black text-[24px] h-[30px]">
+                    <Button className="h-[30px] bg-black text-[24px] uppercase">
                       {artist.title}
                     </Button>
                   </Link>
@@ -163,21 +162,30 @@ const ProductPage = ({ product }: { product: Product }) => {
             )}
             <div className="text-[24px]">{price}</div>
 
-            <Button
-              className="w-32 h-20px bg-[#1E90FF] text-[16px] uppercase"
-              onClick={addToCart}
-            >
-              Add to Cart
-            </Button>
-            <hr className="h-px bg-black border-0 dark:bg-gray-700 my-[15px]" />
+            {product.availableForSale ? (
+              <Button
+                disabled={true}
+                className="h-20px min-w-32 bg-[#1E90FF] text-[16px] uppercase"
+                onClick={addToCart}
+              >
+                {t('Add to Cart')}
+              </Button>
+            ) : (
+              <div>
+                <button className=" h-20px pointer-events-none min-w-[160px] rounded-[4px] bg-[#BFBFBF] p-[0.10rem] pl-2 text-left text-[16px]  uppercase text-white">
+                  {t('sold out')}
+                </button>
+              </div>
+            )}
+            <hr className="my-[15px] h-px border-0 bg-black dark:bg-gray-700" />
           </div>
 
-          <div className="flex flex-col col-span-2 items-center w-full lg:gap-3 gap-[18px] pb-[20px]">
+          <div className="col-span-2 flex w-full flex-col items-center gap-[18px] pb-[20px] lg:gap-3">
             {product &&
               product?.images.edges.map((imageEdge) => (
                 <Image
                   key={imageEdge.node.id}
-                  className="py-5 px-5 rounded"
+                  className="rounded py-5 px-5"
                   src={imageEdge.node.url}
                   alt={imageEdge.node.altText || ''}
                   height={(imageEdge.node.height || 0) * 3}
@@ -188,12 +196,12 @@ const ProductPage = ({ product }: { product: Product }) => {
 
           <div className="sticky top-2 self-start pb-2">
             <div className="hidden lg:block">
-              <span className="uppercase text-[24px]">{product?.title}</span>
+              <span className="text-[24px] uppercase">{product?.title}</span>
               {artists &&
                 artists.map((artist) => (
                   <div key={artist.id}>
                     <Link href={`/artist/${artist.handle}`}>
-                      <Button className="uppercase bg-black text-[24px] h-[30px]">
+                      <Button className="h-[30px] bg-black text-[24px] uppercase">
                         {artist.title}
                       </Button>
                     </Link>
@@ -207,32 +215,35 @@ const ProductPage = ({ product }: { product: Product }) => {
               )}
               <div className="text-[24px]">{price}</div>
 
-              <Button
-                className="w-32 h-20px bg-[#1E90FF] text-[16px] uppercase"
-                onClick={addToCart}
-              >
-                Add to Cart
-              </Button>
+              {product.availableForSale ? (
+                <Button
+                  disabled={true}
+                  className="h-20px min-w-32 bg-[#1E90FF] text-[16px] uppercase"
+                  onClick={addToCart}
+                >
+                  {t('Add to Cart')}
+                </Button>
+              ) : (
+                <button className=" h-20px pointer-events-none min-w-[160px] rounded-[4px] bg-[#BFBFBF] p-[0.10rem] pl-2 text-left text-[16px]  uppercase text-white">
+                  {t('sold out')}
+                </button>
+              )}
             </div>
 
-            <hr className="h-px bg-black border-0 dark:bg-gray-700 my-[10px] lg:my-[20px]" />
-            {material && (
+            {product.descriptionHtml && (
               <>
-                <div>
-                  <p>{material.value}</p>
+                <hr className="my-[10px] h-px border-0 bg-black dark:bg-gray-700 lg:my-[20px]" />
+                <div className="font-[HelenBgLight]">
+                  <div
+                    style={{ fontFamily: 'HelenBgLight' }}
+                    dangerouslySetInnerHTML={{
+                      __html: product.descriptionHtml,
+                    }}
+                  />
                 </div>
-                <hr className="h-px bg-black border-0 dark:bg-gray-700 my-[10px]" />
               </>
             )}
-            {product && (
-              <div className="font-[HelenBgLight]">
-                <div
-                  style={{ fontFamily: 'HelenBgLight' }}
-                  dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
-                />
-              </div>
-            )}
-            <hr className="h-px bg-black border-0 dark:bg-gray-700 mt-[10px]" />
+            <hr className="mt-[10px] h-px border-0 bg-black dark:bg-gray-700" />
             {recommendedProducts.data && (
               <RecommendedProducts products={recommendedProducts.data} />
             )}
