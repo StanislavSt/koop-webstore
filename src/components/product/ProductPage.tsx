@@ -19,6 +19,8 @@ import ProductOptions from '../productOptions/ProductOptions'
 import GetProductsByTag from '../../graphql/queries/GetProductsByTag'
 
 const ProductPage = ({ product }: { product: Product }) => {
+  const { t } = useTranslation()
+
   const selectedInit: { [key: string]: string } = {}
   const [selectedOptions, setSelected] = useState(selectedInit)
   const [selectedVariantId, setVariantId] = useState<string | null | undefined>(
@@ -30,8 +32,6 @@ const ProductPage = ({ product }: { product: Product }) => {
   const [price, setPrice] = useState(
     product.variants.edges[0].node.price.amount
   )
-
-  const { t } = useTranslation()
 
   // TODO get rid of useEffect
   useEffect(() => {
@@ -245,7 +245,10 @@ const ProductPage = ({ product }: { product: Product }) => {
             )}
             <hr className="mt-[10px] h-px border-0 bg-black dark:bg-gray-700" />
             {recommendedProducts.data && (
-              <RecommendedProducts products={recommendedProducts.data} />
+              <RecommendedProducts
+                products={recommendedProducts.data}
+                currentProductId={product.id}
+              />
             )}
           </div>
         </div>

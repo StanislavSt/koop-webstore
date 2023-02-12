@@ -13,12 +13,17 @@ type RecommendedProduct = NonNullable<
 
 const RecommendedProducts = ({
   products,
+  currentProductId,
 }: {
   products: GetProductsByTagQueryResult['data']
+  currentProductId: string
 }) => {
-  const recommendedProducts = products?.collection?.products.edges.map(
-    (edge) => edge.node
-  )
+  const recommendedProducts = products?.collection?.products.edges
+    .map((edge) => edge.node)
+    .filter(
+      (product) =>
+        product.id !== currentProductId && product.availableForSale === true
+    )
 
   const shuffledRecommendedProducts = useMemo(() => {
     if (!recommendedProducts) return

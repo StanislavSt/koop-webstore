@@ -7318,6 +7318,7 @@ export type GetProductsByTagQuery = {
           title: string
           handle: string
           tags: Array<string>
+          availableForSale: boolean
           priceRange: {
             __typename?: 'ProductPriceRange'
             minVariantPrice: { __typename?: 'MoneyV2'; amount: any }
@@ -8170,6 +8171,7 @@ export const GetProductsByTagDocument = gql`
             title
             handle
             tags
+            availableForSale
             priceRange {
               minVariantPrice {
                 amount
