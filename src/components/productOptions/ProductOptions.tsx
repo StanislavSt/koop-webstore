@@ -9,17 +9,21 @@ const notInStock: React.CSSProperties = {
   pointerEvents: 'none',
 }
 
-const getFirstAvailableVariant = (products: any) =>
-  products.find((variant: any) => variant.node.availableForSale === true).node
+const getFirstAvailableVariant = (products: any) => {
+  return (
+    products?.find((variant: any) => variant.node.availableForSale === true)
+      ?.node ?? []
+  )
+}
 
 export default function ProductOptions({
   product,
   setSelected,
 }: {
   product: Product
-  setSelected: any
+  setSelected: (args: any) => void
 }) {
-  const [selectedOptions, setSelectedCurrent] = useState<any>({})
+  const [selectedOptions, setSelectedCurrent] = useState({})
 
   // Select the first available item combination on props change
   useEffect(() => {
@@ -27,10 +31,11 @@ export default function ProductOptions({
       product.variants.edges
     )
 
-    const selection = firstAvailableVariant?.selectedOptions.reduce(
-      (acc: any, curr: any) => ({ ...acc, [curr.name]: curr.value }),
-      {}
-    )
+    const selection =
+      firstAvailableVariant?.selectedOptions?.reduce(
+        (acc: any, curr: any) => ({ ...acc, [curr.name]: curr.value }),
+        {}
+      ) ?? []
     setSelectedCurrent(selection)
     // setSelected(selection)
   }, [product])
