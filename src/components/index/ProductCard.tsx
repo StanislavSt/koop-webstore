@@ -19,7 +19,7 @@ export const ProductCard = ({
   product: ProductWithAnimation
   isRecommendedProduct?: boolean
 }) => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const [image, setImage] = useState<ImageState>(product.images.edges[0].node)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -70,8 +70,9 @@ export const ProductCard = ({
             product.availableForSale ? '' : 'line-through'
           } mt-1 mb-1 font-medium uppercase leading-[18px]`}
         >
-          {t('bgn')}{' '}
-          {Number(product.priceRange.minVariantPrice.amount).toFixed(2)}
+          {i18n.language === 'en' && t('bgn')}{' '}
+          {Number(product.priceRange.minVariantPrice.amount).toFixed(2)}{' '}
+          {i18n.language === 'bg' && t('bgn')}
         </p>
       </div>
       <Link href={`/product/${product.handle}`}>

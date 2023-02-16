@@ -23,6 +23,7 @@ export type ProductWithCursor = NonNullable<
 >['products']['edges'][0]['node'] & {
   cursor: string
   blurDataUrl: string
+  availableForSale: boolean
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {

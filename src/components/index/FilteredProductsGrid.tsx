@@ -43,7 +43,7 @@ const FilteredProductsGrid = () => {
     onCompleted: async (data) => {
       if (!data.collection) return
       const mappedProducts = await mapProducts(data.collection?.products)
-      setProducts(mappedProducts)
+      setProducts(mappedProducts as ProductWithCursor[])
       mappedProducts.length >= numberOfProductsToQuery &&
         setCursor(mappedProducts.slice(-1)[0]?.cursor)
     },
@@ -73,7 +73,7 @@ const FilteredProductsGrid = () => {
     const productsWithCursor = await mapProducts(data.collection?.products)
     setShowLoader(false)
 
-    setProducts([...products, ...productsWithCursor])
+    setProducts([...products, ...(productsWithCursor as ProductWithCursor[])])
 
     productsWithCursor.length < numberOfProductsToQuery
       ? setCursor('')

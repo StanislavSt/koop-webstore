@@ -63,7 +63,7 @@ const ArtistProducts = ({
 
     if (productsWithCursor.length > 0) {
       setProductLengthOfLastLoadMoreBatch(productsWithCursor.length)
-      setProducts([...products, ...productsWithCursor])
+      setProducts([...products, ...(productsWithCursor as ProductWithCursor[])])
     }
 
     if (productsWithCursor.length < numberOfProductsToQuery) setCursor('')

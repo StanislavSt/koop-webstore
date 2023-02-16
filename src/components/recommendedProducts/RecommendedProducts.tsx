@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+import { useRouter } from 'next/router'
 
 import {
   GetProductRecommendationsQuery,
@@ -18,6 +19,8 @@ const RecommendedProducts = ({
   products: GetProductsByTagQueryResult['data']
   currentProductId: string
 }) => {
+  const { asPath } = useRouter()
+
   const recommendedProducts = products?.collection?.products.edges
     .map((edge) => edge.node)
     .filter(
@@ -30,7 +33,7 @@ const RecommendedProducts = ({
 
     return shuffle<RecommendedProduct>(recommendedProducts)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [asPath])
 
   return (
     <>

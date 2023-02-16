@@ -19,7 +19,7 @@ import ProductOptions from '../productOptions/ProductOptions'
 import GetProductsByTag from '../../graphql/queries/GetProductsByTag'
 
 const ProductPage = ({ product }: { product: Product }) => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const selectedInit: { [key: string]: string } = {}
   const [selectedOptions, setSelected] = useState(selectedInit)
@@ -155,16 +155,15 @@ const ProductPage = ({ product }: { product: Product }) => {
                 </div>
               ))}
             {product && (
-              <ProductOptions
-                product={product}
-                setSelectedOptions={setSelected}
-              />
+              <ProductOptions product={product} setSelected={setSelected} />
             )}
-            <div className="text-[24px]">{price}</div>
+            <div className="text-[24px]">
+              {i18n.language === 'en' && t('bgn')} {price}{' '}
+              {i18n.language === 'bg' && t('bgn')}
+            </div>
 
             {product.availableForSale ? (
               <Button
-                disabled={true}
                 className="h-20px min-w-32 bg-[#1E90FF] text-[16px] uppercase"
                 onClick={addToCart}
               >
@@ -210,14 +209,17 @@ const ProductPage = ({ product }: { product: Product }) => {
               {product && (
                 <ProductOptions
                   product={product}
-                  setSelectedOptions={setSelected}
+                  setSelected={(_: Record<string, string>) => setSelected(_)}
                 />
               )}
-              <div className="text-[24px]">{price}</div>
+              <div className="text-[24px]">
+                {' '}
+                {i18n.language === 'en' && t('bgn')} {price}{' '}
+                {i18n.language === 'bg' && t('bgn')}
+              </div>
 
               {product.availableForSale ? (
                 <Button
-                  disabled={true}
                   className="h-20px min-w-32 bg-[#1E90FF] text-[16px] uppercase"
                   onClick={addToCart}
                 >

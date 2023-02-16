@@ -66,7 +66,7 @@ const UnfilteredProductsGrid = ({
     }
 
     setProductLengthOfLastLoadMoreBatch(productsWithCursor.length)
-    setProducts([...products, ...productsWithCursor])
+    setProducts([...products, ...(productsWithCursor as ProductWithCursor[])])
 
     if (productsWithCursor.length < numberOfProductsToQuery) setCursor('')
     else setCursor(productsWithCursor?.slice(-1)[0]?.cursor)
