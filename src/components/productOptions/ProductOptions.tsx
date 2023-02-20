@@ -97,7 +97,7 @@ export default function ProductOptions({
         product.options.map((option, index) => (
           <div key={option.id}>
             <span className="text-[16px] text-[#1E90FF]">{option.name}</span>
-            <ul className="flex">
+            <ul className="flex flex-wrap">
               {option.values &&
                 option.values.map((value) => (
                   <li key={value} className="pr-2">

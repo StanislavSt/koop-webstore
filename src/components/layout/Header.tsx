@@ -7,12 +7,13 @@ import LanguageSwitcher from './LanguageSwitcher'
 import FiltersContainer from '../filters/FiltersContainer'
 import { Button } from '../common/Button'
 import { Cart } from '../cart/Cart'
+import { clearFilters } from '../filters/Filters'
 
 const IndexPageHeader = () => {
   const { t } = useTranslation()
 
   return (
-    <header className="mt-3 flex justify-between px-5">
+    <header className="mt-3 flex justify-between px-3">
       <div className="flex flex-col gap-2 sm:block">
         <div className="relative h-[150px] w-[120px] sm:hidden">
           {/* Mobile version */}
@@ -23,29 +24,32 @@ const IndexPageHeader = () => {
             objectFit="contain"
           />
         </div>
-        <Link href="/info/how-to-order">
+        <Link href="/info/about-us">
           <Button className="block bg-black sm:hidden">{t('info')}</Button>
         </Link>
         <FiltersContainer />
       </div>
 
       <section className="ml-[1rem] flex flex-col justify-between gap-[1rem] sm:flex-row lg:gap-[1rem] xl:gap-[3rem] 2xl:gap-[5rem]">
-        <div className="relative hidden h-[120px] w-[90px] lg:block lg:h-[220px] lg:w-[170px]">
+        <div className="relative hidden h-[120px] w-[90px] cursor-pointer lg:block lg:h-[220px] lg:w-[170px] ">
           <Image
             src="/logos/KopyShop_BIG.svg"
             alt="logo"
             layout="fill"
             objectFit="contain"
+            onClick={() => clearFilters()}
           />
         </div>
-        <div className="hidden sm:block">
-          <Link href="/info/how-to-order">
-            <Button className="bg-black">{t('info')}</Button>
-          </Link>
-        </div>
-        <div className="flex flex-col items-end">
-          <LanguageSwitcher />
-          <Cart />
+        <div className="flex gap-16">
+          <div className="hidden sm:block">
+            <Link href="/info/about-us">
+              <Button className="bg-black">{t('info')}</Button>
+            </Link>
+          </div>
+          <div className="flex flex-col items-end">
+            <LanguageSwitcher />
+            <Cart />
+          </div>
         </div>
       </section>
     </header>
@@ -57,7 +61,7 @@ const CollectionPageHeader = () => {
   const router = useRouter()
 
   return (
-    <header className="mt-3 flex justify-between">
+    <header className="mt-3 flex justify-between px-3">
       <Button
         className="hidden bg-[#1E90FF] text-white sm:block"
         onClick={() => router.push('/')}
@@ -75,9 +79,17 @@ const CollectionPageHeader = () => {
           objectFit="contain"
         />
       </div>
-      <div className="flex flex-col items-end">
-        <LanguageSwitcher />
-        <Cart />
+
+      <div className="flex gap-16">
+        <div className="hidden sm:block">
+          <Link href="/info/about-us">
+            <Button className="bg-black">{t('info')}</Button>
+          </Link>
+        </div>
+        <div className="flex flex-col items-end">
+          <LanguageSwitcher />
+          <Cart />
+        </div>
       </div>
     </header>
   )

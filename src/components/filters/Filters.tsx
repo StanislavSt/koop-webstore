@@ -12,33 +12,29 @@ const filterValues: {
     format: 'publications',
     technique: [
       'art',
-      'architecture',
       'archive',
-      'design',
       'illustration',
       'magazine',
       'photography',
-      'photobook',
       'theory & writing',
       'zine',
     ],
   },
   {
     format: 'prints',
-    technique: ['screen print', 'illustration', 'digital', 'rizo'],
+    technique: ['screen print', 'illustration', 'digital', 'riso'],
   },
 ]
 
+export const clearFilters = () => {
+  filtersVar({ format: '', technique: '' })
+}
 const Filters = () => {
   const { t } = useTranslation()
   const filters = useReactiveVar(filtersVar)
 
-  const clearFilters = () => {
-    filtersVar({ format: '', technique: '' })
-  }
-
   return (
-    <section className="m-5 flex h-full min-h-[13rem] w-full flex-col gap-[2rem] sm:m-0 sm:h-auto sm:w-auto sm:flex-row md:gap-[3rem] lg:gap-[5rem] xl:gap-[6rem] 2xl:gap-[7rem]">
+    <section className="m-5 flex h-full min-h-[15rem] w-full flex-col gap-[2rem] sm:m-0 sm:h-auto sm:w-auto sm:flex-row md:gap-[3rem] lg:gap-[5rem] xl:gap-[6rem] 2xl:gap-[7rem]">
       <div className="flex flex-col-reverse items-start justify-between sm:flex-col">
         <div>
           <ul

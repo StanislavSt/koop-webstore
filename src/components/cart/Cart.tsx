@@ -1,4 +1,5 @@
 import { gql, useQuery, useReactiveVar } from '@apollo/client'
+import Image from 'next/image'
 import { useTranslation } from 'next-i18next'
 import { useState } from 'react'
 
@@ -84,6 +85,7 @@ export const Cart = () => {
             price: cartItemToRemove.price,
             title: cartItemToRemove.title,
             selectedOptions: cartItemToRemove.selectedOptions,
+            image: cartItemToRemove.image,
           },
           ...filteredCartItems.slice(index),
         ])
@@ -118,8 +120,15 @@ export const Cart = () => {
                       key={index}
                       className="my-2 flex justify-between text-[22px]"
                     >
-                      <div>
-                        <div className="w-[80%] leading-[23px]">
+                      <div className="flex">
+                        <Image
+                          src={cartItem.image.url}
+                          width={100}
+                          height={50}
+                          objectFit="contain"
+                          alt={cartItem.title}
+                        />
+                        <div className="max-w-[280px] leading-[23px]">
                           {cartItem.title}
                         </div>
                         <div className="flex flex-col">

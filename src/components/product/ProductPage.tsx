@@ -113,6 +113,7 @@ const ProductPage = ({ product }: { product: Product }) => {
           price: selectedVariant?.price.amount,
           title: product?.title,
           selectedOptions: selectedOptions,
+          image: product?.images.edges[0].node,
         },
       ])
     )
@@ -134,6 +135,7 @@ const ProductPage = ({ product }: { product: Product }) => {
             price: selectedVariant?.price.amount,
             title: product?.title,
             selectedOptions: selectedOptions,
+            image: product?.images.edges[0].node,
           },
         ])
   }
@@ -158,7 +160,7 @@ const ProductPage = ({ product }: { product: Product }) => {
               <ProductOptions product={product} setSelected={setSelected} />
             )}
             <div className="text-[24px]">
-              {i18n.language === 'en' && t('bgn')} {price}{' '}
+              {i18n.language === 'en' && t('bgn')} {Number(price).toFixed(2)}{' '}
               {i18n.language === 'bg' && t('bgn')}
             </div>
 
@@ -214,8 +216,10 @@ const ProductPage = ({ product }: { product: Product }) => {
               )}
               <div className="text-[24px]">
                 {' '}
-                {i18n.language === 'en' && t('bgn')} {price}{' '}
-                {i18n.language === 'bg' && t('bgn')}
+                {i18n.language === 'en' && (
+                  <span className="uppercase">{t('bgn')}</span>
+                )}{' '}
+                {Number(price).toFixed(2)} {i18n.language === 'bg' && t('bgn')}
               </div>
 
               {product.availableForSale ? (
@@ -237,7 +241,8 @@ const ProductPage = ({ product }: { product: Product }) => {
                 <hr className="my-[10px] h-px border-0 bg-black dark:bg-gray-700 lg:my-[20px]" />
                 <div className="font-[HelenBgLight]">
                   <div
-                    style={{ fontFamily: 'HelenBgLight' }}
+                    className="description"
+                    style={{ fontFamily: 'HelenBgLight', fontSize: 'initial' }}
                     dangerouslySetInnerHTML={{
                       __html: product.descriptionHtml,
                     }}

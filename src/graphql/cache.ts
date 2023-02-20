@@ -1,4 +1,5 @@
 import { makeVar, InMemoryCache } from '@apollo/client'
+import { Image } from './types'
 
 export type CartItem = {
   variantId: string
@@ -6,6 +7,7 @@ export type CartItem = {
   price: number
   title: string
   selectedOptions: Record<string, string>
+  image: Image
 }
 export type Filters = {
   format: 'publications' | 'prints' | ''
@@ -23,7 +25,7 @@ export type Filters = {
     | 'screen print'
     | 'illustration'
     | 'digital'
-    | 'rizo'
+    | 'riso'
     | ''
 }
 

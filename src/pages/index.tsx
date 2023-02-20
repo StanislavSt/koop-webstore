@@ -24,6 +24,7 @@ export type ProductWithCursor = NonNullable<
   cursor: string
   blurDataUrl: string
   availableForSale: boolean
+  productType: string
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {

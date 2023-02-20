@@ -5324,6 +5324,7 @@ export type PageEdge = {
 /**
  * Returns information about pagination in a connection, in accordance with the
  * [Relay specification](https://relay.dev/graphql/connections.htm#sec-undefined.PageInfo).
+ * For more information, please read our [GraphQL Pagination Usage Guide](https://shopify.dev/api/usage/pagination-graphql).
  *
  */
 export type PageInfo = {
@@ -6998,6 +6999,8 @@ export type GetArtistQuery = {
           title: string
           handle: string
           tags: Array<string>
+          productType: string
+          availableForSale: boolean
           priceRange: {
             __typename?: 'ProductPriceRange'
             minVariantPrice: { __typename?: 'MoneyV2'; amount: any }
@@ -7246,6 +7249,7 @@ export type GetProductsQuery = {
           title: string
           handle: string
           tags: Array<string>
+          productType: string
           availableForSale: boolean
           priceRange: {
             __typename?: 'ProductPriceRange'
@@ -7318,6 +7322,7 @@ export type GetProductsByTagQuery = {
           title: string
           handle: string
           tags: Array<string>
+          productType: string
           availableForSale: boolean
           priceRange: {
             __typename?: 'ProductPriceRange'
@@ -7518,6 +7523,8 @@ export const GetArtistDocument = gql`
             title
             handle
             tags
+            productType
+            availableForSale
             priceRange {
               minVariantPrice {
                 amount
@@ -8054,6 +8061,7 @@ export const GetProductsDocument = gql`
             title
             handle
             tags
+            productType
             availableForSale
             priceRange {
               minVariantPrice {
@@ -8171,6 +8179,7 @@ export const GetProductsByTagDocument = gql`
             title
             handle
             tags
+            productType
             availableForSale
             priceRange {
               minVariantPrice {

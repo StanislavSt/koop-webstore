@@ -6,7 +6,10 @@ const ArtistsSection = ({ artists }: { artists: CollectionEdge[] }) => {
   const { t } = useTranslation()
   return (
     <section className="md:sticky md:top-5">
-      <span className="hidden text-[#1E90FF] md:block"> {t('artists')}</span>
+      <span className="hidden text-[#1E90FF] md:block">
+        {' '}
+        {t('authors and publishers')}
+      </span>
       <div className="flex flex-wrap gap-5">
         {artists.map((artist) => (
           <Link key={artist.node.id} href={`/artist/${artist.node.handle}`}>

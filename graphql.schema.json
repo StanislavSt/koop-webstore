@@ -22979,7 +22979,7 @@
       {
         "kind": "OBJECT",
         "name": "PageInfo",
-        "description": "Returns information about pagination in a connection, in accordance with the\n[Relay specification](https://relay.dev/graphql/connections.htm#sec-undefined.PageInfo).\n",
+        "description": "Returns information about pagination in a connection, in accordance with the\n[Relay specification](https://relay.dev/graphql/connections.htm#sec-undefined.PageInfo).\nFor more information, please read our [GraphQL Pagination Usage Guide](https://shopify.dev/api/usage/pagination-graphql).\n",
         "fields": [
           {
             "name": "endCursor",

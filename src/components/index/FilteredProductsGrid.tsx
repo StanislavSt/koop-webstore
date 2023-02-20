@@ -1,6 +1,7 @@
 import { useQuery, useReactiveVar } from '@apollo/client'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'next-i18next'
 
 import client from '../../graphql/apollo-client-storefront'
 import { filtersVar } from '../../graphql/cache'
@@ -18,6 +19,7 @@ import { ProductCard } from './ProductCard'
 import { ProductColumn } from './ProductColumn'
 
 const FilteredProductsGrid = () => {
+  const { t } = useTranslation()
   const filters = useReactiveVar(filtersVar)
 
   const { locale } = useRouter()
@@ -29,7 +31,7 @@ const FilteredProductsGrid = () => {
     setCursor('')
   }, [filters])
 
-  const { loading } = useQuery<
+  const { loading, data } = useQuery<
     GetProductsByTagQuery,
     GetProductsByTagQueryVariables
   >(GetProductsByTag, {
@@ -79,6 +81,16 @@ const FilteredProductsGrid = () => {
       ? setCursor('')
       : setCursor(productsWithCursor?.slice(-1)[0]?.cursor)
   }
+  if (
+    products.length === 0 &&
+    !loading &&
+    data?.collection?.products.edges.length === 0
+  )
+    return (
+      <span className="text-[17px]">
+        {t('No products were found for this filter')}.
+      </span>
+    )
 
   return (
     <>

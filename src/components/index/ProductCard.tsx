@@ -32,6 +32,7 @@ export const ProductCard = ({
 
   const handleOnMouseEnter = async () => {
     if (images.length === 1) return
+    if (product.productType === 'prints') return
 
     clearInterval(interval.current)
 
@@ -77,10 +78,7 @@ export const ProductCard = ({
       </div>
       <Link href={`/product/${product.handle}`}>
         <Image
-          className={`${
-            images.length === 1 &&
-            'transition-transform duration-200 hover:scale-110'
-          } aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8 w-full cursor-pointer overflow-hidden rounded-lg`}
+          className="aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8 w-full cursor-pointer overflow-hidden rounded-lg"
           src={image.url}
           alt={image.altText ?? ''}
           width={500}

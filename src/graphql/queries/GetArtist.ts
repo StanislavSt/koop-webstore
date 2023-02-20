@@ -25,6 +25,8 @@ const GetArtist = gql`
             title
             handle
             tags
+            productType
+            availableForSale
             priceRange {
               minVariantPrice {
                 amount
