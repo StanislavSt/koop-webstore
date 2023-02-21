@@ -27,7 +27,7 @@ const IndexPageHeader = () => {
           />
         </div>
         <Link href="/info/about-us">
-          <a>
+          <a className="mb-3">
             <Button className="block bg-black sm:hidden">{t('info')}</Button>
           </a>
         </Link>
@@ -52,7 +52,7 @@ const IndexPageHeader = () => {
               </a>
             </Link>
           </div>
-          <div className="flex flex-col items-end">
+          <div className="flex flex-col items-end gap-3">
             <LanguageSwitcher />
             <Cart />
           </div>

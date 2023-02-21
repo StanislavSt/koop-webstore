@@ -54,6 +54,7 @@ a {
 
 table {
   min-width: 100%;
+  max-width: 100%;
   border-collapse: separate;
   margin-bottom: 10px;
   padding-bottom: 10px;

@@ -147,7 +147,7 @@ const ProductPage = ({ product }: { product: Product }) => {
                 <div key={artist.id}>
                   <Link href={`/artist/${artist.handle}`}>
                     <a>
-                      <Button className="h-[30px] bg-black text-[24px] uppercase">
+                      <Button className="h-[30px] bg-black text-[20px] uppercase">
                         {artist.title}
                       </Button>
                     </a>
@@ -163,12 +163,14 @@ const ProductPage = ({ product }: { product: Product }) => {
             </div>
 
             {product.availableForSale ? (
-              <Button
-                className="h-20px min-w-32 bg-[#1E90FF] text-[16px] uppercase"
-                onClick={addToCart}
-              >
-                {t('Add to Cart')}
-              </Button>
+              <div>
+                <Button
+                  className="h-20px min-w-32 flex items-center bg-[#1E90FF] p-3 text-[16px] uppercase"
+                  onClick={addToCart}
+                >
+                  {t('Add to Cart')}
+                </Button>
+              </div>
             ) : (
               <div>
                 <button className=" h-20px pointer-events-none min-w-[160px] rounded-[4px] bg-[#BFBFBF] p-[0.10rem] pl-2 text-left text-[16px]  uppercase text-white">
