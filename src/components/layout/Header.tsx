@@ -27,7 +27,7 @@ const IndexPageHeader = () => {
           />
         </div>
         <Link href="/info/about-us">
-          <a className="mb-3">
+          <a className="mb-3" aria-label="about us">
             <Button className="block bg-black sm:hidden">{t('info')}</Button>
           </a>
         </Link>
@@ -47,7 +47,7 @@ const IndexPageHeader = () => {
         <div className="flex gap-16">
           <div className="hidden sm:block">
             <Link href="/info/about-us">
-              <a>
+              <a aria-label="about us">
                 <Button className="bg-black">{t('info')}</Button>
               </a>
             </Link>
@@ -89,7 +89,7 @@ const CollectionPageHeader = () => {
       <div className="flex gap-16">
         <div className="hidden sm:block">
           <Link href="/info/about-us">
-            <a>
+            <a aria-label="about us">
               <Button className="bg-black">{t('info')}</Button>
             </a>
           </Link>
