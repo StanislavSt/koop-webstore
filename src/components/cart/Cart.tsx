@@ -16,7 +16,7 @@ export const GET_CART_ITEMS = gql`
 `
 
 export const Cart = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const CartItemsVar = useReactiveVar(cartItemsVar)
 
@@ -105,7 +105,7 @@ export const Cart = () => {
               {t('cart')} ({getCartLength()})
             </div>
             <Button
-              className="flex items-center bg-[#1E90FF] text-white"
+              className="flex items-center bg-black text-white"
               onClick={() => setIsOpen(false)}
             >
               {t('close')}
@@ -118,34 +118,44 @@ export const Cart = () => {
                   return (
                     <div
                       key={index}
-                      className="my-2 flex justify-between text-[22px]"
+                      className="my-2 flex items-center justify-between text-[22px]"
                     >
-                      <div className="flex">
+                      <div className="flex items-center gap-5">
                         <Image
                           src={cartItem.image.url}
-                          width={100}
-                          height={50}
                           objectFit="contain"
+                          objectPosition="center"
                           alt={cartItem.title}
+                          width={75}
+                          height={75}
+                          quality={35}
                         />
-                        <div className="max-w-[280px] leading-[23px]">
-                          {cartItem.title}
-                        </div>
                         <div className="flex flex-col">
-                          {Object.values(cartItem.selectedOptions).map((x) => {
-                            return (
-                              <div key={x} className="leading-6">
-                                {x}
-                              </div>
-                            )
-                          })}
+                          <div className="max-w-[280px] text-[18px] leading-[23px]">
+                            {cartItem.title}
+                          </div>
+                          <div className="flex flex-col text-[16px] text-[#939393]">
+                            {Object.values(cartItem.selectedOptions).map(
+                              (x) => {
+                                return (
+                                  <div key={x} className="leading-6">
+                                    {x}
+                                  </div>
+                                )
+                              }
+                            )}
+                          </div>
                         </div>
                       </div>
-                      <div className="flex flex-col items-end">
-                        <div>
+                      <div className="flex flex-col items-end ">
+                        <span className="text-[18px] ">
                           {cartItem.quantity} x{' '}
-                          {Number(cartItem.price).toFixed(2)} {t('bgn')}
-                        </div>
+                          <span className="uppercase">
+                            {i18n.language === 'en' && t('bgn')}{' '}
+                          </span>
+                          {Number(cartItem.price).toFixed(2)}
+                          {i18n.language === 'bg' && t('bgn')}
+                        </span>
                         <div
                           className="cursor-pointer text-[16px] text-[#939393] hover:opacity-60"
                           onClick={() => removeCartItem(cartItem)}
@@ -161,13 +171,17 @@ export const Cart = () => {
                 <div className="mt-5 flex justify-between border-t border-t-black p-1 text-[22px]">
                   <div className="text-[30px] capitalize">{t('total')}</div>
                   <div className="text-[30px]">
-                    {Number(getCartValue()).toFixed(2)} {t('bgn')}
+                    <span className="uppercase">
+                      {i18n.language === 'en' && t('bgn')}{' '}
+                    </span>
+                    {Number(getCartValue()).toFixed(2)}{' '}
+                    {i18n.language === 'bg' && t('bgn')}
                   </div>
                 </div>
                 {data && data.cartItems.length > 0 && (
                   <div className="mt-10 flex justify-center">
                     <Button
-                      className="flex w-full items-center justify-center bg-black p-7 text-center text-white"
+                      className="flex w-full items-center justify-center bg-[#1E90FF] p-7 text-center text-white"
                       onClick={() => {
                         createCheckout()
                       }}

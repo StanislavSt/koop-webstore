@@ -5,13 +5,13 @@ export function Drawer({ children, isOpen, setIsOpen }: any) {
       className={
         'fixed inset-0 z-20 transform overflow-hidden ease-in-out ' +
         (isOpen
-          ? 'translate-x-0 bg-black bg-opacity-25 opacity-100 transition-opacity duration-500  '
-          : 'delay-[450ms] translate-x-full opacity-0')
+          ? 'translate-x-0 bg-black bg-opacity-40 opacity-100 transition-opacity duration-500  '
+          : 'translate-x-full bg-transparent bg-opacity-0 transition-transform delay-500')
       }
     >
       <section
         className={
-          'delay-400 absolute right-0 h-full w-screen max-w-lg transform bg-white shadow-xl transition-all duration-500 ease-in-out  ' +
+          'absolute right-0 h-full w-screen max-w-lg transform bg-white shadow-xl transition-transform duration-500 ease-in-out  ' +
           (isOpen ? ' translate-x-0 ' : ' translate-x-full')
         }
       >
