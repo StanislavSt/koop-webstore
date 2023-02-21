@@ -2,12 +2,14 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
 
 import LanguageSwitcher from './LanguageSwitcher'
 import FiltersContainer from '../filters/FiltersContainer'
 import { Button } from '../common/Button'
-import { Cart } from '../cart/Cart'
 import { clearFilters } from '../filters/Filters'
+
+const Cart = dynamic(() => import('../cart/Cart'), { ssr: false })
 
 const IndexPageHeader = () => {
   const { t } = useTranslation()

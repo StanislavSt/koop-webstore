@@ -15,7 +15,7 @@ export const GET_CART_ITEMS = gql`
   }
 `
 
-export const Cart = () => {
+const Cart = () => {
   const { t, i18n } = useTranslation()
 
   const CartItemsVar = useReactiveVar(cartItemsVar)
@@ -202,3 +202,5 @@ export const Cart = () => {
     </>
   )
 }
+
+export default Cart

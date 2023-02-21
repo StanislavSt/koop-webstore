@@ -23,7 +23,7 @@ const InfoPage = ({
   const title = router.locale === 'bg' ? 'Инфо' : 'Info'
   return (
     <Layout title={title}>
-      <div className="flex justify-between md:gap-[10%] lg:gap-[20%] xl:gap-[30%]">
+      <div className="flex justify-between px-3 md:gap-[10%] lg:gap-[20%] xl:gap-[30%]">
         <div className="md:min-w-[300px] lg:min-w-[400px] xl:min-w-[500px]">
           <InfoNavigation />
           <TextContent html={page?.body} />

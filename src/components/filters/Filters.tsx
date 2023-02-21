@@ -1,8 +1,11 @@
 import { useTranslation } from 'next-i18next'
+import dynamic from 'next/dynamic'
+
 import { Button } from '../common/Button'
-import { Cart } from '../cart/Cart'
 import { Filters, filtersVar } from '../../graphql/cache'
 import { useReactiveVar } from '@apollo/client'
+
+const Cart = dynamic(() => import('../cart/Cart'), { ssr: false })
 
 const filterValues: {
   format: Filters['format']
