@@ -91,10 +91,6 @@ const ProductPage = ({ product }: { product: Product }) => {
     }
   }
 
-  // const isOptionAvailable = (option: ProductOption, product: Product) => {
-  //   // if variants with specific option are !availableForSale
-  // }
-
   const CartItemsVar = useReactiveVar(cartItemsVar)
 
   const updateCartItemQuantity = (cartItem: CartItem) => {

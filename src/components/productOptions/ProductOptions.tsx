@@ -30,14 +30,16 @@ export default function ProductOptions({
     const firstAvailableVariant = getFirstAvailableVariant(
       product.variants.edges
     )
-
     const selection =
       firstAvailableVariant?.selectedOptions?.reduce(
         (acc: any, curr: any) => ({ ...acc, [curr.name]: curr.value }),
         {}
       ) ?? []
+
+    if (selection['Title'] === 'Default Title') return
     setSelectedCurrent(selection)
-    // setSelected(selection)
+    setSelected(selection)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product])
 
   const SelectOption = ({ name, value }: any) => {
