@@ -13,9 +13,9 @@ const ArtistsSection = ({ artists }: { artists: CollectionEdge[] }) => {
       <div className="flex flex-wrap gap-5">
         {artists.map((artist) => (
           <Link key={artist.node.id} href={`/artist/${artist.node.handle}`}>
-            <span className="max-w-fit cursor-pointer rounded-[4px] bg-black p-[0.35rem] pt-[0.45rem] uppercase leading-[15px] text-white hover:opacity-70">
+            <a className="max-w-fit cursor-pointer rounded-[4px] bg-black p-[0.35rem] pt-[0.45rem] uppercase leading-[15px] text-white hover:opacity-70">
               {artist.node.title}
-            </span>
+            </a>
           </Link>
         ))}
       </div>

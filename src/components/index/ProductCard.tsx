@@ -77,34 +77,36 @@ export const ProductCard = ({
         </p>
       </div>
       <Link href={`/product/${product.handle}`}>
-        <Image
-          className="aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8 w-full cursor-pointer overflow-hidden rounded-lg"
-          src={image.url}
-          alt={image.altText ?? ''}
-          width={500}
-          height={calculateImageHeight(
-            image.width ?? 0,
-            image.height ?? 0,
-            500
-          )}
-          placeholder={product.blurDataUrl ? 'blur' : 'empty'}
-          blurDataURL={product.blurDataUrl}
-          objectFit="contain"
-          onMouseEnter={handleOnMouseEnter}
-          onMouseLeave={handleOnMouseLeave}
-        />
+        <a>
+          <Image
+            className="aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8 w-full cursor-pointer overflow-hidden rounded-lg"
+            src={image.url}
+            alt={image.altText ?? ''}
+            width={500}
+            height={calculateImageHeight(
+              image.width ?? 0,
+              image.height ?? 0,
+              500
+            )}
+            placeholder={product.blurDataUrl ? 'blur' : 'empty'}
+            blurDataURL={product.blurDataUrl}
+            objectFit="contain"
+            onMouseEnter={handleOnMouseEnter}
+            onMouseLeave={handleOnMouseLeave}
+          />
+        </a>
       </Link>
       {artists && (
         <div className="flex flex-col gap-1">
           {artists.map((artist) => (
             <Link key={artist.id} href={`/artist/${artist.handle}`}>
-              <span
+              <a
                 className={` ${
                   isRecommendedProduct ? 'text-md' : 'text-lg'
                 } max-w-fit cursor-pointer rounded-[4px] bg-black p-[0.35rem] pt-[0.45rem] uppercase leading-[15px] text-white hover:opacity-70`}
               >
                 {artist.title}
-              </span>
+              </a>
             </Link>
           ))}
         </div>

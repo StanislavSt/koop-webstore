@@ -146,9 +146,11 @@ const ProductPage = ({ product }: { product: Product }) => {
               artists.map((artist) => (
                 <div key={artist.id}>
                   <Link href={`/artist/${artist.handle}`}>
-                    <Button className="h-[30px] bg-black text-[24px] uppercase">
-                      {artist.title}
-                    </Button>
+                    <a>
+                      <Button className="h-[30px] bg-black text-[24px] uppercase">
+                        {artist.title}
+                      </Button>
+                    </a>
                   </Link>
                 </div>
               ))}
@@ -198,9 +200,11 @@ const ProductPage = ({ product }: { product: Product }) => {
                 artists.map((artist) => (
                   <div key={artist.id}>
                     <Link href={`/artist/${artist.handle}`}>
-                      <Button className="h-[30px] bg-black text-[24px] uppercase">
-                        {artist.title}
-                      </Button>
+                      <a>
+                        <Button className="h-[30px] bg-black text-[24px] uppercase">
+                          {artist.title}
+                        </Button>
+                      </a>
                     </Link>
                   </div>
                 ))}
