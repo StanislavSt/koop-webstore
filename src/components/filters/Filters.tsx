@@ -68,9 +68,9 @@ const Filters = () => {
           ) : (
             <span className="h-[21px]"> </span>
           )}
-          <a className="block sm:hidden">
+          <span className="block sm:hidden">
             <Cart />
-          </a>
+          </span>
         </div>
       </div>
       <div className="min-w-[10rem] md:min-w-[15rem] lg:min-w-0">
