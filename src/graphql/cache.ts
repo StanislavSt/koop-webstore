@@ -31,7 +31,8 @@ export type Filters = {
 
 const isString = (value: unknown) => typeof value === 'string'
 
-const getCleanValueForStorage = <T>(value: T) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getCleanValueForStorage = (value: any) => {
   return isString(value) ? value : JSON.stringify(value)
 }
 
@@ -65,7 +66,7 @@ const makeVarPersisted = <T>(
       if (newValue === undefined) {
         localStorage.removeItem(storageName)
       } else {
-        localStorage.setItem(storageName, getCleanValueForStorage<T>(newValue))
+        localStorage.setItem(storageName, getCleanValueForStorage(newValue))
       }
     } catch {
       // ignore
