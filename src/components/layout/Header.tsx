@@ -52,7 +52,7 @@ const IndexPageHeader = () => {
               </a>
             </Link>
           </div>
-          <div className="flex flex-col items-end gap-3">
+          <div className="flex flex-col items-end gap-2">
             <LanguageSwitcher />
             <Cart />
           </div>
@@ -94,7 +94,7 @@ const CollectionPageHeader = () => {
             </a>
           </Link>
         </div>
-        <div className="flex flex-col items-end">
+        <div className="flex flex-col items-end gap-2">
           <LanguageSwitcher />
           <Cart />
         </div>
