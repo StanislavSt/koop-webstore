@@ -82,11 +82,11 @@ export const ProductCard = ({
             className="aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8 w-full cursor-pointer overflow-hidden rounded-lg"
             src={image.url}
             alt={image.altText ?? ''}
-            width={500}
+            width={375}
             height={calculateImageHeight(
               image.width ?? 0,
               image.height ?? 0,
-              500
+              375
             )}
             placeholder={product.blurDataUrl ? 'blur' : 'empty'}
             blurDataURL={product.blurDataUrl}
