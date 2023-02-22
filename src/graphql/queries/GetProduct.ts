@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client'
+import { gql } from '@apollo/client/core'
 
 const GetProduct = gql`
   query GetProduct($productHandle: String!, $language: LanguageCode)

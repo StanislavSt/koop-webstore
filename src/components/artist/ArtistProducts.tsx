@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client/react/hooks/useQuery'
 import { useEffect, useState } from 'react'
 import GetArtist from '../../graphql/queries/GetArtist'
 import { GetArtistQuery, GetArtistQueryVariables } from '../../graphql/types'

@@ -1,8 +1,9 @@
+import { useReactiveVar } from '@apollo/client/react/hooks/useReactiveVar'
+
 import Layout from '../layout/Layout'
 import { ProductWithCursor } from '../../pages'
 import UnfilteredProductsGrid from './UnfilteredProductsGrid'
 import FilteredProductsGrid from './FilteredProductsGrid'
-import { useReactiveVar } from '@apollo/client'
 import { filtersVar } from '../../graphql/cache'
 import AnnouncementBanner from '../announcement/AnnouncementBanner'
 import { GetAnnouncementQuery } from '../../graphql/types'

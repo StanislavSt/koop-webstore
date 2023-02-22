@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { useQuery, useReactiveVar } from '@apollo/client'
+import { useQuery, useReactiveVar } from '@apollo/client/react/hooks'
 import Link from 'next/link'
 import { useTranslation } from 'next-i18next'
+
 import {
   GetProductsByTagQuery,
   GetProductsByTagQueryVariables,

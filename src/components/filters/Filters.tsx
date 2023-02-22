@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 
 import { Button } from '../common/Button'
 import { Filters, filtersVar } from '../../graphql/cache'
-import { useReactiveVar } from '@apollo/client'
+import { useReactiveVar } from '@apollo/client/react/hooks/useReactiveVar'
 
 const Cart = dynamic(() => import('../cart/Cart'), { ssr: false })
 

@@ -1,4 +1,4 @@
-import { ApolloClient, createHttpLink } from '@apollo/client'
+import { ApolloClient, createHttpLink } from '@apollo/client/core'
 import { setContext } from '@apollo/client/link/context'
 import { CustomInMemoryCache } from './cache'
 

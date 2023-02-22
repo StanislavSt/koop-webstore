@@ -1,4 +1,4 @@
-import { makeVar, InMemoryCache, ReactiveVar } from '@apollo/client'
+import { InMemoryCache, makeVar, ReactiveVar } from '@apollo/client/core'
 import { Image } from './types'
 
 export type CartItem = {

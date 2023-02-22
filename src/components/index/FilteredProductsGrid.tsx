@@ -1,7 +1,7 @@
-import { useQuery, useReactiveVar } from '@apollo/client'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'next-i18next'
+import { useQuery, useReactiveVar } from '@apollo/client/react/hooks'
 
 import client from '../../graphql/apollo-client-storefront'
 import { filtersVar } from '../../graphql/cache'

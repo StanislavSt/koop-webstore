@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client'
+import { gql } from '@apollo/client/core'
 
 const GetArtists = gql`
   query GetArtists($first: Int!, $language: LanguageCode)

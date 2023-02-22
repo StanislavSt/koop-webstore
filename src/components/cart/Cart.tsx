@@ -1,7 +1,8 @@
-import { gql, useQuery, useReactiveVar } from '@apollo/client'
+import { useState } from 'react'
+import { gql } from '@apollo/client/core'
+import { useQuery, useReactiveVar } from '@apollo/client/react/hooks'
 import Image from 'next/image'
 import { useTranslation } from 'next-i18next'
-import { useState } from 'react'
 
 import { Button } from '../common'
 import { Drawer } from './Drawer'
