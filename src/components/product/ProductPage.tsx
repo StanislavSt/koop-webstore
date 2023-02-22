@@ -211,6 +211,7 @@ const ProductPage = ({ product }: { product: ProductWithBlurUrl }) => {
                   objectFit="contain"
                   width={1000}
                   blurDataURL={image.node.blurDataUrl}
+                  placeholder={image.node.blurDataUrl ? 'blur' : 'empty'}
                 />
               ))}
           </div>
