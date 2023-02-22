@@ -7138,6 +7138,7 @@ export type GetProductQuery = {
           width?: number | null
           altText?: string | null
           url: any
+          placeholder: any
         }
       }>
     }
@@ -7818,13 +7819,14 @@ export const GetProductDocument = gql`
           amount
         }
       }
-      images(first: 5) {
+      images(first: 10) {
         edges {
           node {
             height
             width
             altText
             url
+            placeholder: url(transform: { maxWidth: 200, maxHeight: 200 })
           }
         }
       }

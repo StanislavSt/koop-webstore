@@ -16,13 +16,14 @@ const GetProduct = gql`
           amount
         }
       }
-      images(first: 5) {
+      images(first: 10) {
         edges {
           node {
             height
             width
             altText
             url
+            placeholder: url(transform: { maxWidth: 200, maxHeight: 200 })
           }
         }
       }

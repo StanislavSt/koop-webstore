@@ -1,3 +1,5 @@
+import { getPlaiceholder } from 'plaiceholder'
+
 import ProductPage from '../../components/product/ProductPage'
 import GetProduct from '../../graphql/queries/GetProduct'
 import {
@@ -50,10 +52,25 @@ export const getStaticProps = async ({
     },
   })
 
+  const images =
+    data.product &&
+    (await Promise.all(
+      data.product.images.edges.map(async (image) => {
+        const blurDataURL = await (
+          await getPlaiceholder(image.node.placeholder)
+        ).base64
+
+        return {
+          ...image,
+          blurDataUrl: blurDataURL,
+        }
+      })
+    ))
+
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
-      product: data.product,
+      product: { ...data.product, images },
     },
     revalidate: 10,
   }

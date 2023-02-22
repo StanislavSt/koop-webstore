@@ -93,6 +93,7 @@ export const ProductCard = ({
             objectFit="contain"
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
+            quality={50}
           />
         </a>
       </Link>

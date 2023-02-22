@@ -7,6 +7,7 @@ import { useTranslation } from 'next-i18next'
 import {
   GetProductsByTagQuery,
   GetProductsByTagQueryVariables,
+  ImageEdge,
   Product,
   ProductVariant,
   ProductVariantEdge,
@@ -18,8 +19,19 @@ import { getArtists } from '../../utils/getArtist'
 import RecommendedProducts from '../recommendedProducts/RecommendedProducts'
 import ProductOptions from '../productOptions/ProductOptions'
 import GetProductsByTag from '../../graphql/queries/GetProductsByTag'
+import { calculateImageHeight } from '../../utils/calculateImageHeight'
 
-const ProductPage = ({ product }: { product: Product }) => {
+interface IImage extends ImageEdge {
+  node: ImageEdge['node'] & {
+    blurDataUrl: string
+  }
+}
+
+type ProductWithBlurUrl = Product & {
+  images: IImage[]
+}
+
+const ProductPage = ({ product }: { product: ProductWithBlurUrl }) => {
   const { t, i18n } = useTranslation()
 
   const selectedInit: { [key: string]: string } = {}
@@ -110,7 +122,7 @@ const ProductPage = ({ product }: { product: Product }) => {
           price: selectedVariant?.price.amount,
           title: product?.title,
           selectedOptions: selectedOptions,
-          image: product?.images.edges[0].node,
+          image: product?.images[0].node,
         },
       ])
     )
@@ -132,7 +144,7 @@ const ProductPage = ({ product }: { product: Product }) => {
             price: selectedVariant?.price.amount,
             title: product?.title,
             selectedOptions: selectedOptions,
-            image: product?.images.edges[0].node,
+            image: product?.images[0].node,
           },
         ])
   }
@@ -184,14 +196,21 @@ const ProductPage = ({ product }: { product: Product }) => {
 
           <div className="col-span-2 flex w-full flex-col items-center gap-[18px] pb-[20px] lg:gap-3">
             {product &&
-              product?.images.edges.map((imageEdge) => (
+              product?.images.map((image) => (
                 <Image
-                  key={imageEdge.node.id}
+                  key={image.node.id}
                   className="rounded py-5 px-5"
-                  src={imageEdge.node.url}
-                  alt={imageEdge.node.altText || ''}
-                  height={(imageEdge.node.height || 0) * 3}
-                  width={(imageEdge.node.width || 0) * 3}
+                  src={image.node.url}
+                  alt={image.node.altText || ''}
+                  height={calculateImageHeight(
+                    image.node.width ?? 0,
+                    image.node.height ?? 0,
+                    1000
+                  )}
+                  quality={90}
+                  objectFit="contain"
+                  width={1000}
+                  blurDataURL={image.node.blurDataUrl}
                 />
               ))}
           </div>
