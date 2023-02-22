@@ -94,32 +94,34 @@ export const ProductCard = ({
             objectFit="contain"
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
-            quality={50}
+            quality={30}
           />
         </a>
       </Link>
-      {product.images.edges.map((edge, index) => (
-        <Link href={`/product/${product.handle}`} key={index}>
-          <a aria-label={product.title} className="hidden">
-            <Image
-              className="aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8 w-full cursor-pointer overflow-hidden rounded-lg"
-              src={edge.node.url}
-              alt={edge.node.altText ?? ''}
-              width={375}
-              height={calculateImageHeight(
-                edge.node.width ?? 0,
-                edge.node.height ?? 0,
-                375
-              )}
-              objectFit="contain"
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
-              quality={20}
-              priority
-            />
-          </a>
-        </Link>
-      ))}
+      {product.images.edges
+        .slice(1, product.images.edges.length)
+        .map((edge, index) => (
+          <Link href={`/product/${product.handle}`} key={index}>
+            <a aria-label={product.title} className="hidden">
+              <Image
+                className="aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8 w-full cursor-pointer overflow-hidden rounded-lg"
+                src={edge.node.url}
+                alt={edge.node.altText ?? ''}
+                width={375}
+                height={calculateImageHeight(
+                  edge.node.width ?? 0,
+                  edge.node.height ?? 0,
+                  375
+                )}
+                objectFit="contain"
+                onMouseEnter={handleOnMouseEnter}
+                onMouseLeave={handleOnMouseLeave}
+                quality={30}
+                priority
+              />
+            </a>
+          </Link>
+        ))}
       {artists && (
         <div className="flex flex-col gap-1">
           {artists.map((artist) => (
