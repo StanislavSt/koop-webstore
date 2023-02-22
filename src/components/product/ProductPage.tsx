@@ -22,9 +22,7 @@ import GetProductsByTag from '../../graphql/queries/GetProductsByTag'
 import { calculateImageHeight } from '../../utils/calculateImageHeight'
 
 interface IImage extends ImageEdge {
-  node: ImageEdge['node'] & {
-    blurDataUrl: string
-  }
+  blurDataUrl: string
 }
 
 type ProductWithBlurUrl = Product & {
@@ -210,8 +208,8 @@ const ProductPage = ({ product }: { product: ProductWithBlurUrl }) => {
                   quality={90}
                   objectFit="contain"
                   width={1000}
-                  blurDataURL={image.node.blurDataUrl}
-                  placeholder={image.node.blurDataUrl ? 'blur' : 'empty'}
+                  blurDataURL={image.blurDataUrl}
+                  placeholder={image.blurDataUrl ? 'blur' : 'empty'}
                 />
               ))}
           </div>
