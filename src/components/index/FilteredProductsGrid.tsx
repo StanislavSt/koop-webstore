@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import { useQuery, useReactiveVar } from '@apollo/client/react/hooks'
+import dynamic from 'next/dynamic'
 
 import client from '../../graphql/apollo-client-storefront'
 import { filtersVar } from '../../graphql/cache'
@@ -15,8 +16,11 @@ import { numberOfProductsToQuery, ProductWithCursor } from '../../pages'
 import { createProductGrid } from '../../utils/createProductGrid'
 import mapProducts from '../../utils/mapProducts'
 import { Spinner } from '../common/Spinner'
-import { ProductCard } from './ProductCard'
 import { ProductColumn } from './ProductColumn'
+
+const ProductCard = dynamic(() => import('../index/ProductCard'), {
+  ssr: false,
+})
 
 const FilteredProductsGrid = () => {
   const { t } = useTranslation()

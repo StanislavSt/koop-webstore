@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-
 import { useTranslation } from 'next-i18next'
+import useMediaQuery from 'beautiful-react-hooks/useMediaQuery'
 
 import { getArtists } from '../../utils/getArtist'
 import { calculateImageHeight } from '../../utils/calculateImageHeight'
@@ -13,7 +13,7 @@ type ImageState = ProductWithAnimation['images']['edges'][0]['node'] & {
 }
 const intervals: number[] = []
 
-export const ProductCard = ({
+const ProductCard = ({
   product,
   isRecommendedProduct,
 }: {
@@ -21,6 +21,7 @@ export const ProductCard = ({
   isRecommendedProduct?: boolean
 }) => {
   const { t, i18n } = useTranslation()
+  const isLarge = useMediaQuery('(min-width: 48rem)')
 
   const [image, setImage] = useState<ImageState>(product.images.edges[0].node)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -98,30 +99,31 @@ export const ProductCard = ({
           />
         </a>
       </Link>
-      {product.images.edges
-        .slice(1, product.images.edges.length)
-        .map((edge, index) => (
-          <Link href={`/product/${product.handle}`} key={index}>
-            <a aria-label={product.title} className="hidden">
-              <Image
-                className="aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8 w-full cursor-pointer overflow-hidden rounded-lg"
-                src={edge.node.url}
-                alt={edge.node.altText ?? ''}
-                width={375}
-                height={calculateImageHeight(
-                  edge.node.width ?? 0,
-                  edge.node.height ?? 0,
-                  375
-                )}
-                objectFit="contain"
-                onMouseEnter={handleOnMouseEnter}
-                onMouseLeave={handleOnMouseLeave}
-                quality={15}
-                priority
-              />
-            </a>
-          </Link>
-        ))}
+      {isLarge &&
+        product.images.edges
+          .slice(1, product.images.edges.length)
+          .map((edge, index) => (
+            <Link href={`/product/${product.handle}`} key={index}>
+              <a aria-label={product.title} className="hidden">
+                <Image
+                  className="aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8 w-full cursor-pointer overflow-hidden rounded-lg"
+                  src={edge.node.url}
+                  alt={edge.node.altText ?? ''}
+                  width={375}
+                  height={calculateImageHeight(
+                    edge.node.width ?? 0,
+                    edge.node.height ?? 0,
+                    375
+                  )}
+                  objectFit="contain"
+                  onMouseEnter={handleOnMouseEnter}
+                  onMouseLeave={handleOnMouseLeave}
+                  quality={15}
+                  priority
+                />
+              </a>
+            </Link>
+          ))}
       {artists && (
         <div className="flex flex-col gap-1">
           {artists.map((artist) => (
@@ -140,3 +142,5 @@ export const ProductCard = ({
     </div>
   )
 }
+
+export default ProductCard

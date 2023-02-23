@@ -1,13 +1,20 @@
-import { useQuery } from '@apollo/client/react/hooks/useQuery'
 import { useEffect, useState } from 'react'
+import { useQuery } from '@apollo/client/react/hooks/useQuery'
+import dynamic from 'next/dynamic'
+
 import GetArtist from '../../graphql/queries/GetArtist'
 import { GetArtistQuery, GetArtistQueryVariables } from '../../graphql/types'
 import { numberOfProductsToQuery, ProductWithCursor } from '../../pages'
 import { createProductGrid } from '../../utils/createProductGrid'
 import mapProducts from '../../utils/mapProducts'
 import { Spinner } from '../common/Spinner'
-import { ProductCard } from '../index/ProductCard'
 import { ProductColumn } from '../index/ProductColumn'
+
+import dynamic from 'next/dynamic'
+
+const ProductCard = dynamic(() => import('../index/ProductCard'), {
+  ssr: false,
+})
 
 const ArtistProducts = ({
   products: initialProducts,

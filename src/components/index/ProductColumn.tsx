@@ -1,5 +1,10 @@
+import dynamic from 'next/dynamic'
+
 import { ProductWithAnimation } from '../../utils/createProductGrid'
-import { ProductCard } from './ProductCard'
+
+const ProductCard = dynamic(() => import('../index/ProductCard'), {
+  ssr: false,
+})
 
 export const ProductColumn = ({
   column,

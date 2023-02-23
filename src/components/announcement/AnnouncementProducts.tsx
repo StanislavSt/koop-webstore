@@ -1,9 +1,14 @@
 import { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
+
 import { GetAnnouncementQuery } from '../../graphql/types'
 import { ProductWithCursor } from '../../pages'
 import { createProductGrid } from '../../utils/createProductGrid'
-import { ProductCard } from '../index/ProductCard'
 import { ProductColumn } from '../index/ProductColumn'
+
+const ProductCard = dynamic(() => import('../index/ProductCard'), {
+  ssr: false,
+})
 
 const AnnouncementProducts = ({
   products: initialProducts,

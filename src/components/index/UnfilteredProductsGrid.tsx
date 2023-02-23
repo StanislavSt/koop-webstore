@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import client from '../../graphql/apollo-client-storefront'
+import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
 
+import client from '../../graphql/apollo-client-storefront'
 import GetProducts from '../../graphql/queries/GetProducts'
-import { ProductCard } from './ProductCard'
 import {
   GetProductsQuery,
   GetProductsQueryVariables,
@@ -13,7 +14,10 @@ import { numberOfProductsToQuery, ProductWithCursor } from '../../pages'
 import { Spinner } from '../common/Spinner'
 import { ProductColumn } from './ProductColumn'
 import mapProducts from '../../utils/mapProducts'
-import { useRouter } from 'next/router'
+
+const ProductCard = dynamic(() => import('../index/ProductCard'), {
+  ssr: false,
+})
 
 const UnfilteredProductsGrid = ({
   products: initialProducts,

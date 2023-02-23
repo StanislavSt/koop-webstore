@@ -1,12 +1,16 @@
 import React, { useMemo } from 'react'
 import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
 
 import {
   GetProductRecommendationsQuery,
   GetProductsByTagQueryResult,
 } from '../../graphql/types'
 import { shuffle } from '../../utils/shuffleArray'
-import { ProductCard } from '../index/ProductCard'
+
+const ProductCard = dynamic(() => import('../index/ProductCard'), {
+  ssr: false,
+})
 
 type RecommendedProduct = NonNullable<
   GetProductRecommendationsQuery['productRecommendations']

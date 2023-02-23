@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { useQuery, useReactiveVar } from '@apollo/client/react/hooks'
 import Link from 'next/link'
 import { useTranslation } from 'next-i18next'
+import { useQuery, useReactiveVar } from '@apollo/client/react/hooks'
 
 import {
   GetProductsByTagQuery,
@@ -149,7 +149,7 @@ const ProductPage = ({ product }: { product: ProductWithBlurUrl }) => {
 
   return (
     <Layout title={`${product.title} | TheKopyShop`}>
-      <div className="bg-white lg:px-[12px]">
+      <div className="min-h-[100vh] bg-white lg:px-[12px]">
         <div className="gap-y-10 px-[9px] md:grid md:grid-cols-1 md:gap-x-6 lg:grid-cols-3 lg:px-0 xl:grid-cols-3 xl:gap-x-8">
           <div className="flex flex-col lg:hidden">
             <span className="text-[24px] uppercase">{product?.title}</span>
