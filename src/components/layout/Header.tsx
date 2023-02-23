@@ -16,7 +16,7 @@ const IndexPageHeader = () => {
 
   return (
     <header className="mt-3 flex justify-between px-3">
-      <div className="flex flex-col gap-2 sm:block">
+      <div className="flex flex-col gap-3 sm:block">
         <div className="relative h-[150px] w-[120px] sm:hidden">
           {/* Mobile version */}
           <Image
@@ -27,7 +27,7 @@ const IndexPageHeader = () => {
           />
         </div>
         <Link href="/info/about-us">
-          <a className="mb-3" aria-label="about us">
+          <a aria-label="about us">
             <Button className="block bg-black sm:hidden">{t('info')}</Button>
           </a>
         </Link>
@@ -52,7 +52,7 @@ const IndexPageHeader = () => {
               </a>
             </Link>
           </div>
-          <div className="flex flex-col items-end gap-2">
+          <div className="flex flex-col items-end gap-3">
             <LanguageSwitcher />
             <Cart />
           </div>
@@ -67,7 +67,7 @@ const CollectionPageHeader = () => {
   const router = useRouter()
 
   return (
-    <header className="mt-3 flex justify-between px-3">
+    <header className="mt-3 mb-5 flex justify-between px-3">
       <Button
         className="hidden bg-[#1E90FF] text-white sm:block"
         onClick={() => router.push('/')}
@@ -94,7 +94,7 @@ const CollectionPageHeader = () => {
             </a>
           </Link>
         </div>
-        <div className="flex flex-col items-end gap-2">
+        <div className="flex flex-col items-end gap-3">
           <LanguageSwitcher />
           <Cart />
         </div>

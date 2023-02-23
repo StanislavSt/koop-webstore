@@ -169,8 +169,10 @@ const ProductPage = ({ product }: { product: ProductWithBlurUrl }) => {
               <ProductOptions product={product} setSelected={setSelected} />
             )}
             <div className="text-[24px]">
-              {i18n.language === 'en' && t('bgn')} {Number(price).toFixed(2)}{' '}
-              {i18n.language === 'bg' && t('bgn')}
+              {i18n.language === 'en' && (
+                <span className="uppercase">{t('bgn')}</span>
+              )}{' '}
+              {Number(price).toFixed(2)} {i18n.language === 'bg' && t('bgn')}
             </div>
 
             {product.availableForSale ? (

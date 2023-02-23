@@ -95,7 +95,7 @@ const Cart = () => {
   return (
     <>
       <button onClick={() => setIsOpen(true)}>
-        <div className="text-[20px] text-[#1E90FF]">
+        <div className=" min-w-[99px] rounded-[4px] bg-[#1E90FF] px-2 text-right text-white hover:opacity-70">
           {t('cart')} ({getCartLength()})
         </div>
       </button>
@@ -119,50 +119,50 @@ const Cart = () => {
                   return (
                     <div
                       key={index}
-                      className="my-2 flex items-center justify-between text-[22px]"
+                      className="my-2 flex items-center justify-between gap-2 text-[22px]"
                     >
-                      <div className="flex items-center gap-5">
-                        <Image
-                          src={cartItem.image.url}
-                          objectFit="contain"
-                          objectPosition="center"
-                          alt={cartItem.title}
-                          width={75}
-                          height={75}
-                          quality={35}
-                        />
-                        <div className="flex flex-col">
-                          <div className="max-w-[280px] text-[18px] leading-[23px]">
+                      <Image
+                        src={cartItem.image.url}
+                        objectFit="contain"
+                        objectPosition="center"
+                        alt={cartItem.title}
+                        width={75}
+                        height={75}
+                        quality={35}
+                      />
+                      <div className="flex w-full items-start justify-between">
+                        <section className="flex h-full flex-col justify-between">
+                          <span className="inline-block  max-w-[145px] truncate text-[18px] md:max-w-[280px]">
                             {cartItem.title}
-                          </div>
-                          <div className="flex flex-col text-[16px] text-[#939393]">
+                          </span>
+                          <section className="flex flex-col text-[16px] text-[#939393]">
                             {Object.values(cartItem.selectedOptions).map(
                               (x) => {
                                 return (
-                                  <div key={x} className="leading-6">
+                                  <span className="flex items-end" key={x}>
                                     {x}
-                                  </div>
+                                  </span>
                                 )
                               }
                             )}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex flex-col items-end ">
-                        <span className="text-[18px] ">
-                          {cartItem.quantity} x{' '}
-                          <span className="uppercase">
-                            {i18n.language === 'en' && t('bgn')}{' '}
+                          </section>
+                        </section>
+                        <section className="flex flex-col items-end justify-between">
+                          <span className="text-[18px] ">
+                            {cartItem.quantity} x{' '}
+                            <span className="uppercase">
+                              {i18n.language === 'en' && t('bgn')}{' '}
+                            </span>
+                            {Number(cartItem.price).toFixed(2)}
+                            {i18n.language === 'bg' && t('bgn')}
                           </span>
-                          {Number(cartItem.price).toFixed(2)}
-                          {i18n.language === 'bg' && t('bgn')}
-                        </span>
-                        <div
-                          className="cursor-pointer text-[16px] text-[#939393] hover:opacity-60"
-                          onClick={() => removeCartItem(cartItem)}
-                        >
-                          {t('remove')}
-                        </div>
+                          <button
+                            className="cursor-pointer text-[16px] text-[#939393] hover:opacity-60"
+                            onClick={() => removeCartItem(cartItem)}
+                          >
+                            {t('remove')}
+                          </button>
+                        </section>
                       </div>
                     </div>
                   )
