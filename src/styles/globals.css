@@ -5,7 +5,7 @@
 @font-face {
   font-family: HelenBgLight;
   src: url('/Helen-Bg-Light.otf');
-  /* font-display: swap; */
+  font-display: swap;
 }
 @layer base {
   h1 {
