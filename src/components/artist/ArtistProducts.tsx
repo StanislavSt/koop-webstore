@@ -10,8 +10,6 @@ import mapProducts from '../../utils/mapProducts'
 import { Spinner } from '../common/Spinner'
 import { ProductColumn } from '../index/ProductColumn'
 
-import dynamic from 'next/dynamic'
-
 const ProductCard = dynamic(() => import('../index/ProductCard'), {
   ssr: false,
 })
