@@ -151,7 +151,7 @@ const ProductPage = ({ product }: { product: ProductWithBlurUrl }) => {
     <Layout title={`${product.title} | TheKopyShop`}>
       <div className="min-h-[100vh] bg-white lg:px-[12px]">
         <div className="gap-y-10 px-[9px] md:grid md:grid-cols-1 md:gap-x-6 lg:grid-cols-3 lg:px-0 xl:grid-cols-3 xl:gap-x-8">
-          <div className="flex flex-col lg:hidden">
+          <div className="flex flex-col gap-1 lg:hidden">
             <span className="text-[24px] uppercase">{product?.title}</span>
             {artists &&
               artists.map((artist) => (

@@ -95,7 +95,7 @@ const ProductCard = ({
             objectFit="contain"
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
-            quality={15}
+            quality={isLarge ? 35 : 70}
           />
         </a>
       </Link>
@@ -118,7 +118,7 @@ const ProductCard = ({
                   objectFit="contain"
                   onMouseEnter={handleOnMouseEnter}
                   onMouseLeave={handleOnMouseLeave}
-                  quality={15}
+                  quality={35}
                   priority
                 />
               </a>
