@@ -27,6 +27,10 @@ const filterValues: {
     format: 'prints',
     technique: ['screen print', 'illustration', 'digital', 'riso'],
   },
+  {
+    format: 'tickets',
+    technique: [''],
+  },
 ]
 
 export const clearFilters = () => {

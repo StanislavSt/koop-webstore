@@ -10,7 +10,7 @@ export type CartItem = {
   image: Image
 }
 export type Filters = {
-  format: 'publications' | 'prints' | ''
+  format: 'publications' | 'prints' | 'tickets' | ''
   technique:
     | 'art'
     | 'architecture'
