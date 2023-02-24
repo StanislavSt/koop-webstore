@@ -79,7 +79,7 @@ const ProductCard = ({
         </p>
       </div>
       <Link href={`/product/${product.handle}`}>
-        <a aria-label={product.title}>
+        <a aria-label={product.title} className="hover:bg-[#1E90FF]">
           <Image
             className="aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8 w-full cursor-pointer overflow-hidden rounded-lg"
             src={image.url}

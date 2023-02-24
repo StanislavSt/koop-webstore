@@ -1,11 +1,8 @@
 import { useTranslation } from 'next-i18next'
-import dynamic from 'next/dynamic'
 
 import { Button } from '../common/Button'
 import { Filters, filtersVar } from '../../graphql/cache'
 import { useReactiveVar } from '@apollo/client/react/hooks/useReactiveVar'
-
-const Cart = dynamic(() => import('../cart/Cart'), { ssr: false })
 
 const filterValues: {
   format: Filters['format']
@@ -46,7 +43,7 @@ const Filters = () => {
         <div>
           <ul
             aria-labelledby="format"
-            className="inline-flex flex-col items-start text-[48px] uppercase leading-[72%] sm:text-[32px] md:text-[36px] md:leading-[26px] lg:text-[48px] lg:leading-[35.52px]"
+            className="inline-flex flex-col items-start text-[48px] uppercase leading-[85%] sm:text-[32px] md:text-[36px]  md:leading-[26px] lg:text-[48px] lg:leading-[35.52px]"
           >
             {filterValues.map((filter) => (
               <li
@@ -72,9 +69,6 @@ const Filters = () => {
           ) : (
             <span className="h-[21px]"> </span>
           )}
-          <span className="block sm:hidden">
-            <Cart />
-          </span>
         </div>
       </div>
       <div className="min-w-[10rem] md:min-w-[15rem] lg:min-w-0">
