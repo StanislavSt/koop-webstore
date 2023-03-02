@@ -34,6 +34,16 @@ const Layout = ({ title = 'KO-OP', children }: Props) => {
           <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
           <meta name="msapplication-TileColor" content="#da532c" />
           <meta name="theme-color" content="#ffffff" />
+          <meta
+            name="description"
+            content={`The Kopy Shop is a distributor
+            of prints and publications by Bulgarian and international artists and publishers. Most of the products are limited edition or printed on demand. The collection features magazines, zines, artist books, photobooks, as well as artworks in different printed media – riso, screen-print and inkjet.`}
+          />
+          <meta
+            property="og:image"
+            content="https://i.imgur.com/NRFpF1k.png"
+            key="ogImage"
+          />
         </Head>
         <Header />
         {children}
