@@ -43,15 +43,6 @@ const Layout = ({ title = 'KO-OP', customOg, children }: Props) => {
           <meta
             property="og:image"
             content={customOg ? customOg : 'https://i.imgur.com/NRFpF1k.png'}
-            key="ogImage"
-          />
-          <meta
-            property="og:image"
-            content={customOg ? customOg : 'https://i.imgur.com/NRFpF1k.png'}
-          />
-          <meta
-            name="twitter:image"
-            content={customOg ? customOg : 'https://i.imgur.com/NRFpF1k.png'}
           />
         </Head>
         <Header />
