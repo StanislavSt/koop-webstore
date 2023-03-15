@@ -12,13 +12,16 @@ export const ProfileContent = ({ image, title, author }: any) => {
       }}
     >
       <div style={{ display: 'flex', marginTop: '5px', marginBottom: '5px' }}>
-        <img
-          style={{ objectFit: 'contain' }}
-          alt="Vercel"
-          height={550}
-          src={image}
-          width={450}
-        />
+        {image && (
+          <img
+            style={{ objectFit: 'contain' }}
+            alt="Vercel"
+            height={550}
+            src={image}
+            width={450}
+          />
+        )}
+
         <div
           style={{
             display: 'flex',
@@ -26,28 +29,32 @@ export const ProfileContent = ({ image, title, author }: any) => {
             marginLeft: '48px',
           }}
         >
-          <span
-            style={{
-              fontSize: '56px',
-              color: '#222',
-              paddingTop: '45px',
-              fontFamily: "'Noto Sans', sans-serif",
-              fontWeight: 700,
-              maxWidth: 620,
-            }}
-          >
-            {title}
-          </span>
-          <span
-            style={{
-              fontSize: '36px',
-              color: '#222',
-              fontFamily: "'Noto Sans', sans-serif",
-              fontWeight: 500,
-            }}
-          >
-            {author}
-          </span>
+          {title && (
+            <span
+              style={{
+                fontSize: '56px',
+                color: '#222',
+                paddingTop: '45px',
+                fontFamily: "'Noto Sans', sans-serif",
+                fontWeight: 700,
+                maxWidth: 620,
+              }}
+            >
+              {title}
+            </span>
+          )}
+          {author && (
+            <span
+              style={{
+                fontSize: '36px',
+                color: '#222',
+                fontFamily: "'Noto Sans', sans-serif",
+                fontWeight: 500,
+              }}
+            >
+              {author}
+            </span>
+          )}
         </div>
       </div>
     </div>

@@ -71,7 +71,6 @@ export const getStaticProps = async ({
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
       product: { ...data.product, images },
-      // ogImage: ogImage,
     },
     revalidate: 10,
   }
