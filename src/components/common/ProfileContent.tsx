@@ -1,8 +1,11 @@
 /* eslint-disable */
+import bigLogo from '../../../public/logos/KopyShop_BIG.svg'
+
 export const ProfileContent = ({ image, title, author }: any) => {
   return (
     <div
       style={{
+        position: 'relative',
         display: 'flex',
         height: '100%',
         width: '100%',
@@ -33,7 +36,7 @@ export const ProfileContent = ({ image, title, author }: any) => {
             <span
               style={{
                 fontSize: '56px',
-                color: '#222',
+                color: 'white',
                 paddingTop: '45px',
                 fontFamily: "'Noto Sans', sans-serif",
                 fontWeight: 700,
@@ -47,9 +50,10 @@ export const ProfileContent = ({ image, title, author }: any) => {
             <span
               style={{
                 fontSize: '36px',
-                color: '#222',
+                color: 'white',
                 fontFamily: "'Noto Sans', sans-serif",
                 fontWeight: 500,
+                marginTop: '50px',
               }}
             >
               {author}
@@ -57,6 +61,17 @@ export const ProfileContent = ({ image, title, author }: any) => {
           )}
         </div>
       </div>
+      <img
+        src="https://i.imgur.com/2EwaxLX.png"
+        style={{
+          objectFit: 'contain',
+          position: 'absolute',
+          bottom: '-50px',
+          right: '-40px',
+        }}
+        height={150}
+        width={150}
+      />
     </div>
   )
 }

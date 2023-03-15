@@ -6,7 +6,7 @@ export const BackgroundCanvas = ({ children }: { children?: any }) => {
         display: 'flex',
         width: '100%',
         height: '100%',
-        background: 'linear-gradient(to right, #e8cbc0, #636fa4)',
+        background: '#588cf0',
         padding: '30px',
       }}
     >
