@@ -26,7 +26,7 @@ const AnnouncementBanner = ({
   return (
     <>
       {announcement?.image && (
-        <Link href="/announcement">
+        <Link href="/announcement" legacyBehavior>
           <div className="group relative h-[40vh] min-h-[300px] w-full cursor-pointer rounded-2xl md:h-[20vh]">
             <Image
               className="rounded-2xl"

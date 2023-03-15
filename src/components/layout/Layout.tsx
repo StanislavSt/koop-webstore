@@ -4,9 +4,11 @@ import Header from './Header'
 
 type Props = React.PropsWithChildren<{
   title?: string
+  customOg?: string
 }>
+;`/api/og?title=${data.product?.title}&imageUrl=${data.product?.images.edges[0].node.url}`
 
-const Layout = ({ title = 'KO-OP', children }: Props) => {
+const Layout = ({ title = 'KO-OP', customOg, children }: Props) => {
   return (
     <>
       <div className="my-0 mx-auto max-w-screen-2xl p-2 sm:p-3">
@@ -41,7 +43,7 @@ const Layout = ({ title = 'KO-OP', children }: Props) => {
           />
           <meta
             property="og:image"
-            content="https://i.imgur.com/NRFpF1k.png"
+            content={customOg ? customOg : 'https://i.imgur.com/NRFpF1k.png'}
             key="ogImage"
           />
         </Head>

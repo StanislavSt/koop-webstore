@@ -17,7 +17,7 @@ const InfoNavigation = () => {
   return (
     <div className="flex flex-col flex-wrap items-start gap-4 border-b border-b-black pb-5 md:flex-row md:border-0">
       {menuItems.map((item) => (
-        <Link key={item} href={`/info/${item}`}>
+        <Link key={item} href={`/info/${item}`} legacyBehavior>
           <a>
             <Button
               className={` min-w-0 px-3 text-left text-white hover:bg-[#1E90FF] ${
@@ -31,7 +31,7 @@ const InfoNavigation = () => {
           </a>
         </Link>
       ))}
-      <Link href={`/info/artists`}>
+      <Link href={`/info/artists`} legacyBehavior>
         <a>
           <Button
             className={`block min-w-0 px-3 text-left text-white hover:bg-[#1E90FF] md:hidden ${

@@ -26,7 +26,7 @@ const IndexPageHeader = () => {
             objectFit="contain"
           />
         </div>
-        <Link href="/info/about-us">
+        <Link href="/info/about-us" legacyBehavior>
           <a aria-label="about us">
             <Button className="block bg-black sm:hidden">{t('info')}</Button>
           </a>
@@ -46,7 +46,7 @@ const IndexPageHeader = () => {
         </div>
         <div className="flex gap-16">
           <div className="hidden sm:block">
-            <Link href="/info/about-us">
+            <Link href="/info/about-us" legacyBehavior>
               <a aria-label="about us">
                 <Button className="bg-black">{t('info')}</Button>
               </a>
@@ -88,7 +88,7 @@ const CollectionPageHeader = () => {
 
       <div className="flex gap-16">
         <div className="hidden sm:block">
-          <Link href="/info/about-us">
+          <Link href="/info/about-us" legacyBehavior>
             <a aria-label="about us">
               <Button className="bg-black">{t('info')}</Button>
             </a>

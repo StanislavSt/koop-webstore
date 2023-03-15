@@ -148,7 +148,14 @@ const ProductPage = ({ product }: { product: ProductWithBlurUrl }) => {
   }
 
   return (
-    <Layout title={`${product.title} | TheKopyShop`}>
+    <Layout
+      title={`${product.title} | TheKopyShop`}
+      customOg={`https://www.thekopy.shop//api/og?title=${
+        product.title
+      }&imageUrl=${product.images.edges[0].node.url}&author=${
+        artists && artists[0].title
+      }`}
+    >
       <div className="min-h-[100vh] bg-white lg:px-[12px]">
         <div className="gap-y-10 px-[9px] md:grid md:grid-cols-1 md:gap-x-6 lg:grid-cols-3 lg:px-0 xl:grid-cols-3 xl:gap-x-8">
           <div className="flex flex-col gap-1 lg:hidden">
@@ -156,7 +163,7 @@ const ProductPage = ({ product }: { product: ProductWithBlurUrl }) => {
             {artists &&
               artists.map((artist) => (
                 <div key={artist.id}>
-                  <Link href={`/artist/${artist.handle}`}>
+                  <Link href={`/artist/${artist.handle}`} legacyBehavior>
                     <a>
                       <Button className="h-[30px] bg-black text-[20px] uppercase">
                         {artist.title}
@@ -222,7 +229,7 @@ const ProductPage = ({ product }: { product: ProductWithBlurUrl }) => {
               {artists &&
                 artists.map((artist) => (
                   <div key={artist.id}>
-                    <Link href={`/artist/${artist.handle}`}>
+                    <Link href={`/artist/${artist.handle}`} legacyBehavior>
                       <a>
                         <Button className="h-[30px] bg-black text-[24px] uppercase">
                           {artist.title}

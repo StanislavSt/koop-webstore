@@ -60,74 +60,86 @@ const ProductCard = ({
           : 'duration-500 animate-in fade-in'
       }`}
     >
-      <div className="flex flex-row items-end justify-between md:flex-col md:items-start xl:flex-row xl:items-end">
-        <span
-          className={`${
-            isRecommendedProduct ? 'text-md' : 'text-lg'
-          } mb-1 leading-[18px] xl:max-w-[55%]`}
-        >
-          {product.title}
-        </span>
-        <p
-          className={`${isRecommendedProduct ? 'text-md' : 'text-lg'} ${
-            product.availableForSale ? '' : 'line-through'
-          } mt-1 mb-1 font-medium uppercase leading-[18px]`}
-        >
-          {i18n.language === 'en' && t('bgn')}{' '}
-          {Number(product.priceRange.minVariantPrice.amount).toFixed(2)}{' '}
-          {i18n.language === 'bg' && t('bgn')}
-        </p>
+      <div className="group">
+        <div className="flex flex-row items-end justify-between md:flex-col md:items-start xl:flex-row xl:items-end">
+          <span
+            className={`${
+              isRecommendedProduct ? 'text-md' : 'text-lg'
+            } mb-1 leading-[18px] xl:max-w-[55%]`}
+          >
+            {product.title}
+          </span>
+          <p
+            className={`${isRecommendedProduct ? 'text-md' : 'text-lg'} ${
+              product.availableForSale ? '' : 'line-through'
+            } mt-1 mb-1 font-medium uppercase leading-[18px]`}
+          >
+            {i18n.language === 'en' && t('bgn')}{' '}
+            {Number(product.priceRange.minVariantPrice.amount).toFixed(2)}{' '}
+            {i18n.language === 'bg' && t('bgn')}
+          </p>
+        </div>
+        <Link href={`/product/${product.handle}`} legacyBehavior>
+          <a aria-label={product.title}>
+            <Image
+              className="aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8 w-full cursor-pointer overflow-hidden rounded-lg"
+              src={image.url}
+              alt={image.altText ?? ''}
+              width={375}
+              height={calculateImageHeight(
+                image.width ?? 0,
+                image.height ?? 0,
+                375
+              )}
+              placeholder={product.blurDataUrl ? 'blur' : 'empty'}
+              blurDataURL={product.blurDataUrl}
+              objectFit="contain"
+              onMouseEnter={handleOnMouseEnter}
+              onMouseLeave={handleOnMouseLeave}
+              quality={isLarge ? 35 : 70}
+            />
+          </a>
+        </Link>
+        {isLarge &&
+          product.images.edges
+            .slice(1, product.images.edges.length)
+            .map((edge, index) => (
+              <Link
+                href={`/product/${product.handle}`}
+                key={index}
+                legacyBehavior
+              >
+                <a aria-label={product.title} className="hidden">
+                  <Image
+                    className="aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8 w-full cursor-pointer overflow-hidden rounded-lg"
+                    src={edge.node.url}
+                    alt={edge.node.altText ?? ''}
+                    width={375}
+                    height={calculateImageHeight(
+                      edge.node.width ?? 0,
+                      edge.node.height ?? 0,
+                      375
+                    )}
+                    objectFit="contain"
+                    onMouseEnter={handleOnMouseEnter}
+                    onMouseLeave={handleOnMouseLeave}
+                    quality={35}
+                    priority
+                  />
+                </a>
+              </Link>
+            ))}
+        <div className="mt-[-12px] hidden h-4 w-full rounded-lg bg-[#1E90FF] group-hover:block"></div>
+        <div className="mt-[-12px] block h-4 w-full rounded-lg group-hover:hidden"></div>
       </div>
-      <Link href={`/product/${product.handle}`}>
-        <a aria-label={product.title} className="hover:bg-[#1E90FF]">
-          <Image
-            className="aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8 w-full cursor-pointer overflow-hidden rounded-lg"
-            src={image.url}
-            alt={image.altText ?? ''}
-            width={375}
-            height={calculateImageHeight(
-              image.width ?? 0,
-              image.height ?? 0,
-              375
-            )}
-            placeholder={product.blurDataUrl ? 'blur' : 'empty'}
-            blurDataURL={product.blurDataUrl}
-            objectFit="contain"
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
-            quality={isLarge ? 35 : 70}
-          />
-        </a>
-      </Link>
-      {isLarge &&
-        product.images.edges
-          .slice(1, product.images.edges.length)
-          .map((edge, index) => (
-            <Link href={`/product/${product.handle}`} key={index}>
-              <a aria-label={product.title} className="hidden">
-                <Image
-                  className="aspect-w-1 aspect-h-1 xl:aspect-w-7 xl:aspect-h-8 w-full cursor-pointer overflow-hidden rounded-lg"
-                  src={edge.node.url}
-                  alt={edge.node.altText ?? ''}
-                  width={375}
-                  height={calculateImageHeight(
-                    edge.node.width ?? 0,
-                    edge.node.height ?? 0,
-                    375
-                  )}
-                  objectFit="contain"
-                  onMouseEnter={handleOnMouseEnter}
-                  onMouseLeave={handleOnMouseLeave}
-                  quality={35}
-                  priority
-                />
-              </a>
-            </Link>
-          ))}
       {artists && (
-        <div className="flex flex-col gap-1">
+        <div className="mt-1 flex flex-col gap-1">
           {artists.map((artist) => (
-            <Link key={artist.id} href={`/artist/${artist.handle}`}>
+            <Link
+              key={artist.id}
+              href={`/artist/${artist.handle}`}
+              legacyBehavior
+            >
               <a
                 className={` ${
                   isRecommendedProduct ? 'text-md' : 'text-lg'
