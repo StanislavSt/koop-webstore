@@ -1,5 +1,5 @@
 /* eslint-disable */
-export const ProfileContent = ({ image, title, author }: props) => {
+export const ProfileContent = ({ image, title, author }: any) => {
   return (
     <div
       style={{

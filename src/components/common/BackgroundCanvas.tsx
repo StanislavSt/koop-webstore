@@ -1,4 +1,5 @@
-export const BackgroundCanvas = ({ children }: { children?: ReactNode }) => {
+/* eslint-disable */
+export const BackgroundCanvas = ({ children }: { children?: any }) => {
   return (
     <div
       style={{

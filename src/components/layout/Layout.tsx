@@ -6,7 +6,6 @@ type Props = React.PropsWithChildren<{
   title?: string
   customOg?: string
 }>
-;`/api/og?title=${data.product?.title}&imageUrl=${data.product?.images.edges[0].node.url}`
 
 const Layout = ({ title = 'KO-OP', customOg, children }: Props) => {
   return (
