@@ -41,16 +41,16 @@ const Layout = ({ title = 'KO-OP', customOg, children }: Props) => {
             of prints and publications by Bulgarian and international artists and publishers. Most of the products are limited edition or printed on demand. The collection features magazines, zines, artist books, photobooks, as well as artworks in different printed media – riso, screen-print and inkjet.`}
           />
           <meta
-            property="og:image"
+            property="og:image:secure"
             content={customOg ? customOg : 'https://i.imgur.com/NRFpF1k.png'}
             key="ogImage"
           />
           <meta
-            property="og:image"
+            property="og:image:secure"
             content={customOg ? customOg : 'https://i.imgur.com/NRFpF1k.png'}
           />
           <meta
-            name="twitter:image"
+            name="twitter:image:secure"
             content={customOg ? customOg : 'https://i.imgur.com/NRFpF1k.png'}
           />
         </Head>
