@@ -20,8 +20,14 @@ const AnnouncementBanner = ({
     (metafield) => metafield?.key === 'announcement_end_date'
   )?.value
 
+  const now = new Date().getTime()
+  const start = startDate ? new Date(startDate).getTime() : null
+  const end = endDate ? new Date(endDate).getTime() : null
+
   if (!endDate || !startDate) return <></>
+  if (!start || !end) return <></>
   if (new Date(endDate).getTime() < new Date().getTime()) return <></>
+  if (now < start || now > end) return <></>
 
   return (
     <>
