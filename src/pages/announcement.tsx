@@ -19,7 +19,7 @@ export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
   >({
     query: GetAnnouncement,
     variables: {
-      collectionId: 'gid://shopify/Collection/434676531479',
+      collectionId: 'gid://shopify/Collection/612270768476',
       language: locale === 'bg' ? LanguageCode.Bg : LanguageCode.En,
     },
   })
@@ -27,6 +27,7 @@ export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
     data.collection &&
     (await Promise.all(
       data.collection.products.edges.map(async (edge) => {
+        if (!edge.node.images.edges[0]) return null
         const blurDataURL = await (
           await getPlaiceholder(edge.node.images.edges[0].node.placeholder)
         ).base64

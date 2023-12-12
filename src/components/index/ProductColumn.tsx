@@ -13,7 +13,7 @@ export const ProductColumn = ({
 }) => (
   <div className="flex w-[25%] flex-col">
     {column.map((product) => (
-      <div key={product.id} className="pt-5">
+      <div key={product?.id} className="pt-5">
         <ProductCard product={product} />
       </div>
     ))}

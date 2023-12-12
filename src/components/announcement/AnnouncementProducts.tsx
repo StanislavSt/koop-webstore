@@ -47,7 +47,7 @@ const AnnouncementProducts = ({
       <div className="flex flex-col items-center p-3 md:hidden">
         {products &&
           products.map((product) => (
-            <div key={product.id} className="pt-5">
+            <div key={product?.id} className="pt-5">
               <ProductCard product={product} />
             </div>
           ))}

@@ -23,12 +23,14 @@ const ProductCard = ({
   const { t, i18n } = useTranslation()
   const isLarge = useMediaQuery('(min-width: 48rem)')
 
-  const [image, setImage] = useState<ImageState>(product.images.edges[0].node)
+  const [image, setImage] = useState<ImageState>(
+    product?.images.edges[0].node ?? null
+  )
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const interval = useRef<any>()
   const artists = getArtists(product)
 
-  const images = product.images.edges.map((edge) => edge.node)
+  const images = product?.images.edges.map((edge) => edge.node)
 
   let counter = 0
 
@@ -51,11 +53,11 @@ const ProductCard = ({
     clearInterval(interval.current)
     intervals.forEach((interval) => clearInterval(interval))
   }
-
+  if (!product) return <></>
   return (
     <div
       className={`${
-        product.animate
+        product?.animate
           ? 'duration-500 animate-in slide-in-from-bottom'
           : 'duration-500 animate-in fade-in'
       }`}

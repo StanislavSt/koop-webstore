@@ -48,8 +48,8 @@ export const createProductGrid = (
           col1Height:
             acc.col1Height +
             calculateImageHeight(
-              curr.images.edges[0].node.width ?? 0,
-              curr.images.edges[0].node.height ?? 0,
+              curr?.images.edges[0].node.width ?? 0,
+              curr?.images.edges[0].node.height ?? 0,
               500
             ),
         }

@@ -34,7 +34,7 @@ export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
   >({
     query: GetAnnouncement,
     variables: {
-      collectionId: 'gid://shopify/Collection/434676531479',
+      collectionId: 'gid://shopify/Collection/612270768476',
       language: locale === 'bg' ? LanguageCode.Bg : LanguageCode.En,
     },
   })
