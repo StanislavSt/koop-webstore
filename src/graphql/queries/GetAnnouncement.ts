@@ -22,7 +22,7 @@ const GetAnnouncement = gql`
         key
         value
       }
-      products(first: 50) {
+      products(first: 70) {
         edges {
           cursor
           node {
