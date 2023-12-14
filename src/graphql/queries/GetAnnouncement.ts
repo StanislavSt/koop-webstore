@@ -30,6 +30,7 @@ const GetAnnouncement = gql`
             title
             handle
             tags
+            availableForSale
             priceRange {
               minVariantPrice {
                 amount
