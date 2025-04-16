@@ -6,7 +6,7 @@ import { useTranslation } from 'next-i18next'
 
 import { Button } from '../common'
 import { Drawer } from './Drawer'
-import CreateCheckout from '../../graphql/queries/CreateCheckout'
+import CreateCart from '../../graphql/queries/CreateCart'
 import storefrontClient from '../../graphql/apollo-client-storefront'
 import { CartItem, cartItemsVar } from '../../graphql/cache'
 
@@ -30,27 +30,27 @@ const Cart = () => {
   if (loading) return <>Loading Cart</>
   if (error) return <p>ERROR: {error.message}</p>
 
-  async function createCheckout() {
+  async function createCart() {
     if (!data?.cartItems) return
     const variables = {
       input: {
-        lineItems: [
+        lines: [
           ...data.cartItems.map((item) => {
             return {
-              variantId: item.variantId,
+              merchandiseId: item.variantId,
               quantity: item.quantity,
             }
           }),
         ],
       },
     }
-    const checkoutData = await storefrontClient.mutate({
-      mutation: CreateCheckout,
+    const cartData = await storefrontClient.mutate({
+      mutation: CreateCart,
       variables,
     })
 
-    const { webUrl } = checkoutData.data.checkoutCreate.checkout
-    window.location.href = webUrl
+    const { checkoutUrl } = cartData.data.cartCreate.cart
+    window.location.href = checkoutUrl
   }
 
   const getCartLength = () => {
@@ -184,7 +184,7 @@ const Cart = () => {
                     <Button
                       className="flex w-full items-center justify-center bg-[#1E90FF] p-7 text-center text-white"
                       onClick={() => {
-                        createCheckout()
+                        createCart()
                       }}
                     >
                       <span className="text-[24px]">{t('complete order')}</span>
