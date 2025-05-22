@@ -23,6 +23,7 @@ export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
       language: locale === 'bg' ? LanguageCode.Bg : LanguageCode.En,
     },
   })
+
   const productsWithCursor =
     data.collection &&
     (await Promise.all(
