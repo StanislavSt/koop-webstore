@@ -74,7 +74,7 @@ const ProductCard = ({
           <p
             className={`${isRecommendedProduct ? 'text-md' : 'text-lg'} ${
               product.availableForSale ? '' : 'line-through'
-            } mt-1 mb-1 font-medium uppercase leading-[18px]`}
+            } mb-1 mt-1 font-medium uppercase leading-[18px]`}
           >
             {i18n.language === 'en' && t('bgn')}{' '}
             {Number(product.priceRange.minVariantPrice.amount).toFixed(2)}{' '}

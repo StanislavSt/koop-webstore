@@ -20,7 +20,7 @@ const IndexPage = ({
   return (
     <Layout title="Home">
       <div className="min-h-[70vh] bg-white">
-        <div className="py-10 px-3">
+        <div className="px-3 py-10">
           <h2 className="sr-only">Products</h2>
           <AnnouncementBanner announcement={announcement} />
           {filters.format ? (

@@ -93,7 +93,7 @@ export default function ProductOptions({
   }
 
   return (
-    <div className="flex flex-col pt-3 pb-5">
+    <div className="flex flex-col pb-5 pt-3">
       {product &&
         product.options[0].name !== 'Title' &&
         product.options.map((option, index) => (

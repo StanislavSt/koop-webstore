@@ -188,7 +188,7 @@ const ProductPage = ({ product }: { product: ProductWithBlurUrl }) => {
             {product.availableForSale ? (
               <div>
                 <Button
-                  className="h-20px min-w-32 flex items-center bg-[#1E90FF] p-3 text-[16px] uppercase"
+                  className="h-20px flex min-w-32 items-center bg-[#1E90FF] p-3 text-[16px] uppercase"
                   onClick={addToCart}
                 >
                   {t('Add to Cart')}
@@ -209,7 +209,7 @@ const ProductPage = ({ product }: { product: ProductWithBlurUrl }) => {
               product?.images.map((image) => (
                 <Image
                   key={image.node.id}
-                  className="rounded py-5 px-5"
+                  className="rounded px-5 py-5"
                   src={image.node.url}
                   alt={image.node.altText || ''}
                   height={calculateImageHeight(
@@ -271,7 +271,7 @@ const ProductPage = ({ product }: { product: ProductWithBlurUrl }) => {
 
             {product.descriptionHtml && (
               <>
-                <hr className="my-[10px] h-px border-0 bg-black dark:bg-gray-700 lg:my-[20px]" />
+                <hr className="my-[10px] h-px border-0 bg-black lg:my-[20px] dark:bg-gray-700" />
                 <div className="font-[HelenBgLight]">
                   <div
                     className="description"

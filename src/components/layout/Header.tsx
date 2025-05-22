@@ -67,7 +67,7 @@ const CollectionPageHeader = () => {
   const router = useRouter()
 
   return (
-    <header className="mt-3 mb-5 flex justify-between px-3">
+    <header className="mb-5 mt-3 flex justify-between px-3">
       <Button
         className="hidden bg-[#1E90FF] text-white sm:block"
         onClick={() => router.push('/')}
