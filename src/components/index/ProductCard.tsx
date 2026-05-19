@@ -76,9 +76,8 @@ const ProductCard = ({
               product.availableForSale ? '' : 'line-through'
             } mb-1 mt-1 font-medium uppercase leading-[18px]`}
           >
-            {i18n.language === 'en' && t('bgn')}{' '}
-            {Number(product.priceRange.minVariantPrice.amount).toFixed(2)}{' '}
-            {i18n.language === 'bg' && t('bgn')}
+            {t('bgn')}{' '}
+            {Number(product.priceRange.minVariantPrice.amount).toFixed(2)}
           </p>
         </div>
         <Link href={`/product/${product.handle}`} legacyBehavior>

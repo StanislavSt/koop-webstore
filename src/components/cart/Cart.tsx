@@ -150,11 +150,8 @@ const Cart = () => {
                         <section className="flex flex-col items-end justify-between">
                           <span className="text-[18px] ">
                             {cartItem.quantity} x{' '}
-                            <span className="uppercase">
-                              {i18n.language === 'en' && t('bgn')}{' '}
-                            </span>
+                            <span className="uppercase">{t('bgn')}</span>{' '}
                             {Number(cartItem.price).toFixed(2)}
-                            {i18n.language === 'bg' && t('bgn')}
                           </span>
                           <button
                             className="cursor-pointer text-[16px] text-[#939393] hover:opacity-60"
@@ -172,11 +169,8 @@ const Cart = () => {
                 <div className="mt-5 flex justify-between border-t border-t-black p-1 text-[22px]">
                   <div className="text-[30px] capitalize">{t('total')}</div>
                   <div className="text-[30px]">
-                    <span className="uppercase">
-                      {i18n.language === 'en' && t('bgn')}{' '}
-                    </span>
-                    {Number(getCartValue()).toFixed(2)}{' '}
-                    {i18n.language === 'bg' && t('bgn')}
+                    <span className="uppercase">{t('bgn')}</span>{' '}
+                    {Number(getCartValue()).toFixed(2)}
                   </div>
                 </div>
                 {data && data.cartItems.length > 0 && (
